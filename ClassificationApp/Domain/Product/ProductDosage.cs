@@ -5,11 +5,12 @@ namespace Domain
 {
     public class ProductDosage : BaseEntity
     {
-        [MaxLength(64)]
-        [MinLength(1)]
+        public int DosageId { get; set; }
         [Required]
-        public string ProductDosageValue { get; set; }
+        public Dosage Dosage { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public int ProductId { get; set; }
+        [Required]
+        public Product Product { get; set; }
     }
 }

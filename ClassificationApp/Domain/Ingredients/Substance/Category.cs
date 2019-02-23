@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class SubstanceCategory : BaseEntity
+    public class Category : BaseEntity
     {
         [MaxLength(64)]
         [MinLength(1)]
         [Required]
-        public string SubstanceCategoryValue { get; set; }
+        public string CategoryValue { get; set; }
 
-        public ICollection<Substance> Substances { get; set; }
+        public ICollection<SubstanceCategory> SubstanceCategories { get; set; }
     }
 }

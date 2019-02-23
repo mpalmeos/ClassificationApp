@@ -5,10 +5,12 @@ namespace Domain
 {
     public class ProductDescription : BaseEntity
     {
-        [MaxLength(255)]
-        [MinLength(1)]
-        public string ProductDescriptionValue { get; set; }
+        public int ProductId { get; set; }
+        [Required]
+        public Product Product { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public int DescriptionId { get; set; }
+        [Required]
+        public Description Description { get; set; }
     }
 }

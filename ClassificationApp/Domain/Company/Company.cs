@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,6 +18,6 @@ namespace Domain
         [Required]
         public ICollection<CompanyRole> CompanyRoles { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<ProductCompany> ProductCompanies { get; set; }
     }
 }

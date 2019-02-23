@@ -3,21 +3,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class HerbPart : BaseEntity
+    public class PlantForm : BaseEntity
     {
         [MaxLength(64)]
         [MinLength(1)]
         [Required]
-        public string HerbPartValueLatin { get; set; }
+        public string PlantFormValueLatin { get; set; }
         
         [MaxLength(64)]
         [MinLength(1)]
-        public string HerbPartValueEstonian { get; set; }
+        public string PlantFormValueEstonian { get; set; }
         
         [MaxLength(64)]
         [MinLength(1)]
-        public string HerbPartValueEnglish { get; set; }
+        public string PlantFormValueEnglish { get; set; }
 
-        public ICollection<Herb> Herbs { get; set; }
+        public ICollection<HerbForm> HerbForms { get; set; }
     }
 }

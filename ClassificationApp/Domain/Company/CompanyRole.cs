@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
     public class CompanyRole : BaseEntity
     {
-        [MaxLength(32)]
-        [MinLength(1)]
+        public int CompanyId { get; set; }
         [Required]
-        public string CompanyRoleValue { get; set; }
+        public Company Company { get; set; }
 
-        public ICollection<Company> Companies { get; set; }
+        public int RoleId { get; set; }
+        [Required]
+        public Role Role { get; set; }
     }
 }

@@ -1,16 +1,15 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class ProductComposition : BaseEntity
+    public class ProductCompany : BaseEntity
     {
         public int ProductId { get; set; }
         [Required]
         public Product Product { get; set; }
 
-        public int CompositionId { get; set; }
+        public int CompanyId { get; set; }
         [Required]
-        public Composition Composition { get; set; }
+        public Company Company { get; set; }
     }
 }

@@ -24,12 +24,8 @@ namespace Domain
         [Required]
         public ICollection<HerbForm> HerbForms { get; set; }
 
-        public ICollection<ProductComposition> ProductCompositions { get; set; }
+        public ICollection<CompositionHerb> CompositionHerbs { get; set; }
 
-        public ICollection<MedicinalDose> MedicinalDoses { get; set; }
-
-        public int UnitOfMeasureId { get; set; }
-        [Required]
-        public UnitOfMeasure UnitOfMeasure { get; set; }
+        public ICollection<HerbMedicinal> HerbMedicinals { get; set; }
     }
 }

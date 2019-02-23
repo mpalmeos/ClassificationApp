@@ -13,12 +13,8 @@ namespace Domain
         [Required]
         public ICollection<SubstanceCategory> SubstanceCategories { get; set; }
 
-        public ICollection<ProductComposition> ProductCompositions { get; set; }
+        public ICollection<CompositionSubstance> CompositionSubstances { get; set; }
 
-        public ICollection<MedicinalDose> MedicinalDoses { get; set; }
-
-        public int UnitOfMeasureId { get; set; }
-        [Required]
-        public UnitOfMeasure UnitOfMeasure { get; set; }
+        public ICollection<SubstanceMedicinal> SubstanceMedicinals { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace Domain
     public class Product : BaseEntity
     {
         [Required]
-        public ICollection<Company> Companies { get; set; }
+        public ICollection<ProductCompany> ProductCompanies { get; set; }
 
         public int RouteOfAdministrationId { get; set; }
         [Required]

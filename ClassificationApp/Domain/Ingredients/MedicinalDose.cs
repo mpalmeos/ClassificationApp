@@ -9,9 +9,9 @@ namespace Domain
         [MinLength(1)]
         public string MedicinalDoseValue { get; set; }
 
-        public ICollection<Herb> Herbs { get; set; }
+        public ICollection<HerbMedicinal> HerbMedicinals { get; set; }
 
-        public ICollection<Substance> Substances { get; set; }
+        public ICollection<SubstanceMedicinal> SubstanceMedicinals { get; set; }
 
         public int UnitOfMeasureId { get; set; }
         [Required]
