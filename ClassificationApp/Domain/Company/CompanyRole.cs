@@ -4,12 +4,12 @@ namespace Domain
 {
     public class CompanyRole : BaseEntity
     {
-        public int CompanyId { get; set; }
         [Required]
+        public int CompanyId { get; set; }
         public Company Company { get; set; }
 
-        public int RoleId { get; set; }
         [Required]
+        public int RoleId { get; set; }
         public Role Role { get; set; }
     }
 }

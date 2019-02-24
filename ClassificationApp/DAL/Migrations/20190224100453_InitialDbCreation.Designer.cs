@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190224083801_InitialDbCreation")]
+    [Migration("20190224100453_InitialDbCreation")]
     partial class InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -303,6 +303,7 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("MedicinalDoseValue")
+                        .IsRequired()
                         .HasMaxLength(64);
 
                     b.Property<int>("UnitOfMeasureId");

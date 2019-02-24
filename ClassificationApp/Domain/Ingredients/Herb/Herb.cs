@@ -18,10 +18,8 @@ namespace Domain
         [MinLength(1)]
         public string HerbNameEnglish { get; set; }
 
-        [Required]
         public ICollection<HerbPart> HerbParts { get; set; }
 
-        [Required]
         public ICollection<HerbForm> HerbForms { get; set; }
 
         public ICollection<CompositionHerb> CompositionHerbs { get; set; }

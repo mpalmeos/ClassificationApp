@@ -6,16 +6,16 @@ namespace Domain
 {
     public class CompositionHerb : BaseEntity
     {
-        public int HerbId { get; set; }
         [Required]
+        public int HerbId { get; set; }
         public Herb Herb { get; set; }
 
-        public int CompositionId { get; set; }
         [Required]
+        public int CompositionId { get; set; }
         public Composition Composition { get; set; }
 
-        public int UnitOfMeasureId { get; set; }
         [Required]
+        public int UnitOfMeasureId { get; set; }
         public UnitOfMeasure UnitOfMeasure { get; set; }
     }
 }

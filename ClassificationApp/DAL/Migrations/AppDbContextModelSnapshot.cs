@@ -301,6 +301,7 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("MedicinalDoseValue")
+                        .IsRequired()
                         .HasMaxLength(64);
 
                     b.Property<int>("UnitOfMeasureId");

@@ -5,12 +5,12 @@ namespace Domain
 {
     public class HerbForm : BaseEntity
     {
-        public int HerbId { get; set; }
         [Required]
+        public int HerbId { get; set; }
         public Herb Herb { get; set; }
 
-        public int PlantFormId { get; set; }
         [Required]
+        public int PlantFormId { get; set; }
         public PlantForm PlantForm { get; set; }
     }
 }

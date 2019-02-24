@@ -5,12 +5,12 @@ namespace Domain
 {
     public class ProductDosage : BaseEntity
     {
-        public int DosageId { get; set; }
         [Required]
+        public int DosageId { get; set; }
         public Dosage Dosage { get; set; }
 
-        public int ProductId { get; set; }
         [Required]
+        public int ProductId { get; set; }
         public Product Product { get; set; }
     }
 }

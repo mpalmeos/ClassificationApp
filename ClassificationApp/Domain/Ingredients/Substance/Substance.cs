@@ -10,7 +10,6 @@ namespace Domain
         [Required]
         public string SubstanceName { get; set; }
 
-        [Required]
         public ICollection<SubstanceCategory> SubstanceCategories { get; set; }
 
         public ICollection<CompositionSubstance> CompositionSubstances { get; set; }

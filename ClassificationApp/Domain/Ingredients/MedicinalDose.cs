@@ -7,14 +7,15 @@ namespace Domain
     {
         [MaxLength(64)]
         [MinLength(1)]
+        [Required]
         public string MedicinalDoseValue { get; set; }
 
         public ICollection<HerbMedicinal> HerbMedicinals { get; set; }
 
         public ICollection<SubstanceMedicinal> SubstanceMedicinals { get; set; }
 
-        public int UnitOfMeasureId { get; set; }
         [Required]
+        public int UnitOfMeasureId { get; set; }
         public UnitOfMeasure UnitOfMeasure { get; set; }
     }
 }

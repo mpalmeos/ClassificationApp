@@ -552,7 +552,7 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    MedicinalDoseValue = table.Column<string>(maxLength: 64, nullable: true),
+                    MedicinalDoseValue = table.Column<string>(maxLength: 64, nullable: false),
                     UnitOfMeasureId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

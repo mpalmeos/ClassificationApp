@@ -4,12 +4,12 @@ namespace Domain
 {
     public class SubstanceMedicinal : BaseEntity
     {
-        public int SubstanceId { get; set; }
         [Required]
+        public int SubstanceId { get; set; }
         public Substance Substance { get; set; }
 
-        public int MedicinalDoseId { get; set; }
         [Required]
+        public int MedicinalDoseId { get; set; }
         public MedicinalDose MedicinalDose { get; set; }
     }
 }

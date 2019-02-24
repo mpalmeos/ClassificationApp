@@ -4,16 +4,16 @@ namespace Domain
 {
     public class CompositionSubstance : BaseEntity
     {
+        [Required]
         public int SubstanceId { get; set; }
-        [Required]
         public Substance Substance { get; set; }
-
-        public int CompositionId { get; set; }
+        
         [Required]
+        public int CompositionId { get; set; }
         public Composition Composition { get; set; }
 
-        public int UnitOfMeasureId { get; set; }
         [Required]
+        public int UnitOfMeasureId { get; set; }
         public UnitOfMeasure UnitOfMeasure { get; set; }
     }
 }
