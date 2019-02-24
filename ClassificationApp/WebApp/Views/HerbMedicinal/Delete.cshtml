@@ -21,7 +21,19 @@
             @Html.DisplayNameFor(model => model.MedicinalDose)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MedicinalDose.Id)
+            @Html.DisplayFor(model => model.MedicinalDose.MedicinalDoseValue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HerbPart)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HerbPart.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HerbForm)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HerbForm.Id)
         </dd>
     </dl>
     

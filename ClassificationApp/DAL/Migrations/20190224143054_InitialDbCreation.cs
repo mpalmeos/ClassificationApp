@@ -677,15 +677,29 @@ namespace DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     HerbId = table.Column<int>(nullable: false),
-                    MedicinalDoseId = table.Column<int>(nullable: false)
+                    MedicinalDoseId = table.Column<int>(nullable: false),
+                    HerbPartId = table.Column<int>(nullable: false),
+                    HerbFormId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HerbMedicinals", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_HerbMedicinals_HerbForms_HerbFormId",
+                        column: x => x.HerbFormId,
+                        principalTable: "HerbForms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_HerbMedicinals_Herbs_HerbId",
                         column: x => x.HerbId,
                         principalTable: "Herbs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HerbMedicinals_HerbParts_HerbPartId",
+                        column: x => x.HerbPartId,
+                        principalTable: "HerbParts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -810,9 +824,19 @@ namespace DAL.Migrations
                 column: "PlantFormId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_HerbMedicinals_HerbFormId",
+                table: "HerbMedicinals",
+                column: "HerbFormId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HerbMedicinals_HerbId",
                 table: "HerbMedicinals",
                 column: "HerbId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HerbMedicinals_HerbPartId",
+                table: "HerbMedicinals",
+                column: "HerbPartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HerbMedicinals_MedicinalDoseId",
@@ -937,13 +961,7 @@ namespace DAL.Migrations
                 name: "CompositionSubstances");
 
             migrationBuilder.DropTable(
-                name: "HerbForms");
-
-            migrationBuilder.DropTable(
                 name: "HerbMedicinals");
-
-            migrationBuilder.DropTable(
-                name: "HerbParts");
 
             migrationBuilder.DropTable(
                 name: "ProductCompanies");
@@ -973,13 +991,10 @@ namespace DAL.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "PlantForms");
+                name: "HerbForms");
 
             migrationBuilder.DropTable(
-                name: "Herbs");
-
-            migrationBuilder.DropTable(
-                name: "PlantParts");
+                name: "HerbParts");
 
             migrationBuilder.DropTable(
                 name: "Companies");
@@ -1004,6 +1019,15 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Substances");
+
+            migrationBuilder.DropTable(
+                name: "PlantForms");
+
+            migrationBuilder.DropTable(
+                name: "Herbs");
+
+            migrationBuilder.DropTable(
+                name: "PlantParts");
 
             migrationBuilder.DropTable(
                 name: "ProductClassifications");

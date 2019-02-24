@@ -191,13 +191,21 @@ namespace DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("HerbFormId");
+
                     b.Property<int>("HerbId");
+
+                    b.Property<int>("HerbPartId");
 
                     b.Property<int>("MedicinalDoseId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HerbFormId");
+
                     b.HasIndex("HerbId");
+
+                    b.HasIndex("HerbPartId");
 
                     b.HasIndex("MedicinalDoseId");
 
@@ -716,9 +724,19 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Domain.HerbMedicinal", b =>
                 {
+                    b.HasOne("Domain.HerbForm", "HerbForm")
+                        .WithMany("HerbMedicinals")
+                        .HasForeignKey("HerbFormId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Domain.Herb", "Herb")
                         .WithMany("HerbMedicinals")
                         .HasForeignKey("HerbId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.HerbPart", "HerbPart")
+                        .WithMany("HerbMedicinals")
+                        .HasForeignKey("HerbPartId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.MedicinalDose", "MedicinalDose")

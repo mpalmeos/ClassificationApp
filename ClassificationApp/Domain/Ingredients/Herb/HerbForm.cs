@@ -12,5 +12,7 @@ namespace Domain
         [Required]
         public int PlantFormId { get; set; }
         public PlantForm PlantForm { get; set; }
+
+        public ICollection<HerbMedicinal> HerbMedicinals { get; set; }
     }
 }

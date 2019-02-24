@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         // GET: HerbMedicinal
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.HerbMedicinals.Include(h => h.Herb).Include(h => h.MedicinalDose);
+            var appDbContext = _context.HerbMedicinals.Include(h => h.Herb).Include(h => h.HerbForm).Include(h => h.HerbPart).Include(h => h.MedicinalDose);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -36,6 +36,8 @@ namespace WebApp.Controllers
 
             var herbMedicinal = await _context.HerbMedicinals
                 .Include(h => h.Herb)
+                .Include(h => h.HerbForm)
+                .Include(h => h.HerbPart)
                 .Include(h => h.MedicinalDose)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (herbMedicinal == null)
@@ -50,7 +52,9 @@ namespace WebApp.Controllers
         public IActionResult Create()
         {
             ViewData["HerbId"] = new SelectList(_context.Herbs, "Id", "HerbNameLatin");
-            ViewData["MedicinalDoseId"] = new SelectList(_context.MedicinalDoses, "Id", "Id");
+            ViewData["HerbFormId"] = new SelectList(_context.HerbForms, "Id", "Id");
+            ViewData["HerbPartId"] = new SelectList(_context.HerbParts, "Id", "Id");
+            ViewData["MedicinalDoseId"] = new SelectList(_context.MedicinalDoses, "Id", "MedicinalDoseValue");
             return View();
         }
 
@@ -59,7 +63,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HerbId,MedicinalDoseId,Id")] HerbMedicinal herbMedicinal)
+        public async Task<IActionResult> Create([Bind("HerbId,MedicinalDoseId,HerbPartId,HerbFormId,Id")] HerbMedicinal herbMedicinal)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +72,9 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["HerbId"] = new SelectList(_context.Herbs, "Id", "HerbNameLatin", herbMedicinal.HerbId);
-            ViewData["MedicinalDoseId"] = new SelectList(_context.MedicinalDoses, "Id", "Id", herbMedicinal.MedicinalDoseId);
+            ViewData["HerbFormId"] = new SelectList(_context.HerbForms, "Id", "Id", herbMedicinal.HerbFormId);
+            ViewData["HerbPartId"] = new SelectList(_context.HerbParts, "Id", "Id", herbMedicinal.HerbPartId);
+            ViewData["MedicinalDoseId"] = new SelectList(_context.MedicinalDoses, "Id", "MedicinalDoseValue", herbMedicinal.MedicinalDoseId);
             return View(herbMedicinal);
         }
 
@@ -86,7 +92,9 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             ViewData["HerbId"] = new SelectList(_context.Herbs, "Id", "HerbNameLatin", herbMedicinal.HerbId);
-            ViewData["MedicinalDoseId"] = new SelectList(_context.MedicinalDoses, "Id", "Id", herbMedicinal.MedicinalDoseId);
+            ViewData["HerbFormId"] = new SelectList(_context.HerbForms, "Id", "Id", herbMedicinal.HerbFormId);
+            ViewData["HerbPartId"] = new SelectList(_context.HerbParts, "Id", "Id", herbMedicinal.HerbPartId);
+            ViewData["MedicinalDoseId"] = new SelectList(_context.MedicinalDoses, "Id", "MedicinalDoseValue", herbMedicinal.MedicinalDoseId);
             return View(herbMedicinal);
         }
 
@@ -95,7 +103,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HerbId,MedicinalDoseId,Id")] HerbMedicinal herbMedicinal)
+        public async Task<IActionResult> Edit(int id, [Bind("HerbId,MedicinalDoseId,HerbPartId,HerbFormId,Id")] HerbMedicinal herbMedicinal)
         {
             if (id != herbMedicinal.Id)
             {
@@ -123,7 +131,9 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["HerbId"] = new SelectList(_context.Herbs, "Id", "HerbNameLatin", herbMedicinal.HerbId);
-            ViewData["MedicinalDoseId"] = new SelectList(_context.MedicinalDoses, "Id", "Id", herbMedicinal.MedicinalDoseId);
+            ViewData["HerbFormId"] = new SelectList(_context.HerbForms, "Id", "Id", herbMedicinal.HerbFormId);
+            ViewData["HerbPartId"] = new SelectList(_context.HerbParts, "Id", "Id", herbMedicinal.HerbPartId);
+            ViewData["MedicinalDoseId"] = new SelectList(_context.MedicinalDoses, "Id", "MedicinalDoseValue", herbMedicinal.MedicinalDoseId);
             return View(herbMedicinal);
         }
 
@@ -137,6 +147,8 @@ namespace WebApp.Controllers
 
             var herbMedicinal = await _context.HerbMedicinals
                 .Include(h => h.Herb)
+                .Include(h => h.HerbForm)
+                .Include(h => h.HerbPart)
                 .Include(h => h.MedicinalDose)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (herbMedicinal == null)

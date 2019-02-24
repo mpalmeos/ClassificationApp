@@ -11,5 +11,13 @@ namespace Domain
         [Required]
         public int MedicinalDoseId { get; set; }
         public MedicinalDose MedicinalDose { get; set; }
+
+        [Required]
+        public int HerbPartId { get; set; }
+        public HerbPart HerbPart { get; set; }
+
+        [Required]
+        public int HerbFormId { get; set; }
+        public HerbForm HerbForm { get; set; }
     }
 }

@@ -13,5 +13,7 @@ namespace Domain
         [Required]
         public int PlantPartId { get; set; }
         public PlantPart PlantPart { get; set; }
+
+        public ICollection<HerbMedicinal> HerbMedicinals { get; set; }
     }
 }
