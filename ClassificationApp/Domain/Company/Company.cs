@@ -15,7 +15,6 @@ namespace Domain
         [MinLength(1)]
         public string CompanyAddress { get; set; }
 
-        [Required]
         public ICollection<CompanyRole> CompanyRoles { get; set; }
 
         public ICollection<ProductCompany> ProductCompanies { get; set; }
