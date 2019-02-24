@@ -1,0 +1,44 @@
+@model Domain.CompositionHerb
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>CompositionHerb</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="HerbId" class="control-label"></label>
+                <select asp-for="HerbId" class="form-control" asp-items="ViewBag.HerbId"></select>
+                <span asp-validation-for="HerbId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompositionId" class="control-label"></label>
+                <select asp-for="CompositionId" class="form-control" asp-items="ViewBag.CompositionId"></select>
+                <span asp-validation-for="CompositionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitOfMeasureId" class="control-label"></label>
+                <select asp-for="UnitOfMeasureId" class="form-control" asp-items="ViewBag.UnitOfMeasureId"></select>
+                <span asp-validation-for="UnitOfMeasureId" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

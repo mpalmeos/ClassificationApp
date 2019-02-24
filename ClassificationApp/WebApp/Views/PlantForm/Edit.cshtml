@@ -1,0 +1,44 @@
+@model Domain.PlantForm
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PlantForm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PlantFormValueLatin" class="control-label"></label>
+                <input asp-for="PlantFormValueLatin" class="form-control" />
+                <span asp-validation-for="PlantFormValueLatin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlantFormValueEstonian" class="control-label"></label>
+                <input asp-for="PlantFormValueEstonian" class="form-control" />
+                <span asp-validation-for="PlantFormValueEstonian" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlantFormValueEnglish" class="control-label"></label>
+                <input asp-for="PlantFormValueEnglish" class="form-control" />
+                <span asp-validation-for="PlantFormValueEnglish" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
