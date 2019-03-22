@@ -21,9 +21,8 @@ namespace DAL
         public DbSet<RouteOfAdministration> RouteOfAdministrations { get; set; }
 
         public DbSet<Company> Companies { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<CRole> CRoles { get; set; }
         public DbSet<CompanyRole> CompanyRoles { get; set; }
-
         public DbSet<Composition> Compositions { get; set; }
         public DbSet<CompositionHerb> CompositionHerbs { get; set; }
         public DbSet<CompositionSubstance> CompositionSubstances { get; set; }

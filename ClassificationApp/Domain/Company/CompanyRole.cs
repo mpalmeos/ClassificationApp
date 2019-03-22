@@ -8,8 +8,8 @@ namespace Domain
         public int CompanyId { get; set; }
         public Company Company { get; set; }
 
-        [Required]
-        public int RoleId { get; set; }
-        public Role Role { get; set; }
+        [Required] 
+        public int CRoleId { get; set; }
+        public CRole CRole { get; set; }
     }
 }
