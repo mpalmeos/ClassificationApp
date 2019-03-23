@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using Contracts.DAL.Base.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,12 @@ namespace DAL.Base.EF.Repositories
 
         public async Task<IEnumerable<TEntity>> AllAsync()
         {
+            var recordCount = await RepositoryDbSet.CountAsync();
+            if (recordCount > 100)
+            {
+                throw new DataException($"Too many possibilities ({recordCount} > 100)! Aborting query.");
+            }
+            
             return await RepositoryDbSet.ToListAsync();
         }
 
@@ -45,6 +52,11 @@ namespace DAL.Base.EF.Repositories
         public async Task AddAsync(TEntity entity)
         {
             await RepositoryDbSet.AddAsync(entity);
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await RepositoryDbContext.SaveChangesAsync();
         }
     }
 }

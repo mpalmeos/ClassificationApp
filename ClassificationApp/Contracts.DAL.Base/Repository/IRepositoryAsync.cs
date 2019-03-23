@@ -9,5 +9,6 @@ namespace Contracts.DAL.Base.Repository
         Task<IEnumerable<TEntity>> AllAsync();
         Task<TEntity> FindAsync(params object[] id);
         Task AddAsync(TEntity entity);
+        Task<int> SaveChangesAsync();
     }
 }

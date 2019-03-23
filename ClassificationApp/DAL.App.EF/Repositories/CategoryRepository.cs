@@ -7,7 +7,7 @@ namespace DAL.App.EF.Repositories
 {
     public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public CategoryRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
     }

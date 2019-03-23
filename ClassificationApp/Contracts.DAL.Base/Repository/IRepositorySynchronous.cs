@@ -8,5 +8,6 @@ namespace Contracts.DAL.Base.Repository
         IEnumerable<TEntity> All();
         TEntity Find(params object[] id);
         void Add(TEntity entity);
+        int SaveChanges();
     }
 }
