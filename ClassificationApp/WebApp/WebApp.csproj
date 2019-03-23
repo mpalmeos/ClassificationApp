@@ -9,7 +9,6 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.1" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.2" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
@@ -17,19 +16,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DAL\DAL.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Views\Role\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Role\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Role\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Role\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Role\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\CompanyRole\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\CompanyRole\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\CompanyRole\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\CompanyRole\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\CompanyRole\Index.cshtml" />
     </ItemGroup>
 
 </Project>
