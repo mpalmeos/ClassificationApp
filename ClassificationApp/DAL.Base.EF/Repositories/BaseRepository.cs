@@ -9,8 +9,9 @@ namespace DAL.Base.EF.Repositories
     public class BaseRepository<TEntity> : IRepository<TEntity> 
         where TEntity : class, new()
     {
-        protected DbContext RepositoryDbContext;
-        protected DbSet<TEntity> RepositoryDbSet;
+        
+        protected readonly DbContext RepositoryDbContext;
+        protected readonly DbSet<TEntity> RepositoryDbSet;
 
         public BaseRepository(DbContext repositoryDbContext)
         {
@@ -33,7 +34,7 @@ namespace DAL.Base.EF.Repositories
             Remove(FindAsync(id).Result);
         }
 
-        public async Task<IEnumerable<TEntity>> AllAsync()
+        public virtual async Task<IEnumerable<TEntity>> AllAsync()
         {
             var recordCount = await RepositoryDbSet.CountAsync();
             if (recordCount > 100)
@@ -44,12 +45,12 @@ namespace DAL.Base.EF.Repositories
             return await RepositoryDbSet.ToListAsync();
         }
 
-        public Task<TEntity> FindAsync(params object[] id)
+        public virtual async Task<TEntity> FindAsync(params object[] id)
         {
-            return RepositoryDbSet.FindAsync(id);
+            return await RepositoryDbSet.FindAsync(id);
         }
 
-        public async Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {
             await RepositoryDbSet.AddAsync(entity);
         }

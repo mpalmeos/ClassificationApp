@@ -39,6 +39,7 @@ namespace DAL
         public DbSet<SubstanceCategory> SubstanceCategories { get; set; }
         public DbSet<SubstanceMedicinal> SubstanceMedicinals { get; set; }
         public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
+        
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }

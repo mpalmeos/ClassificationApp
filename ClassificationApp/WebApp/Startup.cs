@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 using DAL;
+using DAL.App.EF;
 using DAL.App.EF.Repositories;
 using Domain.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -42,7 +44,7 @@ namespace WebApp
                 options.UseMySql(
                     Configuration.GetConnectionString("MySqlConnection")));
 
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
             
             // TODO: Remove in production
             services.Configure<IdentityOptions>(options =>
