@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class SubstanceController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public SubstanceController(AppDbContext context)
+        public SubstanceController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Substance
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Substance>>> GetSubstances()
         {
-            return await _context.Substances.ToListAsync();
+            var res = await _uow.Substances.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/Substance/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Substance>> GetSubstance(int id)
         {
-            var substance = await _context.Substances.FindAsync(id);
+            var substance = await _uow.Substances.FindAsync(id);
 
             if (substance == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(substance).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SubstanceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.Substances.Update(substance);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Substance>> PostSubstance(Substance substance)
         {
-            _context.Substances.Add(substance);
-            await _context.SaveChangesAsync();
+            await _uow.Substances.AddAsync(substance);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetSubstance", new { id = substance.Id }, substance);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Substance>> DeleteSubstance(int id)
         {
-            var substance = await _context.Substances.FindAsync(id);
+            var substance = await _uow.Substances.FindAsync(id);
             if (substance == null)
             {
                 return NotFound();
             }
 
-            _context.Substances.Remove(substance);
-            await _context.SaveChangesAsync();
+            _uow.Substances.Remove(substance);
+            await _uow.SaveChangesAsync();
 
             return substance;
-        }
-
-        private bool SubstanceExists(int id)
-        {
-            return _context.Substances.Any(e => e.Id == id);
         }
     }
 }

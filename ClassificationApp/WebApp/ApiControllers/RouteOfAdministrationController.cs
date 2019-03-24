@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class RouteOfAdministrationController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public RouteOfAdministrationController(AppDbContext context)
+        public RouteOfAdministrationController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/RouteOfAdministration
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RouteOfAdministration>>> GetRouteOfAdministrations()
         {
-            return await _context.RouteOfAdministrations.ToListAsync();
+            var res = await _uow.RouteOfAdministrations.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/RouteOfAdministration/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RouteOfAdministration>> GetRouteOfAdministration(int id)
         {
-            var routeOfAdministration = await _context.RouteOfAdministrations.FindAsync(id);
+            var routeOfAdministration = await _uow.RouteOfAdministrations.FindAsync(id);
 
             if (routeOfAdministration == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(routeOfAdministration).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RouteOfAdministrationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.RouteOfAdministrations.Update(routeOfAdministration);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<RouteOfAdministration>> PostRouteOfAdministration(RouteOfAdministration routeOfAdministration)
         {
-            _context.RouteOfAdministrations.Add(routeOfAdministration);
-            await _context.SaveChangesAsync();
+            await _uow.RouteOfAdministrations.AddAsync(routeOfAdministration);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetRouteOfAdministration", new { id = routeOfAdministration.Id }, routeOfAdministration);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<RouteOfAdministration>> DeleteRouteOfAdministration(int id)
         {
-            var routeOfAdministration = await _context.RouteOfAdministrations.FindAsync(id);
+            var routeOfAdministration = await _uow.RouteOfAdministrations.FindAsync(id);
             if (routeOfAdministration == null)
             {
                 return NotFound();
             }
 
-            _context.RouteOfAdministrations.Remove(routeOfAdministration);
-            await _context.SaveChangesAsync();
+            _uow.RouteOfAdministrations.Remove(routeOfAdministration);
+            await _uow.SaveChangesAsync();
 
             return routeOfAdministration;
-        }
-
-        private bool RouteOfAdministrationExists(int id)
-        {
-            return _context.RouteOfAdministrations.Any(e => e.Id == id);
         }
     }
 }

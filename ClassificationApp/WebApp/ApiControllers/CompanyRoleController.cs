@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CompanyRoleController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CompanyRoleController(AppDbContext context)
+        public CompanyRoleController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/CompanyRole
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompanyRole>>> GetCompanyRoles()
         {
-            return await _context.CompanyRoles.ToListAsync();
+            var res = await _uow.CompanyRoles.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/CompanyRole/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CompanyRole>> GetCompanyRole(int id)
         {
-            var companyRole = await _context.CompanyRoles.FindAsync(id);
+            var companyRole = await _uow.CompanyRoles.FindAsync(id);
 
             if (companyRole == null)
             {
@@ -51,23 +53,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(companyRole).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CompanyRoleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.CompanyRoles.Update(companyRole);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CompanyRole>> PostCompanyRole(CompanyRole companyRole)
         {
-            _context.CompanyRoles.Add(companyRole);
-            await _context.SaveChangesAsync();
+            await _uow.CompanyRoles.AddAsync(companyRole);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetCompanyRole", new { id = companyRole.Id }, companyRole);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<CompanyRole>> DeleteCompanyRole(int id)
         {
-            var companyRole = await _context.CompanyRoles.FindAsync(id);
+            var companyRole = await _uow.CompanyRoles.FindAsync(id);
             if (companyRole == null)
             {
                 return NotFound();
             }
 
-            _context.CompanyRoles.Remove(companyRole);
-            await _context.SaveChangesAsync();
+            _uow.CompanyRoles.Remove(companyRole);
+            await _uow.SaveChangesAsync();
 
             return companyRole;
-        }
-
-        private bool CompanyRoleExists(int id)
-        {
-            return _context.CompanyRoles.Any(e => e.Id == id);
         }
     }
 }

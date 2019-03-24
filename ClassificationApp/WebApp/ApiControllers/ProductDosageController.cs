@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductDosageController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public ProductDosageController(AppDbContext context)
+        public ProductDosageController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/ProductDosage
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDosage>>> GetProductDosages()
         {
-            return await _context.ProductDosages.ToListAsync();
+            var res = await _uow.ProductDosages.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/ProductDosage/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDosage>> GetProductDosage(int id)
         {
-            var productDosage = await _context.ProductDosages.FindAsync(id);
+            var productDosage = await _uow.ProductDosages.FindAsync(id);
 
             if (productDosage == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(productDosage).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductDosageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.ProductDosages.Update(productDosage);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<ProductDosage>> PostProductDosage(ProductDosage productDosage)
         {
-            _context.ProductDosages.Add(productDosage);
-            await _context.SaveChangesAsync();
+            await _uow.ProductDosages.AddAsync(productDosage);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetProductDosage", new { id = productDosage.Id }, productDosage);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ProductDosage>> DeleteProductDosage(int id)
         {
-            var productDosage = await _context.ProductDosages.FindAsync(id);
+            var productDosage = await _uow.ProductDosages.FindAsync(id);
             if (productDosage == null)
             {
                 return NotFound();
             }
 
-            _context.ProductDosages.Remove(productDosage);
-            await _context.SaveChangesAsync();
+            _uow.ProductDosages.Remove(productDosage);
+            await _uow.SaveChangesAsync();
 
             return productDosage;
-        }
-
-        private bool ProductDosageExists(int id)
-        {
-            return _context.ProductDosages.Any(e => e.Id == id);
         }
     }
 }

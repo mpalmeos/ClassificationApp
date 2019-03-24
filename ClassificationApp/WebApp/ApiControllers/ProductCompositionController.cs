@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductCompositionController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public ProductCompositionController(AppDbContext context)
+        public ProductCompositionController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/ProductComposition
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductComposition>>> GetProductCompositions()
         {
-            return await _context.ProductCompositions.ToListAsync();
+            var res = await _uow.ProductCompositions.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/ProductComposition/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductComposition>> GetProductComposition(int id)
         {
-            var productComposition = await _context.ProductCompositions.FindAsync(id);
+            var productComposition = await _uow.ProductCompositions.FindAsync(id);
 
             if (productComposition == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(productComposition).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductCompositionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.ProductCompositions.Update(productComposition);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<ProductComposition>> PostProductComposition(ProductComposition productComposition)
         {
-            _context.ProductCompositions.Add(productComposition);
-            await _context.SaveChangesAsync();
+            await _uow.ProductCompositions.AddAsync(productComposition);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetProductComposition", new { id = productComposition.Id }, productComposition);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ProductComposition>> DeleteProductComposition(int id)
         {
-            var productComposition = await _context.ProductCompositions.FindAsync(id);
+            var productComposition = await _uow.ProductCompositions.FindAsync(id);
             if (productComposition == null)
             {
                 return NotFound();
             }
 
-            _context.ProductCompositions.Remove(productComposition);
-            await _context.SaveChangesAsync();
+            _uow.ProductCompositions.Remove(productComposition);
+            await _uow.SaveChangesAsync();
 
             return productComposition;
-        }
-
-        private bool ProductCompositionExists(int id)
-        {
-            return _context.ProductCompositions.Any(e => e.Id == id);
         }
     }
 }

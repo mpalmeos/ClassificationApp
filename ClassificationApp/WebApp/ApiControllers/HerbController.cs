@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class HerbController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public HerbController(AppDbContext context)
+        public HerbController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Herb
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Herb>>> GetHerbs()
         {
-            return await _context.Herbs.ToListAsync();
+            var res = await _uow.Herbs.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/Herb/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Herb>> GetHerb(int id)
         {
-            var herb = await _context.Herbs.FindAsync(id);
+            var herb = await _uow.Herbs.FindAsync(id);
 
             if (herb == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(herb).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HerbExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.Herbs.Update(herb);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Herb>> PostHerb(Herb herb)
         {
-            _context.Herbs.Add(herb);
-            await _context.SaveChangesAsync();
+            await _uow.Herbs.AddAsync(herb);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetHerb", new { id = herb.Id }, herb);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Herb>> DeleteHerb(int id)
         {
-            var herb = await _context.Herbs.FindAsync(id);
+            var herb = await _uow.Herbs.FindAsync(id);
             if (herb == null)
             {
                 return NotFound();
             }
 
-            _context.Herbs.Remove(herb);
-            await _context.SaveChangesAsync();
+            _uow.Herbs.Remove(herb);
+            await _uow.SaveChangesAsync();
 
             return herb;
-        }
-
-        private bool HerbExists(int id)
-        {
-            return _context.Herbs.Any(e => e.Id == id);
         }
     }
 }

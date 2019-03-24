@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductClassificationController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public ProductClassificationController(AppDbContext context)
+        public ProductClassificationController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/ProductClassification
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductClassification>>> GetProductClassifications()
         {
-            return await _context.ProductClassifications.ToListAsync();
+            var res = await _uow.ProductClassifications.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/ProductClassification/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductClassification>> GetProductClassification(int id)
         {
-            var productClassification = await _context.ProductClassifications.FindAsync(id);
+            var productClassification = await _uow.ProductClassifications.FindAsync(id);
 
             if (productClassification == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(productClassification).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductClassificationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.ProductClassifications.Update(productClassification);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<ProductClassification>> PostProductClassification(ProductClassification productClassification)
         {
-            _context.ProductClassifications.Add(productClassification);
-            await _context.SaveChangesAsync();
+            await _uow.ProductClassifications.AddAsync(productClassification);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetProductClassification", new { id = productClassification.Id }, productClassification);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ProductClassification>> DeleteProductClassification(int id)
         {
-            var productClassification = await _context.ProductClassifications.FindAsync(id);
+            var productClassification = await _uow.ProductClassifications.FindAsync(id);
             if (productClassification == null)
             {
                 return NotFound();
             }
 
-            _context.ProductClassifications.Remove(productClassification);
-            await _context.SaveChangesAsync();
+            _uow.ProductClassifications.Remove(productClassification);
+            await _uow.SaveChangesAsync();
 
             return productClassification;
-        }
-
-        private bool ProductClassificationExists(int id)
-        {
-            return _context.ProductClassifications.Any(e => e.Id == id);
         }
     }
 }

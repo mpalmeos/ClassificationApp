@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CRoleController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CRoleController(AppDbContext context)
+        public CRoleController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/CRole
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CRole>>> GetCRoles()
         {
-            return await _context.CRoles.ToListAsync();
+            var res = await _uow.CRoles.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/CRole/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CRole>> GetCRole(int id)
         {
-            var cRole = await _context.CRoles.FindAsync(id);
+            var cRole = await _uow.CRoles.FindAsync(id);
 
             if (cRole == null)
             {
@@ -51,23 +53,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(cRole).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CRoleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.CRoles.Update(cRole);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CRole>> PostCRole(CRole cRole)
         {
-            _context.CRoles.Add(cRole);
-            await _context.SaveChangesAsync();
+            await _uow.CRoles.AddAsync(cRole);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetCRole", new { id = cRole.Id }, cRole);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<CRole>> DeleteCRole(int id)
         {
-            var cRole = await _context.CRoles.FindAsync(id);
+            var cRole = await _uow.CRoles.FindAsync(id);
             if (cRole == null)
             {
                 return NotFound();
             }
 
-            _context.CRoles.Remove(cRole);
-            await _context.SaveChangesAsync();
+            _uow.CRoles.Remove(cRole);
+            await _uow.SaveChangesAsync();
 
             return cRole;
-        }
-
-        private bool CRoleExists(int id)
-        {
-            return _context.CRoles.Any(e => e.Id == id);
         }
     }
 }

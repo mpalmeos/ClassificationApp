@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductNameController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public ProductNameController(AppDbContext context)
+        public ProductNameController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/ProductName
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductName>>> GetProductNames()
         {
-            return await _context.ProductNames.ToListAsync();
+            var res = await _uow.ProductNames.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/ProductName/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductName>> GetProductName(int id)
         {
-            var productName = await _context.ProductNames.FindAsync(id);
+            var productName = await _uow.ProductNames.FindAsync(id);
 
             if (productName == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(productName).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductNameExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.ProductNames.Update(productName);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<ProductName>> PostProductName(ProductName productName)
         {
-            _context.ProductNames.Add(productName);
-            await _context.SaveChangesAsync();
+            await _uow.ProductNames.AddAsync(productName);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetProductName", new { id = productName.Id }, productName);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ProductName>> DeleteProductName(int id)
         {
-            var productName = await _context.ProductNames.FindAsync(id);
+            var productName = await _uow.ProductNames.FindAsync(id);
             if (productName == null)
             {
                 return NotFound();
             }
 
-            _context.ProductNames.Remove(productName);
-            await _context.SaveChangesAsync();
+            _uow.ProductNames.Remove(productName);
+            await _uow.SaveChangesAsync();
 
             return productName;
-        }
-
-        private bool ProductNameExists(int id)
-        {
-            return _context.ProductNames.Any(e => e.Id == id);
         }
     }
 }

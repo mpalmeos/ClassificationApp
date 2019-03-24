@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class HerbFormController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public HerbFormController(AppDbContext context)
+        public HerbFormController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/HerbForm
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HerbForm>>> GetHerbForms()
         {
-            return await _context.HerbForms.ToListAsync();
+            var res = await _uow.HerbForms.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/HerbForm/5
         [HttpGet("{id}")]
         public async Task<ActionResult<HerbForm>> GetHerbForm(int id)
         {
-            var herbForm = await _context.HerbForms.FindAsync(id);
+            var herbForm = await _uow.HerbForms.FindAsync(id);
 
             if (herbForm == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(herbForm).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HerbFormExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.HerbForms.Update(herbForm);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<HerbForm>> PostHerbForm(HerbForm herbForm)
         {
-            _context.HerbForms.Add(herbForm);
-            await _context.SaveChangesAsync();
+            await _uow.HerbForms.AddAsync(herbForm);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetHerbForm", new { id = herbForm.Id }, herbForm);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<HerbForm>> DeleteHerbForm(int id)
         {
-            var herbForm = await _context.HerbForms.FindAsync(id);
+            var herbForm = await _uow.HerbForms.FindAsync(id);
             if (herbForm == null)
             {
                 return NotFound();
             }
 
-            _context.HerbForms.Remove(herbForm);
-            await _context.SaveChangesAsync();
+            _uow.HerbForms.Remove(herbForm);
+            await _uow.SaveChangesAsync();
 
             return herbForm;
-        }
-
-        private bool HerbFormExists(int id)
-        {
-            return _context.HerbForms.Any(e => e.Id == id);
         }
     }
 }

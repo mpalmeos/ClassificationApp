@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class SubstanceMedicinalController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public SubstanceMedicinalController(AppDbContext context)
+        public SubstanceMedicinalController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/SubstanceMedicinal
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SubstanceMedicinal>>> GetSubstanceMedicinals()
         {
-            return await _context.SubstanceMedicinals.ToListAsync();
+            var res = await _uow.SubstanceMedicinals.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/SubstanceMedicinal/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SubstanceMedicinal>> GetSubstanceMedicinal(int id)
         {
-            var substanceMedicinal = await _context.SubstanceMedicinals.FindAsync(id);
+            var substanceMedicinal = await _uow.SubstanceMedicinals.FindAsync(id);
 
             if (substanceMedicinal == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(substanceMedicinal).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SubstanceMedicinalExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.SubstanceMedicinals.Update(substanceMedicinal);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<SubstanceMedicinal>> PostSubstanceMedicinal(SubstanceMedicinal substanceMedicinal)
         {
-            _context.SubstanceMedicinals.Add(substanceMedicinal);
-            await _context.SaveChangesAsync();
+            await _uow.SubstanceMedicinals.AddAsync(substanceMedicinal);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetSubstanceMedicinal", new { id = substanceMedicinal.Id }, substanceMedicinal);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<SubstanceMedicinal>> DeleteSubstanceMedicinal(int id)
         {
-            var substanceMedicinal = await _context.SubstanceMedicinals.FindAsync(id);
+            var substanceMedicinal = await _uow.SubstanceMedicinals.FindAsync(id);
             if (substanceMedicinal == null)
             {
                 return NotFound();
             }
 
-            _context.SubstanceMedicinals.Remove(substanceMedicinal);
-            await _context.SaveChangesAsync();
+            _uow.SubstanceMedicinals.Remove(substanceMedicinal);
+            await _uow.SaveChangesAsync();
 
             return substanceMedicinal;
-        }
-
-        private bool SubstanceMedicinalExists(int id)
-        {
-            return _context.SubstanceMedicinals.Any(e => e.Id == id);
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class DescriptionController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public DescriptionController(AppDbContext context)
+        public DescriptionController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/Description
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Description>>> GetDescriptions()
         {
-            return await _context.Descriptions.ToListAsync();
+            var res = await _uow.Descriptions.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/Description/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Description>> GetDescription(int id)
         {
-            var description = await _context.Descriptions.FindAsync(id);
+            var description = await _uow.Descriptions.FindAsync(id);
 
             if (description == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(description).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DescriptionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.Descriptions.Update(description);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Description>> PostDescription(Description description)
         {
-            _context.Descriptions.Add(description);
-            await _context.SaveChangesAsync();
+            await _uow.Descriptions.AddAsync(description);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetDescription", new { id = description.Id }, description);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Description>> DeleteDescription(int id)
         {
-            var description = await _context.Descriptions.FindAsync(id);
+            var description = await _uow.Descriptions.FindAsync(id);
             if (description == null)
             {
                 return NotFound();
             }
 
-            _context.Descriptions.Remove(description);
-            await _context.SaveChangesAsync();
+            _uow.Descriptions.Remove(description);
+            await _uow.SaveChangesAsync();
 
             return description;
-        }
-
-        private bool DescriptionExists(int id)
-        {
-            return _context.Descriptions.Any(e => e.Id == id);
         }
     }
 }

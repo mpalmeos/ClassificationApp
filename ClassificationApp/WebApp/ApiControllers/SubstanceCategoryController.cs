@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class SubstanceCategoryController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public SubstanceCategoryController(AppDbContext context)
+        public SubstanceCategoryController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/SubstanceCategory
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SubstanceCategory>>> GetSubstanceCategories()
         {
-            return await _context.SubstanceCategories.ToListAsync();
+            var res = await _uow.SubstanceCategories.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/SubstanceCategory/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SubstanceCategory>> GetSubstanceCategory(int id)
         {
-            var substanceCategory = await _context.SubstanceCategories.FindAsync(id);
+            var substanceCategory = await _uow.SubstanceCategories.FindAsync(id);
 
             if (substanceCategory == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(substanceCategory).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SubstanceCategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.SubstanceCategories.Update(substanceCategory);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<SubstanceCategory>> PostSubstanceCategory(SubstanceCategory substanceCategory)
         {
-            _context.SubstanceCategories.Add(substanceCategory);
-            await _context.SaveChangesAsync();
+            await _uow.SubstanceCategories.AddAsync(substanceCategory);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetSubstanceCategory", new { id = substanceCategory.Id }, substanceCategory);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<SubstanceCategory>> DeleteSubstanceCategory(int id)
         {
-            var substanceCategory = await _context.SubstanceCategories.FindAsync(id);
+            var substanceCategory = await _uow.SubstanceCategories.FindAsync(id);
             if (substanceCategory == null)
             {
                 return NotFound();
             }
 
-            _context.SubstanceCategories.Remove(substanceCategory);
-            await _context.SaveChangesAsync();
+            _uow.SubstanceCategories.Remove(substanceCategory);
+            await _uow.SaveChangesAsync();
 
             return substanceCategory;
-        }
-
-        private bool SubstanceCategoryExists(int id)
-        {
-            return _context.SubstanceCategories.Any(e => e.Id == id);
         }
     }
 }

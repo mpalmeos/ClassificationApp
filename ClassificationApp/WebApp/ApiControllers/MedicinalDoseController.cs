@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class MedicinalDoseController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public MedicinalDoseController(AppDbContext context)
+        public MedicinalDoseController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/MedicinalDose
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MedicinalDose>>> GetMedicinalDoses()
         {
-            return await _context.MedicinalDoses.ToListAsync();
+            var res = await _uow.MedicinalDoses.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/MedicinalDose/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MedicinalDose>> GetMedicinalDose(int id)
         {
-            var medicinalDose = await _context.MedicinalDoses.FindAsync(id);
+            var medicinalDose = await _uow.MedicinalDoses.FindAsync(id);
 
             if (medicinalDose == null)
             {
@@ -51,24 +53,9 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(medicinalDose).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MedicinalDoseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _uow.MedicinalDoses.Update(medicinalDose);
+            await _uow.SaveChangesAsync();
+            
             return NoContent();
         }
 
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<MedicinalDose>> PostMedicinalDose(MedicinalDose medicinalDose)
         {
-            _context.MedicinalDoses.Add(medicinalDose);
-            await _context.SaveChangesAsync();
+            await _uow.MedicinalDoses.AddAsync(medicinalDose);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetMedicinalDose", new { id = medicinalDose.Id }, medicinalDose);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<MedicinalDose>> DeleteMedicinalDose(int id)
         {
-            var medicinalDose = await _context.MedicinalDoses.FindAsync(id);
+            var medicinalDose = await _uow.MedicinalDoses.FindAsync(id);
             if (medicinalDose == null)
             {
                 return NotFound();
             }
 
-            _context.MedicinalDoses.Remove(medicinalDose);
-            await _context.SaveChangesAsync();
+            _uow.MedicinalDoses.Remove(medicinalDose);
+            await _uow.SaveChangesAsync();
 
             return medicinalDose;
-        }
-
-        private bool MedicinalDoseExists(int id)
-        {
-            return _context.MedicinalDoses.Any(e => e.Id == id);
         }
     }
 }

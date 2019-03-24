@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,25 +15,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CompositionSubstanceController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public CompositionSubstanceController(AppDbContext context)
+        public CompositionSubstanceController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: api/CompositionSubstance
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompositionSubstance>>> GetCompositionSubstances()
         {
-            return await _context.CompositionSubstances.ToListAsync();
+            var res = await _uow.CompositionSubstances.AllAsync();
+            return Ok(res);
         }
 
         // GET: api/CompositionSubstance/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CompositionSubstance>> GetCompositionSubstance(int id)
         {
-            var compositionSubstance = await _context.CompositionSubstances.FindAsync(id);
+            var compositionSubstance = await _uow.CompositionSubstances.FindAsync(id);
 
             if (compositionSubstance == null)
             {
@@ -51,23 +53,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(compositionSubstance).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CompositionSubstanceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _uow.CompositionSubstances.Update(compositionSubstance);
+            await _uow.SaveChangesAsync();
 
             return NoContent();
         }
@@ -76,8 +63,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<CompositionSubstance>> PostCompositionSubstance(CompositionSubstance compositionSubstance)
         {
-            _context.CompositionSubstances.Add(compositionSubstance);
-            await _context.SaveChangesAsync();
+            await _uow.CompositionSubstances.AddAsync(compositionSubstance);
+            await _uow.SaveChangesAsync();
 
             return CreatedAtAction("GetCompositionSubstance", new { id = compositionSubstance.Id }, compositionSubstance);
         }
@@ -86,21 +73,16 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<CompositionSubstance>> DeleteCompositionSubstance(int id)
         {
-            var compositionSubstance = await _context.CompositionSubstances.FindAsync(id);
+            var compositionSubstance = await _uow.CompositionSubstances.FindAsync(id);
             if (compositionSubstance == null)
             {
                 return NotFound();
             }
 
-            _context.CompositionSubstances.Remove(compositionSubstance);
-            await _context.SaveChangesAsync();
+            _uow.CompositionSubstances.Remove(compositionSubstance);
+            await _uow.SaveChangesAsync();
 
             return compositionSubstance;
-        }
-
-        private bool CompositionSubstanceExists(int id)
-        {
-            return _context.CompositionSubstances.Any(e => e.Id == id);
         }
     }
 }
