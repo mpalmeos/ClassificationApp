@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
@@ -46,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/HerbMedicinal/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutHerbMedicinal(int id, HerbMedicinal herbMedicinal)
         {
             if (id != herbMedicinal.Id)
@@ -61,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/HerbMedicinal
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbMedicinal>> PostHerbMedicinal(HerbMedicinal herbMedicinal)
         {
             await _uow.HerbMedicinals.AddAsync(herbMedicinal);
@@ -71,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/HerbMedicinal/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbMedicinal>> DeleteHerbMedicinal(int id)
         {
             var herbMedicinal = await _uow.HerbMedicinals.FindAsync(id);

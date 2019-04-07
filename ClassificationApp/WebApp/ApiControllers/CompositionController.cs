@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
@@ -46,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/Composition/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutComposition(int id, Composition composition)
         {
             if (id != composition.Id)
@@ -61,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/Composition
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Composition>> PostComposition(Composition composition)
         {
             await _uow.Compositions.AddAsync(composition);
@@ -71,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/Composition/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Composition>> DeleteComposition(int id)
         {
             var composition = await _uow.Compositions.FindAsync(id);

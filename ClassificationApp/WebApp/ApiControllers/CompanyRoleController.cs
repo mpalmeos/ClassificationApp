@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
@@ -46,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/CompanyRole/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutCompanyRole(int id, CompanyRole companyRole)
         {
             if (id != companyRole.Id)
@@ -61,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/CompanyRole
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompanyRole>> PostCompanyRole(CompanyRole companyRole)
         {
             await _uow.CompanyRoles.AddAsync(companyRole);
@@ -71,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/CompanyRole/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompanyRole>> DeleteCompanyRole(int id)
         {
             var companyRole = await _uow.CompanyRoles.FindAsync(id);

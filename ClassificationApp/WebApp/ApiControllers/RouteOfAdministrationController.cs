@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
@@ -46,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/RouteOfAdministration/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutRouteOfAdministration(int id, RouteOfAdministration routeOfAdministration)
         {
             if (id != routeOfAdministration.Id)
@@ -61,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/RouteOfAdministration
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<RouteOfAdministration>> PostRouteOfAdministration(RouteOfAdministration routeOfAdministration)
         {
             await _uow.RouteOfAdministrations.AddAsync(routeOfAdministration);
@@ -71,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/RouteOfAdministration/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<RouteOfAdministration>> DeleteRouteOfAdministration(int id)
         {
             var routeOfAdministration = await _uow.RouteOfAdministrations.FindAsync(id);

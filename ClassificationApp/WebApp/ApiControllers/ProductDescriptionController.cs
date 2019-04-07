@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
 using Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
@@ -46,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/ProductDescription/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutProductDescription(int id, ProductDescription productDescription)
         {
             if (id != productDescription.Id)
@@ -61,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/ProductDescription
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductDescription>> PostProductDescription(ProductDescription productDescription)
         {
             await _uow.ProductDescriptions.AddAsync(productDescription);
@@ -71,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/ProductDescription/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductDescription>> DeleteProductDescription(int id)
         {
             var productDescription = await _uow.ProductDescriptions.FindAsync(id);
