@@ -21,21 +21,16 @@ export class MainRouter {
     config.map([
       {route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('home'), nav: true, title: 'Home'},
 
-      {route: 'identity/login', name: 'identity' + 'Login', moduleId: PLATFORM.moduleName('identity/login'), nav: true, title: 'Login'},
-      {route: 'identity/register', name: 'identity' + 'Register', moduleId: PLATFORM.moduleName('identity/register'), nav: true, title: 'Register'},
-      {route: 'identity/logout', name: 'identity' + 'Logout', moduleId: PLATFORM.moduleName('identity/logout'), nav: true, title: 'Logout'},
+      {route: 'identity/login', name: 'identity' + 'Login', moduleId: PLATFORM.moduleName('identity/login'), nav: false, title: 'Login'},
+      {route: 'identity/register', name: 'identity' + 'Register', moduleId: PLATFORM.moduleName('identity/register'), nav: false, title: 'Register'},
+      {route: 'identity/logout', name: 'identity' + 'Logout', moduleId: PLATFORM.moduleName('identity/logout'), nav: false, title: 'Logout'},
       
       //{route: '', name: '', moduleId: PLATFORM.moduleName(''), nav: true, title: ''},
-      {route: ['companies', 'companies/index'], name: 'companies' + 'Index', moduleId: PLATFORM.moduleName('app-items/companies/index'), nav: true, title: 'Companies'},
-      {route: 'companies/create', name: 'companies' + 'Create', moduleId: PLATFORM.moduleName('app-items/companies/create'), nav: true},
-      
-      /*
-      {route: ['persons','persons/index'], name: 'persons' + 'Index', moduleId: PLATFORM.moduleName('persons/index'), nav: true, title: 'Persons'},
-        {route: 'persons/create', name: 'persons' + 'Create', moduleId: PLATFORM.moduleName('persons/create'), nav: false, title: 'Persons Create'},
-        {route: 'persons/edit/:id', name: 'persons' + 'Edit', moduleId: PLATFORM.moduleName('persons/edit'), nav: false, title: 'Persons Edit'},
-        {route: 'persons/delete/:id', name: 'persons' + 'Delete', moduleId: PLATFORM.moduleName('persons/delete'), nav: false, title: 'Persons Delete'},
-        {route: 'persons/details/:id', name: 'persons' + 'Details', moduleId: PLATFORM.moduleName('persons/details'), nav: false, title: 'Persons Details'},
-      */ 
+      {route: ['company','company/index'], name: 'company' + 'Index', moduleId: PLATFORM.moduleName('app-items/company/index'), nav: true, title: 'Company'},
+      {route: 'company/create', name: 'company' + 'Create', moduleId: PLATFORM.moduleName('app-items/company/create'), nav: false, title: 'Company Create'},
+      {route: 'company/edit/:id', name: 'company' + 'Edit', moduleId: PLATFORM.moduleName('app-items/company/edit'), nav: false, title: 'Company Edit'},
+      {route: 'company/delete/:id', name: 'company' + 'Delete', moduleId: PLATFORM.moduleName('app-items/company/delete'), nav: false, title: 'Company Delete'},
+      {route: 'company/details/:id', name: 'company' + 'Details', moduleId: PLATFORM.moduleName('app-items/company/details'), nav: false, title: 'Company Details'},
       
       
     ]);

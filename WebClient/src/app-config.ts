@@ -1,5 +1,4 @@
 import {LogManager, autoinject} from "aurelia-framework";
-import {ICompany} from "./interfaces/ICompany";
 
 export var log = LogManager.getLogger('AppConfig');
 

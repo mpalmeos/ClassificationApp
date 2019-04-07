@@ -1,8 +1,8 @@
 import {LogManager, autoinject} from "aurelia-framework";
 import {HttpClient} from 'aurelia-fetch-client';
-import {ICompany} from "../interfaces/ICompany";
-import {BaseService} from "./base-service";
-import {AppConfig} from "../app-config";
+import {AppConfig} from "../../app-config";
+import {BaseService} from "../base-service";
+import {ICompany} from "../../interfaces/app-interfaces/ICompany";
 
 export var log = LogManager.getLogger('CompanyService');
 

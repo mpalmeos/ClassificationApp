@@ -1,6 +1,7 @@
 import { LogManager, autoinject } from "aurelia-framework";
 import { HttpClient } from 'aurelia-fetch-client';
-import { AppConfig } from "../app-config";
+import {AppConfig} from "../app-config";
+
 
 export var log = LogManager.getLogger('IdentityService');
 
