@@ -1,32 +1,20 @@
 import {LogManager, autoinject} from "aurelia-framework";
-import {RouterConfiguration, Router} from "aurelia-router";
-import {HttpClient} from "aurelia-fetch-client";
+import {HttpClient} from 'aurelia-fetch-client';
 import {ICompany} from "../interfaces/ICompany";
+import {BaseService} from "./base-service";
+import {AppConfig} from "../app-config";
 
-export var log = LogManager.getLogger("app.CompaniesService");
+export var log = LogManager.getLogger('CompanyService');
 
 @autoinject
-export class CompaniesService {
+export class CompanyService extends BaseService<ICompany> {
 
-  constructor(private httpClient: HttpClient){
-    log.debug('constructor running');
+  constructor(
+    private httpClient: HttpClient,
+    private appConfig: AppConfig
+  ) {
+    super(httpClient, appConfig, 'Company');
   }
-  
-  fetchAll(): Promise<ICompany[]> {
-    let url = "https://localhost:5001/api/Company";
-    
-    return this.httpClient.get(url, {cache: 'no-store'}).then(
-      response => {
-        log.debug('response', response);
-        return response.json();
-      }
-    ).then(jsonData => {
-      log.debug('jsonData', jsonData);
-      return jsonData;
-    }).catch(
-      reason => {
-        log.debug('catch reason', reason);
-      }
-    );
-  }
+
 }
+

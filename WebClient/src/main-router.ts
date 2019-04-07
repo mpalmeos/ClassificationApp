@@ -1,5 +1,6 @@
 import {LogManager, autoinject, PLATFORM} from "aurelia-framework";
 import {RouterConfiguration, Router} from "aurelia-router";
+import {AppConfig} from "./app-config";
 
 export var log = LogManager.getLogger("app.MainRouter");
 
@@ -8,7 +9,7 @@ export class MainRouter {
   
   private router: Router;
   
-  constructor(){
+  constructor(private appConfig: AppConfig){
     log.debug('constructor running');
   }
 
@@ -19,10 +20,14 @@ export class MainRouter {
     config.title = 'WebClient - Aurelia';
     config.map([
       {route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('home'), nav: true, title: 'Home'},
+
+      {route: 'identity/login', name: 'identity' + 'Login', moduleId: PLATFORM.moduleName('identity/login'), nav: true, title: 'Login'},
+      {route: 'identity/register', name: 'identity' + 'Register', moduleId: PLATFORM.moduleName('identity/register'), nav: true, title: 'Register'},
+      {route: 'identity/logout', name: 'identity' + 'Logout', moduleId: PLATFORM.moduleName('identity/logout'), nav: true, title: 'Logout'},
       
       //{route: '', name: '', moduleId: PLATFORM.moduleName(''), nav: true, title: ''},
-      {route: ['companies', 'companies/index'], name: 'companies' + 'Index', moduleId: PLATFORM.moduleName('companies/index'), nav: true, title: 'Companies'},
-      {route: 'companies/create', name: 'companies' + 'Create', moduleId: PLATFORM.moduleName('companies/create'), nav: true},
+      {route: ['companies', 'companies/index'], name: 'companies' + 'Index', moduleId: PLATFORM.moduleName('app-items/companies/index'), nav: true, title: 'Companies'},
+      {route: 'companies/create', name: 'companies' + 'Create', moduleId: PLATFORM.moduleName('app-items/companies/create'), nav: true},
       
       /*
       {route: ['persons','persons/index'], name: 'persons' + 'Index', moduleId: PLATFORM.moduleName('persons/index'), nav: true, title: 'Persons'},

@@ -1,16 +1,15 @@
 import {LogManager, autoinject, View} from "aurelia-framework";
-import {RouterConfiguration, Router} from "aurelia-router";
-import {CompanyService} from "../../services/companies-service";
-import {ICompany} from "../../interfaces/ICompany";
+import {ICompany} from "../interfaces/ICompany";
+import {IdentityService} from "../services/identity-service";
 
-export var log = LogManager.getLogger("app.Comapnies.Index");
+export var log = LogManager.getLogger("app.Register.Index");
 
 @autoinject
-export class Companies {
+export class Register {
 
   private companies : ICompany[];
-  
-  constructor(private companiesService: CompanyService){
+
+  constructor(private identityService: IdentityService){
     log.debug('constructor running');
   }
 
@@ -24,12 +23,6 @@ export class Companies {
 
   attached(){
     log.debug('attached');
-
-    this.companiesService.fetchAll().then(
-      jsonData => {
-        this.companies = jsonData;
-      }
-    );
   }
 
   detached(){
