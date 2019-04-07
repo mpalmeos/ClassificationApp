@@ -1,5 +1,5 @@
 import {IBaseEntity} from "../IBaseEntity";
 
-export interface ICategorya extends IBaseEntity{
+export interface ICategory extends IBaseEntity{
   categoryValue: string;
 }

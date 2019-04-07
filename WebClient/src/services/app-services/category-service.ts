@@ -2,17 +2,17 @@ import {LogManager, autoinject} from "aurelia-framework";
 import {HttpClient} from 'aurelia-fetch-client';
 import {AppConfig} from "../../app-config";
 import {BaseService} from "../base-service";
-import {ICompany} from "../../interfaces/app-interfaces/ICompany";
+import {ICategory} from "../../interfaces/app-interfaces/ICategory";
 
-export var log = LogManager.getLogger('CompanyService');
+export var log = LogManager.getLogger('CategoryService');
 
 @autoinject
-export class CompanyService extends BaseService<ICompany> {
+export class CategoryService extends BaseService<ICategory> {
 
   constructor(
     private httpClient: HttpClient,
     private appConfig: AppConfig
   ) {
-    super(httpClient, appConfig, 'Company');
+    super(httpClient, appConfig, 'Category');
   }
 }
