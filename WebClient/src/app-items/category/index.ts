@@ -3,7 +3,7 @@ import {RouteConfig, NavigationInstruction} from "aurelia-router";
 import {ICategory} from "../../interfaces/app-interfaces/ICategory";
 import {CategoryService} from "../../services/app-services/category-service";
 
-export var log = LogManager.getLogger("Categorys.Index");
+export var log = LogManager.getLogger("Category.Index");
 
 @autoinject
 export class Index {
