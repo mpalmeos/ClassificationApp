@@ -1,0 +1,21 @@
+<template>
+  <h1>Details</h1>
+
+  <div>
+    <h4>PlantPart</h4>
+    <hr />
+    <dl class="row">
+      <dt class = "col-sm-2">
+        plantPartItem
+      </dt>
+      <dd class = "col-sm-10">
+        ${plantPart.plantPartValueLatin}
+      </dd>
+    </dl>
+  </div>
+  <div>
+    <!-- if.bind - add/remove element to dom based on predicate -->
+    <a if.bind="plantPart != null" route-href="route: plantPartEdit; params.bind: {id: plantPart.id}">Edit</a> |
+    <a route-href="route: plantPartIndex">Back to List</a>
+  </div>
+</template>

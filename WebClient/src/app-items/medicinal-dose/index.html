@@ -1,0 +1,32 @@
+<template>
+  <h1>MedicinalDose - Index</h1>
+  <p>
+    <a route-href="route: medicinalDoseCreate">MedicinalDose - Create New</a>
+  </p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>
+        Item
+      </th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- repeat this tr element, iterate over contactTypes -->
+    <tr repeat.for="medicinalDose of medicinalDoses">
+      <td>
+        <!-- string interpolation -->
+        ${medicinalDose.medicinalDoseValue}
+      </td>
+      <td>
+        <!-- generate links, based on routing table defined in main-router -->
+        <a route-href="route: medicinalDoseEdit; params.bind: {id: medicinalDose.id}">Edit</a> |
+        <a route-href="route: medicinalDoseDetails; params.bind: {id: medicinalDose.id}">Details</a> |
+        <a route-href="route: medicinalDoseDelete; params.bind: {id: medicinalDose.id}">Delete</a>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</template>

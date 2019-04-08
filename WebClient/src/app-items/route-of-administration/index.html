@@ -1,0 +1,32 @@
+<template>
+  <h1>RouteOfAdministration - Index</h1>
+  <p>
+    <a route-href="route: routeOfAdministrationCreate">RouteOfAdministration - Create New</a>
+  </p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>
+        Item
+      </th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- repeat this tr element, iterate over contactTypes -->
+    <tr repeat.for="routeOfAdministration of routeOfAdministrations">
+      <td>
+        <!-- string interpolation -->
+        ${routeOfAdministration.routeOfAdministrationValue}
+      </td>
+      <td>
+        <!-- generate links, based on routing table defined in main-router -->
+        <a route-href="route: routeOfAdministrationEdit; params.bind: {id: routeOfAdministration.id}">Edit</a> |
+        <a route-href="route: routeOfAdministrationDetails; params.bind: {id: routeOfAdministration.id}">Details</a> |
+        <a route-href="route: routeOfAdministrationDelete; params.bind: {id: routeOfAdministration.id}">Delete</a>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</template>

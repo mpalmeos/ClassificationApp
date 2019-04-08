@@ -1,0 +1,21 @@
+<template>
+  <h1>Details</h1>
+
+  <div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+      <dt class = "col-sm-2">
+        productItem
+      </dt>
+      <dd class = "col-sm-10">
+        
+      </dd>
+    </dl>
+  </div>
+  <div>
+    <!-- if.bind - add/remove element to dom based on predicate -->
+    <a if.bind="product != null" route-href="route: productEdit; params.bind: {id: product.id}">Edit</a> |
+    <a route-href="route: productIndex">Back to List</a>
+  </div>
+</template>

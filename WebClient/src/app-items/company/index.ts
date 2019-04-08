@@ -1,13 +1,13 @@
 import {LogManager, autoinject, View} from "aurelia-framework";
-import {RouterConfiguration, Router, RouteConfig, NavigationInstruction} from "aurelia-router";
+import {RouteConfig, NavigationInstruction} from "aurelia-router";
 import {ICompany} from "../../interfaces/app-interfaces/ICompany";
 import {CompanyService} from "services/app-services/company-service";
 
 
-export var log = LogManager.getLogger("app.Comapnies.Index");
+export var log = LogManager.getLogger("Company.Index");
 
 @autoinject
-export class Companies {
+export class Index {
 
   private companies : ICompany[] = [];
   

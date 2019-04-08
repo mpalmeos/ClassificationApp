@@ -1,0 +1,32 @@
+<template>
+  <h1>Description - Index</h1>
+  <p>
+    <a route-href="route: descriptionCreate">Description - Create New</a>
+  </p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>
+        Item
+      </th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- repeat this tr element, iterate over contactTypes -->
+    <tr repeat.for="description of descriptions">
+      <td>
+        <!-- string interpolation -->
+        ${description.descriptionValue}
+      </td>
+      <td>
+        <!-- generate links, based on routing table defined in main-router -->
+        <a route-href="route: descriptionEdit; params.bind: {id: description.id}">Edit</a> |
+        <a route-href="route: descriptionDetails; params.bind: {id: description.id}">Details</a> |
+        <a route-href="route: descriptionDelete; params.bind: {id: description.id}">Delete</a>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</template>

@@ -1,0 +1,32 @@
+<template>
+  <h1>HerbMedicinal - Index</h1>
+  <p>
+    <a route-href="route: herbMedicinalCreate">HerbMedicinal - Create New</a>
+  </p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>
+        Item
+      </th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- repeat this tr element, iterate over contactTypes -->
+    <tr repeat.for="herbMedicinal of herbMedicinals">
+      <td>
+        <!-- string interpolation -->
+        
+      </td>
+      <td>
+        <!-- generate links, based on routing table defined in main-router -->
+        <a route-href="route: herbMedicinalEdit; params.bind: {id: herbMedicinal.id}">Edit</a> |
+        <a route-href="route: herbMedicinalDetails; params.bind: {id: herbMedicinal.id}">Details</a> |
+        <a route-href="route: herbMedicinalDelete; params.bind: {id: herbMedicinal.id}">Delete</a>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</template>

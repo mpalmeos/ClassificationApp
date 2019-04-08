@@ -3,10 +3,10 @@ import {Router, RouteConfig, NavigationInstruction} from "aurelia-router";
 import {CompanyService} from "../../services/app-services/company-service";
 import {ICompany} from "../../interfaces/app-interfaces/ICompany";
 
-export var log = LogManager.getLogger("app.Company.Create");
+export var log = LogManager.getLogger("Company.Create");
 
 @autoinject
-export class Home {
+export class Create {
 
   private company: ICompany;
   

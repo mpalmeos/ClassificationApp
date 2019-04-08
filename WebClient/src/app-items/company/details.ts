@@ -3,7 +3,7 @@ import {RouteConfig, NavigationInstruction, Router} from "aurelia-router";
 import {ICompany} from "../../interfaces/app-interfaces/ICompany";
 import {CompanyService} from "../../services/app-services/company-service";
 
-export var log = LogManager.getLogger('ContactTypes.Details');
+export var log = LogManager.getLogger('Company.Details');
 
 @autoinject
 export class Details {
@@ -47,7 +47,7 @@ export class Details {
     log.debug('activate', params);
     this.companyService.fetch(params.id).then(
       company => {
-        log.debug('contactType', company);
+        log.debug('company', company);
         this.company = company;
       }
     );

@@ -1,0 +1,32 @@
+<template>
+  <h1>ProductName - Index</h1>
+  <p>
+    <a route-href="route: productNameCreate">ProductName - Create New</a>
+  </p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>
+        Item
+      </th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- repeat this tr element, iterate over contactTypes -->
+    <tr repeat.for="productName of productNames">
+      <td>
+        <!-- string interpolation -->
+        ${productName.productNameValue}
+      </td>
+      <td>
+        <!-- generate links, based on routing table defined in main-router -->
+        <a route-href="route: productNameEdit; params.bind: {id: productName.id}">Edit</a> |
+        <a route-href="route: productNameDetails; params.bind: {id: productName.id}">Details</a> |
+        <a route-href="route: productNameDelete; params.bind: {id: productName.id}">Delete</a>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</template>

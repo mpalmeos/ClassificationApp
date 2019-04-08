@@ -60,7 +60,7 @@ export class Delete {
     log.debug('activate', params);
     this.companyService.fetch(params.id).then(
       company => {
-        log.debug('contactType', company);
+        log.debug('company', company);
         this.company = company;
       }
     );

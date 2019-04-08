@@ -1,0 +1,32 @@
+<template>
+  <h1>CompanyRole - Index</h1>
+  <p>
+    <a route-href="route: companyRoleCreate">CompanyRole - Create New</a>
+  </p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>
+        Item
+      </th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- repeat this tr element, iterate over contactTypes -->
+    <tr repeat.for="companyRole of companyRoles">
+      <td>
+        <!-- string interpolation -->
+        
+      </td>
+      <td>
+        <!-- generate links, based on routing table defined in main-router -->
+        <a route-href="route: companyRoleEdit; params.bind: {id: companyRole.id}">Edit</a> |
+        <a route-href="route: companyRoleDetails; params.bind: {id: companyRole.id}">Details</a> |
+        <a route-href="route: companyRoleDelete; params.bind: {id: companyRole.id}">Delete</a>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</template>

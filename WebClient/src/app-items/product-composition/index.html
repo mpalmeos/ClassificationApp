@@ -1,0 +1,32 @@
+<template>
+  <h1>ProductComposition - Index</h1>
+  <p>
+    <a route-href="route: productCompositionCreate">ProductComposition - Create New</a>
+  </p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>
+        Item
+      </th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- repeat this tr element, iterate over contactTypes -->
+    <tr repeat.for="productComposition of productCompositions">
+      <td>
+        <!-- string interpolation -->
+        
+      </td>
+      <td>
+        <!-- generate links, based on routing table defined in main-router -->
+        <a route-href="route: productCompositionEdit; params.bind: {id: productComposition.id}">Edit</a> |
+        <a route-href="route: productCompositionDetails; params.bind: {id: productComposition.id}">Details</a> |
+        <a route-href="route: productCompositionDelete; params.bind: {id: productComposition.id}">Delete</a>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</template>

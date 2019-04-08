@@ -1,0 +1,21 @@
+<template>
+  <h1>Details</h1>
+
+  <div>
+    <h4>UnitOfMeasure</h4>
+    <hr />
+    <dl class="row">
+      <dt class = "col-sm-2">
+        unitOfMeasureItem
+      </dt>
+      <dd class = "col-sm-10">
+        ${unitOfMeasure.unitOfMeasureValue}
+      </dd>
+    </dl>
+  </div>
+  <div>
+    <!-- if.bind - add/remove element to dom based on predicate -->
+    <a if.bind="unitOfMeasure != null" route-href="route: unitOfMeasureEdit; params.bind: {id: unitOfMeasure.id}">Edit</a> |
+    <a route-href="route: unitOfMeasureIndex">Back to List</a>
+  </div>
+</template>

@@ -3,7 +3,7 @@ import {RouteConfig, NavigationInstruction, Router} from "aurelia-router";
 import {ICompany} from "../../interfaces/app-interfaces/ICompany";
 import {CompanyService} from "../../services/app-services/company-service";
 
-export var log = LogManager.getLogger('ContactTypes.Edit');
+export var log = LogManager.getLogger('Company.Edit');
 
 @autoinject
 export class Edit {
@@ -19,7 +19,7 @@ export class Edit {
 
   // ============ View methods ==============
   submit():void{
-    log.debug('contactType', this.company);
+    log.debug('company', this.company);
     this.companyService.put(this.company!).then(
       response => {
         if (response.status == 204){
@@ -63,7 +63,7 @@ export class Edit {
 
     this.companyService.fetch(params.id).then(
       company => {
-        log.debug('contactType', company);
+        log.debug('company', company);
         this.company = company;
       }
     );
