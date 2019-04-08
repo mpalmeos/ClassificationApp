@@ -23,7 +23,7 @@ export class Create {
     this.cRoleService.post(this.cRole).then(
       response => {
         if (response.status == 201){
-          this.router.navigateToRoute("cRoleIndex");
+          this.router.navigateToRoute("c-roleIndex");
         } else {
           log.error('Error in response!', response);
         }

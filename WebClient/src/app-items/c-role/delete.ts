@@ -22,7 +22,7 @@ export class Delete {
   submit():void{
     this.cRoleService.delete(this.cRole.id).then(response => {
       if (response.status == 200){
-        this.router.navigateToRoute("cRoleIndex");
+        this.router.navigateToRoute("c-roleIndex");
       } else {
         log.debug('response', response);
       }

@@ -8,8 +8,8 @@ export var log = LogManager.getLogger("app.Login.Index");
 @autoinject
 export class Login {
 
-  private email: string;
-  private password: string;
+  private email: string = "a@a.ee";
+  private password: string = "Password";
 
   constructor(
     private identityService: IdentityService,

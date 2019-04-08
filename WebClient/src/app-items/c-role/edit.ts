@@ -23,7 +23,7 @@ export class Edit {
     this.cRoleService.put(this.cRole!).then(
       response => {
         if (response.status == 204){
-          this.router.navigateToRoute("cRoleIndex");
+          this.router.navigateToRoute("c-roleIndex");
         } else {
           log.error('Error in response!', response);
         }
