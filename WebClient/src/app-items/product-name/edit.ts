@@ -8,7 +8,7 @@ export var log = LogManager.getLogger('ProductName.Edit');
 @autoinject
 export class Edit {
 
-  private productName : IProductName | null = null;
+  private productNameE : IProductName | null = null;
 
   constructor(
     private router: Router,
@@ -19,8 +19,8 @@ export class Edit {
 
   // ============ View methods ==============
   submit():void{
-    log.debug('productName', this.productName);
-    this.productNameService.put(this.productName!).then(
+    log.debug('productName', this.productNameE);
+    this.productNameService.put(this.productNameE!).then(
       response => {
         if (response.status == 204){
           this.router.navigateToRoute("productNameIndex");
@@ -64,7 +64,7 @@ export class Edit {
     this.productNameService.fetch(params.id).then(
       productName => {
         log.debug('productName', productName);
-        this.productName = productName;
+        this.productNameE = productName;
       }
     );
 

@@ -8,7 +8,7 @@ export var log = LogManager.getLogger('ProductName.Delete');
 @autoinject
 export class Delete {
 
-  private productName: IProductName;
+  private productNameD: IProductName;
 
   constructor(
     private router: Router,
@@ -20,7 +20,7 @@ export class Delete {
   // ============ View Methods ==============
 
   submit():void{
-    this.productNameService.delete(this.productName.id).then(response => {
+    this.productNameService.delete(this.productNameD.id).then(response => {
       if (response.status == 200){
         this.router.navigateToRoute("productNameIndex");
       } else {
@@ -61,7 +61,7 @@ export class Delete {
     this.productNameService.fetch(params.id).then(
       productName => {
         log.debug('productName', productName);
-        this.productName = productName;
+        this.productNameD = productName;
       }
     );
 

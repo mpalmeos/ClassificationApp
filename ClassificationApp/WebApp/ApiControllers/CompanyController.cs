@@ -15,7 +15,6 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CompanyController : ControllerBase
     {
         private readonly IAppUnitOfWork _uow;
@@ -49,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/Company/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutCompany(int id, Company company)
         {
             if (id != company.Id)
@@ -64,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/Company
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Company>> PostCompany(Company company)
         {
             await _uow.Companies.AddAsync(company);
@@ -74,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/Company/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Company>> DeleteCompany(int id)
         {
             var company = await _uow.Companies.FindAsync(id);

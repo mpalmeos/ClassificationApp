@@ -15,7 +15,6 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class HerbFormController : ControllerBase
     {
         private readonly IAppUnitOfWork _uow;
@@ -49,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/HerbForm/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutHerbForm(int id, HerbForm herbForm)
         {
             if (id != herbForm.Id)
@@ -64,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/HerbForm
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbForm>> PostHerbForm(HerbForm herbForm)
         {
             await _uow.HerbForms.AddAsync(herbForm);
@@ -74,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/HerbForm/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbForm>> DeleteHerbForm(int id)
         {
             var herbForm = await _uow.HerbForms.FindAsync(id);

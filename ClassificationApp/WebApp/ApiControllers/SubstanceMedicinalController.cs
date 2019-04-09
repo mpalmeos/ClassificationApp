@@ -15,7 +15,6 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SubstanceMedicinalController : ControllerBase
     {
         private readonly IAppUnitOfWork _uow;
@@ -49,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/SubstanceMedicinal/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutSubstanceMedicinal(int id, SubstanceMedicinal substanceMedicinal)
         {
             if (id != substanceMedicinal.Id)
@@ -64,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/SubstanceMedicinal
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<SubstanceMedicinal>> PostSubstanceMedicinal(SubstanceMedicinal substanceMedicinal)
         {
             await _uow.SubstanceMedicinals.AddAsync(substanceMedicinal);
@@ -74,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/SubstanceMedicinal/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<SubstanceMedicinal>> DeleteSubstanceMedicinal(int id)
         {
             var substanceMedicinal = await _uow.SubstanceMedicinals.FindAsync(id);

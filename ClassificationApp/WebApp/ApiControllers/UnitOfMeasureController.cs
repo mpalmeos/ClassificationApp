@@ -15,8 +15,6 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UnitOfMeasureController : ControllerBase
     {
         private readonly IAppUnitOfWork _uow;
@@ -50,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/UnitOfMeasure/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutUnitOfMeasure(int id, UnitOfMeasure unitOfMeasure)
         {
             if (id != unitOfMeasure.Id)
@@ -65,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/UnitOfMeasure
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<UnitOfMeasure>> PostUnitOfMeasure(UnitOfMeasure unitOfMeasure)
         {
             await _uow.UnitOfMeasures.AddAsync(unitOfMeasure);
@@ -75,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/UnitOfMeasure/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<UnitOfMeasure>> DeleteUnitOfMeasure(int id)
         {
             var unitOfMeasure = await _uow.UnitOfMeasures.FindAsync(id);

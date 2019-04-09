@@ -15,7 +15,6 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PlantPartController : ControllerBase
     {
         private readonly IAppUnitOfWork _uow;
@@ -49,6 +48,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/PlantPart/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutPlantPart(int id, PlantPart plantPart)
         {
             if (id != plantPart.Id)
@@ -64,6 +64,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/PlantPart
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<PlantPart>> PostPlantPart(PlantPart plantPart)
         {
             await _uow.PlantParts.AddAsync(plantPart);
@@ -74,6 +75,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/PlantPart/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<PlantPart>> DeletePlantPart(int id)
         {
             var plantPart = await _uow.PlantParts.FindAsync(id);

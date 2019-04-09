@@ -7,17 +7,29 @@
     <thead>
     <tr>
       <th>
-        Item
+        Product Name
+      </th>
+      <th>
+        Product Classification
+      </th>
+      <th>
+        Product Route of administration
       </th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     <!-- repeat this tr element, iterate over contactTypes -->
-    <tr repeat.for="product of products">
+    <tr repeat.for="item of products">
       <td>
         <!-- string interpolation -->
-        
+        ${item.productName}
+      </td>
+      <td>
+        ${item.productClassification}
+      </td>
+      <td>
+        ${item.routeOfAdministration}
       </td>
       <td>
         <!-- generate links, based on routing table defined in main-router -->

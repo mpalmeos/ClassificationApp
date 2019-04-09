@@ -8,7 +8,7 @@ export var log = LogManager.getLogger('ProductName.Details');
 @autoinject
 export class Details {
 
-  private productName: IProductName | null = null;
+  private productNameD: IProductName | null = null;
 
   constructor(
     private router: Router,
@@ -48,7 +48,7 @@ export class Details {
     this.productNameService.fetch(params.id).then(
       productName => {
         log.debug('productName', productName);
-        this.productName = productName;
+        this.productNameD = productName;
       }
     );
 

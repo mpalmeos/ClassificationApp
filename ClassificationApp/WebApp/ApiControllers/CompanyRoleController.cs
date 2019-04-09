@@ -65,7 +65,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/CompanyRole
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompanyRole>> PostCompanyRole(CompanyRole companyRole)
         {
             await _uow.CompanyRoles.AddAsync(companyRole);

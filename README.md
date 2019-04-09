@@ -1,16 +1,14 @@
 # icd0009-2018
 
-Maie Palmeos
-
+Maie Palmeos<br>
 DK31
+<br><br>
+HW1 done.<br>
+HW2 done.<br>
+HW3: done:<br>
+User story 1: see all companies and their registered functions.<br>
+User story 2: see all substances and how they have been classified.<br>
+User story 3: see product complete view.<br>
 
-HW1 done.
-
-HW2 done.
-
-HW3: <br>
-User story 1: see all companies and their registered functions.
-
-This is my project for Distributed Systems II Spring 2019.
-
+This is my project for Distributed Systems II Spring 2019.<br>
 Explanation of project is given in the accompanying PDF file, which will be updated during development.

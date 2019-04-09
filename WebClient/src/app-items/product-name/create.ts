@@ -8,7 +8,7 @@ export var log = LogManager.getLogger("ProductName.Create");
 @autoinject
 export class Create {
 
-  private productName: IProductName;
+  private productNameC: IProductName;
   
   constructor(
     private router: Router,
@@ -19,8 +19,8 @@ export class Create {
 
   // ============ View methods ==============
   submit():void{
-    log.debug('productName', this.productName);
-    this.productNameService.post(this.productName).then(
+    log.debug('productName', this.productNameC);
+    this.productNameService.post(this.productNameC).then(
       response => {
         if (response.status == 201){
           this.router.navigateToRoute("productNameIndex");

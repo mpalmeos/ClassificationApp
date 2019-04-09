@@ -15,7 +15,6 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoryController : ControllerBase
     {
         private readonly IAppUnitOfWork _uow;
@@ -48,6 +47,7 @@ namespace WebApp.ApiControllers
         }
 
         // PUT: api/Category/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
@@ -63,6 +63,7 @@ namespace WebApp.ApiControllers
         }
 
         // POST: api/Category
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
@@ -73,6 +74,7 @@ namespace WebApp.ApiControllers
         }
 
         // DELETE: api/Category/5
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Category>> DeleteCategory(int id)
         {

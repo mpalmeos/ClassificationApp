@@ -16,7 +16,6 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SubstanceCategoryController : ControllerBase
     {
         private readonly IAppUnitOfWork _uow;
@@ -50,6 +49,7 @@ namespace WebApp.ApiControllers
 
         // PUT: api/SubstanceCategory/5
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutSubstanceCategory(int id, SubstanceCategory substanceCategory)
         {
             if (id != substanceCategory.Id)
@@ -65,6 +65,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/SubstanceCategory
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<SubstanceCategory>> PostSubstanceCategory(SubstanceCategory substanceCategory)
         {
             await _uow.SubstanceCategories.AddAsync(substanceCategory);
@@ -75,6 +76,7 @@ namespace WebApp.ApiControllers
 
         // DELETE: api/SubstanceCategory/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<SubstanceCategory>> DeleteSubstanceCategory(int id)
         {
             var substanceCategory = await _uow.SubstanceCategories.FindAsync(id);
