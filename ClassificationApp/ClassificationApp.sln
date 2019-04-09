@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Base.EF", "DAL.Base.EF\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "Identity\Identity.csproj", "{EFD995B5-939B-493B-B1A5-B611E3073DD4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.App.DTO", "DAL.App.DTO\DAL.App.DTO.csproj", "{135D5B38-4E80-47DA-8322-B5267BAD6AD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,5 +63,9 @@ Global
 		{EFD995B5-939B-493B-B1A5-B611E3073DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFD995B5-939B-493B-B1A5-B611E3073DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFD995B5-939B-493B-B1A5-B611E3073DD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{135D5B38-4E80-47DA-8322-B5267BAD6AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{135D5B38-4E80-47DA-8322-B5267BAD6AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{135D5B38-4E80-47DA-8322-B5267BAD6AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{135D5B38-4E80-47DA-8322-B5267BAD6AD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

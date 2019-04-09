@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
+using DAL.App.DTO;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -26,9 +27,9 @@ namespace WebApp.ApiControllers
 
         // GET: api/CompanyRole
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CompanyRole>>> GetCompanyRoles()
+        public async Task<ActionResult<IEnumerable<CompanyRoleDTO>>> GetCompanyRoles()
         {
-            var res = await _uow.CompanyRoles.AllAsync();
+            var res = await _uow.CompanyRoles.GetAllWithConnections();
             return Ok(res);
         }
 
@@ -64,7 +65,7 @@ namespace WebApp.ApiControllers
 
         // POST: api/CompanyRole
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompanyRole>> PostCompanyRole(CompanyRole companyRole)
         {
             await _uow.CompanyRoles.AddAsync(companyRole);

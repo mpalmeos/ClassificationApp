@@ -96,7 +96,7 @@ namespace WebApp
                 })
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+                    //options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 });
 

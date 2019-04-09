@@ -23,7 +23,7 @@ export class Create {
     this.companyRoleService.post(this.companyRole).then(
       response => {
         if (response.status == 201){
-          this.router.navigateToRoute("companyRoleIndex");
+          this.router.navigateToRoute("company-roleIndex");
         } else {
           log.error('Error in response!', response);
         }

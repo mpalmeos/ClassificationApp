@@ -9,8 +9,15 @@
       <form method="post" submit.delegate="submit()">
 
         <div class="form-group">
-          <label class="control-label" for="companyRoleItem">companyRoleItem</label>
-          <input class="form-control" id="companyRoleItem" type="text" />
+          <label class="control-label" for="CompanyName">CompanyName</label>
+          <input class="form-control" id="CompanyName" type="text" value.bind="companyRole.CompanyName"/>
+
+          <label class="control-label" for="CompanyAddress">CompanyAddress</label>
+          <input class="form-control" id="CompanyAddress" type="text" value.bind="companyRole.CompanyAddress"/>
+
+          <label class="control-label" for="CompanyRole">CompanyRole</label>
+          <input class="form-control" id="CompanyRole" type="text" value.bind="companyRole.RoleValue"/>
+          
         </div>
         <div class="form-group">
           <input type="submit" value="Save" class="btn btn-primary" />

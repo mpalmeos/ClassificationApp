@@ -6,16 +6,28 @@
     <hr />
     <dl class="row">
       <dt class = "col-sm-2">
-        companyRoleItem
+        Company Name
       </dt>
       <dd class = "col-sm-10">
-        
+        ${companyRole.CompanyName}
+      </dd>
+      <dt class = "col-sm-2">
+        Company Address
+      </dt>
+      <dd class = "col-sm-10">
+        ${companyRole.CompanyAddress}
+      </dd>
+      <dt class = "col-sm-2">
+        Company Role
+      </dt>
+      <dd class = "col-sm-10">
+        ${companyRole.RoleValue}
       </dd>
     </dl>
   </div>
   <div>
     <!-- if.bind - add/remove element to dom based on predicate -->
-    <a if.bind="companyRole != null" route-href="route: companyRoleEdit; params.bind: {id: companyRole.id}">Edit</a> |
-    <a route-href="route: companyRoleIndex">Back to List</a>
+    <a if.bind="companyRole != null" route-href="route: company-roleEdit; params.bind: {id: companyRole.id}">Edit</a> |
+    <a route-href="route: company-roleIndex">Back to List</a>
   </div>
 </template>
