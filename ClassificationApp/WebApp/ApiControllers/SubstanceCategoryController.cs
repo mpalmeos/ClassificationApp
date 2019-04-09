@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
+using DAL.App.DTO;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +16,7 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SubstanceCategoryController : ControllerBase
     {
         private readonly IAppUnitOfWork _uow;
@@ -27,9 +28,9 @@ namespace WebApp.ApiControllers
 
         // GET: api/SubstanceCategory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SubstanceCategory>>> GetSubstanceCategories()
+        public async Task<ActionResult<IEnumerable<SubstanceCategoryDTO>>> GetSubstanceCategories()
         {
-            var res = await _uow.SubstanceCategories.AllAsync();
+            var res = await _uow.SubstanceCategories.GetAllWithConnections();
             return Ok(res);
         }
 
