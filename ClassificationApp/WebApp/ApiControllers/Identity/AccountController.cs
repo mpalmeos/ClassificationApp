@@ -21,8 +21,6 @@ namespace WebApp.ApiControllers.Identity
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
 
-        
-
         public AccountController(SignInManager<AppUser> signInManager, IConfiguration configuration, UserManager<AppUser> userManager, ILogger<RegisterModel> logger, IEmailSender emailSender)
         {
             _signInManager = signInManager;
