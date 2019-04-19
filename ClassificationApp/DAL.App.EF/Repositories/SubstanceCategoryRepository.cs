@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class SubstanceCategoryRepository : BaseRepository<SubstanceCategory>, ISubstanceCategoryRepository
+    public class SubstanceCategoryRepository : BaseRepository<SubstanceCategory, AppDbContext>, ISubstanceCategoryRepository
     {
-        public SubstanceCategoryRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public SubstanceCategoryRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
 

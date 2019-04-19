@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class CompanyRepository : BaseRepository<Company>, ICompanyRepository
+    public class CompanyRepository : BaseRepository<Company, AppDbContext>, ICompanyRepository
     {
-        public CompanyRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public CompanyRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
     }

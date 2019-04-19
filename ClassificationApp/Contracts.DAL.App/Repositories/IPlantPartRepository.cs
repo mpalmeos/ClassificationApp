@@ -3,7 +3,7 @@ using Domain;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface IPlantPartRepository : IRepository<PlantPart>
+    public interface IPlantPartRepository : IBaseRepository<PlantPart>
     {
         
     }

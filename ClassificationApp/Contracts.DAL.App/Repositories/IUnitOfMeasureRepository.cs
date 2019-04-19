@@ -3,7 +3,7 @@ using Domain;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface IUnitOfMeasureRepository : IRepository<UnitOfMeasure>
+    public interface IUnitOfMeasureRepository : IBaseRepository<UnitOfMeasure>
     {
         
     }

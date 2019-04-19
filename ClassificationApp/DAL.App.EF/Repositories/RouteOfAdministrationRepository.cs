@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class RouteOfAdministrationRepository : BaseRepository<RouteOfAdministration>, IRouteOfAdministrationRepository
+    public class RouteOfAdministrationRepository : BaseRepository<RouteOfAdministration, AppDbContext>, IRouteOfAdministrationRepository
     {
-        public RouteOfAdministrationRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public RouteOfAdministrationRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
     }

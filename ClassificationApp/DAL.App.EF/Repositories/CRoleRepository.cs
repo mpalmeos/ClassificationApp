@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class CRoleRepository : BaseRepository<CRole>, ICRoleRepository
+    public class CRoleRepository : BaseRepository<CRole, AppDbContext>, ICRoleRepository
     {
-        public CRoleRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public CRoleRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
     }

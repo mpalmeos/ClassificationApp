@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class PlantPartRepository : BaseRepository<PlantPart>, IPlantPartRepository
+    public class PlantPartRepository : BaseRepository<PlantPart, AppDbContext>, IPlantPartRepository
     {
-        public PlantPartRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public PlantPartRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
     }

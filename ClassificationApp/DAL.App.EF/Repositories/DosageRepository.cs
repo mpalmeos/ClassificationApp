@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class DosageRepository : BaseRepository<Dosage>, IDosageRepository
+    public class DosageRepository : BaseRepository<Dosage, AppDbContext>, IDosageRepository
     {
-        public DosageRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public DosageRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
     }

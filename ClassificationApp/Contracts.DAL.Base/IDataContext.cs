@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace Contracts.DAL.Base
 {
-    public interface IUnitOfWork
+    public interface IDataContext
     {
         Task<int> SaveChangesAsync();
         int SaveChanges();

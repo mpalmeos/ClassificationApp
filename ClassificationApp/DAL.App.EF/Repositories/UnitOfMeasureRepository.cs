@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class UnitOfMeasureRepository : BaseRepository<UnitOfMeasure>, IUnitOfMeasureRepository
+    public class UnitOfMeasureRepository : BaseRepository<UnitOfMeasure,AppDbContext>, IUnitOfMeasureRepository
     {
-        public UnitOfMeasureRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public UnitOfMeasureRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
     }

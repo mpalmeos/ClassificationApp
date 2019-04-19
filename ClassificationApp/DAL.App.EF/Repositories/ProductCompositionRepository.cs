@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class ProductCompositionRepository : BaseRepository<ProductComposition>, IProductCompositionRepository
+    public class ProductCompositionRepository : BaseRepository<ProductComposition, AppDbContext>, IProductCompositionRepository
     {
-        public ProductCompositionRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+        public ProductCompositionRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
         {
         }
     }

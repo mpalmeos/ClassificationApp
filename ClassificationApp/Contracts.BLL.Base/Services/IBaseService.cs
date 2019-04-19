@@ -1,5 +1,6 @@
 using System;
 using Contracts.Base;
+using Contracts.DAL.Base;
 using Contracts.DAL.Base.Repository;
 
 namespace Contracts.BLL.Base.Services
@@ -8,8 +9,8 @@ namespace Contracts.BLL.Base.Services
     {
     }
 
-    public interface IBaseEntityService<TEntity> : IBaseService, IRepository<TEntity> 
-        where TEntity : class, new()
+    public interface IBaseEntityService<TEntity> : IBaseService, IBaseRepository<TEntity> 
+        where TEntity : class, IBaseEntity, new()
     {
         
     }

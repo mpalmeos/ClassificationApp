@@ -3,7 +3,7 @@ using Domain;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface IHerbRepository : IRepository<Herb>
+    public interface IHerbRepository : IBaseRepository<Herb>
     {
         
     }

@@ -2,114 +2,101 @@ using System;
 using System.Collections.Generic;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
+using Contracts.DAL.Base.Helpers;
 using DAL.App.EF.Repositories;
 using DAL.Base.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class AppUnitOfWork : BaseUnitOfWork, IAppUnitOfWork
+    public class AppUnitOfWork : BaseUnitOfWork<AppDbContext>, IAppUnitOfWork
     {
-        private Dictionary<Type, object> _repositoryCache = new Dictionary<Type, object>();
-        
-        public AppUnitOfWork(AppDbContext unitOfWorkDbContext) : base(unitOfWorkDbContext)
+        public AppUnitOfWork(AppDbContext dbContext, IBaseRepositoryProvider repositoryProvider) : base(dbContext, repositoryProvider)
         {
         }
         
-        private TRepo GetOrCreateRepository<TRepo>(Func<AppDbContext, TRepo> repoCreationMethod)
-        {
-            if (_repositoryCache.ContainsKey(typeof(TRepo)))
-            {
-                return (TRepo) _repositoryCache[typeof(TRepo)];
-            }
-
-            var repoObj = repoCreationMethod((AppDbContext) UnitOfWorkDbContext);
-            _repositoryCache.Add(typeof(TRepo), repoObj);
-            return repoObj;
-        }
-
-        public ICategoryRepository Categories =>
-            GetOrCreateRepository<ICategoryRepository>(dbContext => new CategoryRepository(dbContext));
-
-        public ICompanyRepository Companies =>
-            GetOrCreateRepository<ICompanyRepository>(ctx => new CompanyRepository(ctx));
-
-        public ICompanyRoleRepository CompanyRoles =>
-            GetOrCreateRepository<ICompanyRoleRepository>(ctx => new CompanyRoleRepository(ctx));
-
-        public ICompositionHerbRepository CompositionHerbs =>
-            GetOrCreateRepository<ICompositionHerbRepository>(ctx => new CompositionHerbRepository(ctx));
-
-        public ICompositionRepository Compositions =>
-            GetOrCreateRepository<ICompositionRepository>(ctx => new CompositionRepository(ctx));
+        public ICategoryRepository Categories => 
+            _repositoryProvider.GetRepository<ICategoryRepository>();
+        
+        public ICompanyRepository Companies => 
+            _repositoryProvider.GetRepository<ICompanyRepository>();
+        
+        public ICompanyRoleRepository CompanyRoles => 
+            _repositoryProvider.GetRepository<ICompanyRoleRepository>();
+        
+        public ICompositionHerbRepository CompositionHerbs => 
+            _repositoryProvider.GetRepository<ICompositionHerbRepository>();
+        
+        public ICompositionRepository Compositions => 
+            _repositoryProvider.GetRepository<ICompositionRepository>();
 
         public ICompositionSubstanceRepository CompositionSubstances =>
-            GetOrCreateRepository<ICompositionSubstanceRepository>(ctx => new CompositionSubstanceRepository(ctx));
+            _repositoryProvider.GetRepository<ICompositionSubstanceRepository>();
 
         public ICRoleRepository CRoles =>
-            GetOrCreateRepository<ICRoleRepository>(ctx => new CRoleRepository(ctx));
+            _repositoryProvider.GetRepository<ICRoleRepository>();
 
         public IDescriptionRepository Descriptions =>
-            GetOrCreateRepository<IDescriptionRepository>(ctx => new DescriptionRepository(ctx));
+            _repositoryProvider.GetRepository<IDescriptionRepository>();
 
         public IDosageRepository Dosages =>
-            GetOrCreateRepository<IDosageRepository>(ctx => new DosageRepository(ctx));
+            _repositoryProvider.GetRepository<IDosageRepository>();
 
         public IHerbFormRepository HerbForms =>
-            GetOrCreateRepository<IHerbFormRepository>(ctx => new HerbFormRepository(ctx));
+            _repositoryProvider.GetRepository<IHerbFormRepository>();
 
         public IHerbMedicinalRepository HerbMedicinals =>
-            GetOrCreateRepository<IHerbMedicinalRepository>(ctx => new HerbMedicinalRepository(ctx));
+            _repositoryProvider.GetRepository<IHerbMedicinalRepository>();
 
         public IHerbPartRepository HerbParts =>
-            GetOrCreateRepository<IHerbPartRepository>(ctx => new HerbPartRepository(ctx));
+            _repositoryProvider.GetRepository<IHerbPartRepository>();
 
         public IHerbRepository Herbs =>
-            GetOrCreateRepository<IHerbRepository>(ctx => new HerbRepository(ctx));
+            _repositoryProvider.GetRepository<IHerbRepository>();
 
         public IMedicinalDoseRepository MedicinalDoses =>
-            GetOrCreateRepository<IMedicinalDoseRepository>(ctx => new MedicinalDoseRepository(ctx));
+            _repositoryProvider.GetRepository<IMedicinalDoseRepository>();
 
         public IPlantFormRepository PlantForms =>
-            GetOrCreateRepository<IPlantFormRepository>(ctx => new PlantFormRepository(ctx));
+            _repositoryProvider.GetRepository<IPlantFormRepository>();
 
         public IPlantPartRepository PlantParts =>
-            GetOrCreateRepository<IPlantPartRepository>(ctx => new PlantPartRepository(ctx));
+            _repositoryProvider.GetRepository<IPlantPartRepository>();
 
         public IProductClassificationRepository ProductClassifications =>
-            GetOrCreateRepository<IProductClassificationRepository>(ctx => new ProductClassificationRepository(ctx));
+            _repositoryProvider.GetRepository<IProductClassificationRepository>();
 
         public IProductCompanyRepository ProductCompanies =>
-            GetOrCreateRepository<IProductCompanyRepository>(ctx => new ProductCompanyRepository(ctx));
+            _repositoryProvider.GetRepository<IProductCompanyRepository>();
 
         public IProductCompositionRepository ProductCompositions =>
-            GetOrCreateRepository<IProductCompositionRepository>(ctx => new ProductCompositionRepository(ctx));
+            _repositoryProvider.GetRepository<IProductCompositionRepository>();
 
         public IProductDescriptionRepository ProductDescriptions =>
-            GetOrCreateRepository<IProductDescriptionRepository>(ctx => new ProductDescriptionRepository(ctx));
+            _repositoryProvider.GetRepository<IProductDescriptionRepository>();
 
         public IProductDosageRepository ProductDosages =>
-            GetOrCreateRepository<IProductDosageRepository>(ctx => new ProductDosageRepository(ctx));
+            _repositoryProvider.GetRepository<IProductDosageRepository>();
 
         public IProductNameRepository ProductNames =>
-            GetOrCreateRepository<IProductNameRepository>(ctx => new ProductNameRepository(ctx));
+            _repositoryProvider.GetRepository<IProductNameRepository>();
 
         public IProductRepository Products =>
-            GetOrCreateRepository<IProductRepository>(ctx => new ProductRepository(ctx));
+            _repositoryProvider.GetRepository<IProductRepository>();
 
         public IRouteOfAdministrationRepository RouteOfAdministrations =>
-            GetOrCreateRepository<IRouteOfAdministrationRepository>(ctx => new RouteOfAdministrationRepository(ctx));
+            _repositoryProvider.GetRepository<IRouteOfAdministrationRepository>();
 
         public ISubstanceCategoryRepository SubstanceCategories =>
-            GetOrCreateRepository<ISubstanceCategoryRepository>(ctx => new SubstanceCategoryRepository(ctx));
+            _repositoryProvider.GetRepository<ISubstanceCategoryRepository>();
 
         public ISubstanceMedicinalRepository SubstanceMedicinals =>
-            GetOrCreateRepository<ISubstanceMedicinalRepository>(ctx => new SubstanceMedicinalRepository(ctx));
+            _repositoryProvider.GetRepository<ISubstanceMedicinalRepository>();
 
         public ISubstanceRepository Substances =>
-            GetOrCreateRepository<ISubstanceRepository>(ctx => new SubstanceRepository(ctx));
+            _repositoryProvider.GetRepository<ISubstanceRepository>();
 
         public IUnitOfMeasureRepository UnitOfMeasures =>
-            GetOrCreateRepository<IUnitOfMeasureRepository>(ctx => new UnitOfMeasureRepository(ctx));
+            _repositoryProvider.GetRepository<IUnitOfMeasureRepository>();
     }
 }

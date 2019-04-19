@@ -6,7 +6,7 @@ using Domain;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface ICompanyRoleRepository : IRepository<CompanyRole>
+    public interface ICompanyRoleRepository : IBaseRepository<CompanyRole>
     {
         Task<List<CompanyRoleDTO>> GetAllWithConnections();
     }

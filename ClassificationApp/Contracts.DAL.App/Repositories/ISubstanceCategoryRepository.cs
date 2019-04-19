@@ -6,7 +6,7 @@ using Domain;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface ISubstanceCategoryRepository : IRepository<SubstanceCategory>
+    public interface ISubstanceCategoryRepository : IBaseRepository<SubstanceCategory>
     {
         Task<List<SubstanceCategoryDTO>> GetAllWithConnections();
     }

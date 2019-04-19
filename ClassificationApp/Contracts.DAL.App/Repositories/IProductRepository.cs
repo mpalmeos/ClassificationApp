@@ -6,7 +6,7 @@ using Domain;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface IProductRepository : IRepository<Product>
+    public interface IProductRepository : IBaseRepository<Product>
     {
         Task<List<ProductDTO>> GetAllWithConnections();
     }
