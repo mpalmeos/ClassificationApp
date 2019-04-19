@@ -2,7 +2,8 @@ using System;
 
 namespace Contracts.DAL.Base.Repository
 {
-    public interface IBaseRepository<TEntity> : IBaseRepositoryAsync<TEntity>, IBaseRepositorySynchronous<TEntity>
+    public interface IBaseRepository<TEntity> : 
+        IBaseRepositoryAsync<TEntity>, IBaseRepositorySynchronous<TEntity>
         where TEntity : class, IBaseEntity, new()
     {
     }
