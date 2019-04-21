@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class PlantPartController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public PlantPartController(IAppUnitOfWork uow)
+        public PlantPartController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/PlantPart
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlantPart>>> GetPlantParts()
         {
-            var res = await _uow.PlantParts.AllAsync();
-            return Ok(res);
+            return await _bll.PlantParts.AllAsync();
         }
 
         // GET: api/PlantPart/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PlantPart>> GetPlantPart(int id)
         {
-            var plantPart = await _uow.PlantParts.FindAsync(id);
+            var plantPart = await _bll.PlantParts.FindAsync(id);
 
             if (plantPart == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.PlantParts.Update(plantPart);
-            await _uow.SaveChangesAsync();
+            _bll.PlantParts.Update(plantPart);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<PlantPart>> PostPlantPart(PlantPart plantPart)
         {
-            await _uow.PlantParts.AddAsync(plantPart);
-            await _uow.SaveChangesAsync();
+            await _bll.PlantParts.AddAsync(plantPart);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetPlantPart", new { id = plantPart.Id }, plantPart);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<PlantPart>> DeletePlantPart(int id)
         {
-            var plantPart = await _uow.PlantParts.FindAsync(id);
+            var plantPart = await _bll.PlantParts.FindAsync(id);
             if (plantPart == null)
             {
                 return NotFound();
             }
 
-            _uow.PlantParts.Remove(plantPart);
-            await _uow.SaveChangesAsync();
+            _bll.PlantParts.Remove(plantPart);
+            await _bll.SaveChangesAsync();
 
             return plantPart;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductDosageController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public ProductDosageController(IAppUnitOfWork uow)
+        public ProductDosageController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/ProductDosage
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDosage>>> GetProductDosages()
         {
-            var res = await _uow.ProductDosages.AllAsync();
-            return Ok(res);
+            return await _bll.ProductDosages.AllAsync();
         }
 
         // GET: api/ProductDosage/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDosage>> GetProductDosage(int id)
         {
-            var productDosage = await _uow.ProductDosages.FindAsync(id);
+            var productDosage = await _bll.ProductDosages.FindAsync(id);
 
             if (productDosage == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.ProductDosages.Update(productDosage);
-            await _uow.SaveChangesAsync();
+            _bll.ProductDosages.Update(productDosage);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductDosage>> PostProductDosage(ProductDosage productDosage)
         {
-            await _uow.ProductDosages.AddAsync(productDosage);
-            await _uow.SaveChangesAsync();
+            await _bll.ProductDosages.AddAsync(productDosage);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetProductDosage", new { id = productDosage.Id }, productDosage);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductDosage>> DeleteProductDosage(int id)
         {
-            var productDosage = await _uow.ProductDosages.FindAsync(id);
+            var productDosage = await _bll.ProductDosages.FindAsync(id);
             if (productDosage == null)
             {
                 return NotFound();
             }
 
-            _uow.ProductDosages.Remove(productDosage);
-            await _uow.SaveChangesAsync();
+            _bll.ProductDosages.Remove(productDosage);
+            await _bll.SaveChangesAsync();
 
             return productDosage;
         }

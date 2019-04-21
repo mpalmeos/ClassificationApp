@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CompositionController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CompositionController(IAppUnitOfWork uow)
+        public CompositionController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
+
 
         // GET: api/Composition
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Composition>>> GetCompositions()
         {
-            var res = await _uow.Compositions.AllAsync();
-            return Ok(res);
+            return await _bll.Compositions.AllAsync();
         }
 
         // GET: api/Composition/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Composition>> GetComposition(int id)
         {
-            var composition = await _uow.Compositions.FindAsync(id);
+            var composition = await _bll.Compositions.FindAsync(id);
 
             if (composition == null)
             {
@@ -56,8 +57,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.Compositions.Update(composition);
-            await _uow.SaveChangesAsync();
+            _bll.Compositions.Update(composition);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +68,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Composition>> PostComposition(Composition composition)
         {
-            await _uow.Compositions.AddAsync(composition);
-            await _uow.SaveChangesAsync();
+            await _bll.Compositions.AddAsync(composition);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetComposition", new { id = composition.Id }, composition);
         }
@@ -78,14 +79,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Composition>> DeleteComposition(int id)
         {
-            var composition = await _uow.Compositions.FindAsync(id);
+            var composition = await _bll.Compositions.FindAsync(id);
             if (composition == null)
             {
                 return NotFound();
             }
 
-            _uow.Compositions.Remove(composition);
-            await _uow.SaveChangesAsync();
+            _bll.Compositions.Remove(composition);
+            await _bll.SaveChangesAsync();
 
             return composition;
         }

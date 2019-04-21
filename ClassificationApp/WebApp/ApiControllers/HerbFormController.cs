@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class HerbFormController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public HerbFormController(IAppUnitOfWork uow)
+        public HerbFormController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
+
 
         // GET: api/HerbForm
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HerbForm>>> GetHerbForms()
         {
-            var res = await _uow.HerbForms.AllAsync();
-            return Ok(res);
+            return await _bll.HerbForms.AllAsync();
         }
 
         // GET: api/HerbForm/5
         [HttpGet("{id}")]
         public async Task<ActionResult<HerbForm>> GetHerbForm(int id)
         {
-            var herbForm = await _uow.HerbForms.FindAsync(id);
+            var herbForm = await _bll.HerbForms.FindAsync(id);
 
             if (herbForm == null)
             {
@@ -56,8 +57,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.HerbForms.Update(herbForm);
-            await _uow.SaveChangesAsync();
+            _bll.HerbForms.Update(herbForm);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +68,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbForm>> PostHerbForm(HerbForm herbForm)
         {
-            await _uow.HerbForms.AddAsync(herbForm);
-            await _uow.SaveChangesAsync();
+            await _bll.HerbForms.AddAsync(herbForm);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetHerbForm", new { id = herbForm.Id }, herbForm);
         }
@@ -78,14 +79,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbForm>> DeleteHerbForm(int id)
         {
-            var herbForm = await _uow.HerbForms.FindAsync(id);
+            var herbForm = await _bll.HerbForms.FindAsync(id);
             if (herbForm == null)
             {
                 return NotFound();
             }
 
-            _uow.HerbForms.Remove(herbForm);
-            await _uow.SaveChangesAsync();
+            _bll.HerbForms.Remove(herbForm);
+            await _bll.SaveChangesAsync();
 
             return herbForm;
         }

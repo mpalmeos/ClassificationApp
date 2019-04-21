@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,26 +19,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class SubstanceCategoryController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public SubstanceCategoryController(IAppUnitOfWork uow)
+        public SubstanceCategoryController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/SubstanceCategory
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SubstanceCategoryDTO>>> GetSubstanceCategories()
         {
-            var res = await _uow.SubstanceCategories.GetAllWithConnections();
-            return Ok(res);
+            return await _bll.SubstanceCategories.GetAllWithConnections();
         }
 
         // GET: api/SubstanceCategory/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SubstanceCategory>> GetSubstanceCategory(int id)
         {
-            var substanceCategory = await _uow.SubstanceCategories.FindAsync(id);
+            var substanceCategory = await _bll.SubstanceCategories.FindAsync(id);
 
             if (substanceCategory == null)
             {
@@ -57,8 +57,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.SubstanceCategories.Update(substanceCategory);
-            await _uow.SaveChangesAsync();
+            _bll.SubstanceCategories.Update(substanceCategory);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -68,8 +68,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<SubstanceCategory>> PostSubstanceCategory(SubstanceCategory substanceCategory)
         {
-            await _uow.SubstanceCategories.AddAsync(substanceCategory);
-            await _uow.SaveChangesAsync();
+            await _bll.SubstanceCategories.AddAsync(substanceCategory);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetSubstanceCategory", new { id = substanceCategory.Id }, substanceCategory);
         }
@@ -79,14 +79,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<SubstanceCategory>> DeleteSubstanceCategory(int id)
         {
-            var substanceCategory = await _uow.SubstanceCategories.FindAsync(id);
+            var substanceCategory = await _bll.SubstanceCategories.FindAsync(id);
             if (substanceCategory == null)
             {
                 return NotFound();
             }
 
-            _uow.SubstanceCategories.Remove(substanceCategory);
-            await _uow.SaveChangesAsync();
+            _bll.SubstanceCategories.Remove(substanceCategory);
+            await _bll.SaveChangesAsync();
 
             return substanceCategory;
         }

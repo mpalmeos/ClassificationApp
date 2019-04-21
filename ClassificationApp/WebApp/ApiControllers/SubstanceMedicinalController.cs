@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class SubstanceMedicinalController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public SubstanceMedicinalController(IAppUnitOfWork uow)
+        public SubstanceMedicinalController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/SubstanceMedicinal
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SubstanceMedicinal>>> GetSubstanceMedicinals()
         {
-            var res = await _uow.SubstanceMedicinals.AllAsync();
-            return Ok(res);
+            return await _bll.SubstanceMedicinals.AllAsync();
         }
 
         // GET: api/SubstanceMedicinal/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SubstanceMedicinal>> GetSubstanceMedicinal(int id)
         {
-            var substanceMedicinal = await _uow.SubstanceMedicinals.FindAsync(id);
+            var substanceMedicinal = await _bll.SubstanceMedicinals.FindAsync(id);
 
             if (substanceMedicinal == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.SubstanceMedicinals.Update(substanceMedicinal);
-            await _uow.SaveChangesAsync();
+            _bll.SubstanceMedicinals.Update(substanceMedicinal);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<SubstanceMedicinal>> PostSubstanceMedicinal(SubstanceMedicinal substanceMedicinal)
         {
-            await _uow.SubstanceMedicinals.AddAsync(substanceMedicinal);
-            await _uow.SaveChangesAsync();
+            await _bll.SubstanceMedicinals.AddAsync(substanceMedicinal);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetSubstanceMedicinal", new { id = substanceMedicinal.Id }, substanceMedicinal);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<SubstanceMedicinal>> DeleteSubstanceMedicinal(int id)
         {
-            var substanceMedicinal = await _uow.SubstanceMedicinals.FindAsync(id);
+            var substanceMedicinal = await _bll.SubstanceMedicinals.FindAsync(id);
             if (substanceMedicinal == null)
             {
                 return NotFound();
             }
 
-            _uow.SubstanceMedicinals.Remove(substanceMedicinal);
-            await _uow.SaveChangesAsync();
+            _bll.SubstanceMedicinals.Remove(substanceMedicinal);
+            await _bll.SaveChangesAsync();
 
             return substanceMedicinal;
         }

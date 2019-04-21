@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class UnitOfMeasureController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public UnitOfMeasureController(IAppUnitOfWork uow)
+        public UnitOfMeasureController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/UnitOfMeasure
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UnitOfMeasure>>> GetUnitOfMeasures()
         {
-            var res = await _uow.UnitOfMeasures.AllAsync();
-            return Ok(res);
+            return await _bll.UnitOfMeasures.AllAsync();
         }
 
         // GET: api/UnitOfMeasure/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UnitOfMeasure>> GetUnitOfMeasure(int id)
         {
-            var unitOfMeasure = await _uow.UnitOfMeasures.FindAsync(id);
+            var unitOfMeasure = await _bll.UnitOfMeasures.FindAsync(id);
 
             if (unitOfMeasure == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.UnitOfMeasures.Update(unitOfMeasure);
-            await _uow.SaveChangesAsync();
+            _bll.UnitOfMeasures.Update(unitOfMeasure);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<UnitOfMeasure>> PostUnitOfMeasure(UnitOfMeasure unitOfMeasure)
         {
-            await _uow.UnitOfMeasures.AddAsync(unitOfMeasure);
-            await _uow.SaveChangesAsync();
+            await _bll.UnitOfMeasures.AddAsync(unitOfMeasure);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetUnitOfMeasure", new { id = unitOfMeasure.Id }, unitOfMeasure);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<UnitOfMeasure>> DeleteUnitOfMeasure(int id)
         {
-            var unitOfMeasure = await _uow.UnitOfMeasures.FindAsync(id);
+            var unitOfMeasure = await _bll.UnitOfMeasures.FindAsync(id);
             if (unitOfMeasure == null)
             {
                 return NotFound();
             }
 
-            _uow.UnitOfMeasures.Remove(unitOfMeasure);
-            await _uow.SaveChangesAsync();
+            _bll.UnitOfMeasures.Remove(unitOfMeasure);
+            await _bll.SaveChangesAsync();
 
             return unitOfMeasure;
         }

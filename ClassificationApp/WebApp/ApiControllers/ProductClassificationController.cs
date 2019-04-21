@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductClassificationController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public ProductClassificationController(IAppUnitOfWork uow)
+        public ProductClassificationController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/ProductClassification
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductClassification>>> GetProductClassifications()
         {
-            var res = await _uow.ProductClassifications.AllAsync();
-            return Ok(res);
+            return await _bll.ProductClassifications.AllAsync();
         }
 
         // GET: api/ProductClassification/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductClassification>> GetProductClassification(int id)
         {
-            var productClassification = await _uow.ProductClassifications.FindAsync(id);
+            var productClassification = await _bll.ProductClassifications.FindAsync(id);
 
             if (productClassification == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.ProductClassifications.Update(productClassification);
-            await _uow.SaveChangesAsync();
+            _bll.ProductClassifications.Update(productClassification);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductClassification>> PostProductClassification(ProductClassification productClassification)
         {
-            await _uow.ProductClassifications.AddAsync(productClassification);
-            await _uow.SaveChangesAsync();
+            await _bll.ProductClassifications.AddAsync(productClassification);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetProductClassification", new { id = productClassification.Id }, productClassification);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductClassification>> DeleteProductClassification(int id)
         {
-            var productClassification = await _uow.ProductClassifications.FindAsync(id);
+            var productClassification = await _bll.ProductClassifications.FindAsync(id);
             if (productClassification == null)
             {
                 return NotFound();
             }
 
-            _uow.ProductClassifications.Remove(productClassification);
-            await _uow.SaveChangesAsync();
+            _bll.ProductClassifications.Remove(productClassification);
+            await _bll.SaveChangesAsync();
 
             return productClassification;
         }

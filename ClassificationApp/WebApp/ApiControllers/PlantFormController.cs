@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class PlantFormController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public PlantFormController(IAppUnitOfWork uow)
+        public PlantFormController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/PlantForm
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlantForm>>> GetPlantForms()
         {
-            var res = await _uow.PlantForms.AllAsync();
-            return Ok(res);
+            return await _bll.PlantForms.AllAsync();
         }
 
         // GET: api/PlantForm/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PlantForm>> GetPlantForm(int id)
         {
-            var plantForm = await _uow.PlantForms.FindAsync(id);
+            var plantForm = await _bll.PlantForms.FindAsync(id);
 
             if (plantForm == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.PlantForms.Update(plantForm);
-            await _uow.SaveChangesAsync();
+            _bll.PlantForms.Update(plantForm);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<PlantForm>> PostPlantForm(PlantForm plantForm)
         {
-            await _uow.PlantForms.AddAsync(plantForm);
-            await _uow.SaveChangesAsync();
+            await _bll.PlantForms.AddAsync(plantForm);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetPlantForm", new { id = plantForm.Id }, plantForm);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<PlantForm>> DeletePlantForm(int id)
         {
-            var plantForm = await _uow.PlantForms.FindAsync(id);
+            var plantForm = await _bll.PlantForms.FindAsync(id);
             if (plantForm == null)
             {
                 return NotFound();
             }
 
-            _uow.PlantForms.Remove(plantForm);
-            await _uow.SaveChangesAsync();
+            _bll.PlantForms.Remove(plantForm);
+            await _bll.SaveChangesAsync();
 
             return plantForm;
         }

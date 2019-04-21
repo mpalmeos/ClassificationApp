@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class MedicinalDoseController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public MedicinalDoseController(IAppUnitOfWork uow)
+        public MedicinalDoseController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/MedicinalDose
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MedicinalDose>>> GetMedicinalDoses()
         {
-            var res = await _uow.MedicinalDoses.AllAsync();
-            return Ok(res);
+            return await _bll.MedicinalDoses.AllAsync();
         }
 
         // GET: api/MedicinalDose/5
         [HttpGet("{id}")]
         public async Task<ActionResult<MedicinalDose>> GetMedicinalDose(int id)
         {
-            var medicinalDose = await _uow.MedicinalDoses.FindAsync(id);
+            var medicinalDose = await _bll.MedicinalDoses.FindAsync(id);
 
             if (medicinalDose == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.MedicinalDoses.Update(medicinalDose);
-            await _uow.SaveChangesAsync();
+            _bll.MedicinalDoses.Update(medicinalDose);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<MedicinalDose>> PostMedicinalDose(MedicinalDose medicinalDose)
         {
-            await _uow.MedicinalDoses.AddAsync(medicinalDose);
-            await _uow.SaveChangesAsync();
+            await _bll.MedicinalDoses.AddAsync(medicinalDose);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetMedicinalDose", new { id = medicinalDose.Id }, medicinalDose);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<MedicinalDose>> DeleteMedicinalDose(int id)
         {
-            var medicinalDose = await _uow.MedicinalDoses.FindAsync(id);
+            var medicinalDose = await _bll.MedicinalDoses.FindAsync(id);
             if (medicinalDose == null)
             {
                 return NotFound();
             }
 
-            _uow.MedicinalDoses.Remove(medicinalDose);
-            await _uow.SaveChangesAsync();
+            _bll.MedicinalDoses.Remove(medicinalDose);
+            await _bll.SaveChangesAsync();
 
             return medicinalDose;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class DescriptionController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public DescriptionController(IAppUnitOfWork uow)
+        public DescriptionController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Description
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Description>>> GetDescriptions()
         {
-            var res = await _uow.Descriptions.AllAsync();
-            return Ok(res);
+            return await _bll.Descriptions.AllAsync();
         }
 
         // GET: api/Description/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Description>> GetDescription(int id)
         {
-            var description = await _uow.Descriptions.FindAsync(id);
+            var description = await _bll.Descriptions.FindAsync(id);
 
             if (description == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.Descriptions.Update(description);
-            await _uow.SaveChangesAsync();
+            _bll.Descriptions.Update(description);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Description>> PostDescription(Description description)
         {
-            await _uow.Descriptions.AddAsync(description);
-            await _uow.SaveChangesAsync();
+            await _bll.Descriptions.AddAsync(description);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetDescription", new { id = description.Id }, description);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Description>> DeleteDescription(int id)
         {
-            var description = await _uow.Descriptions.FindAsync(id);
+            var description = await _bll.Descriptions.FindAsync(id);
             if (description == null)
             {
                 return NotFound();
             }
 
-            _uow.Descriptions.Remove(description);
-            await _uow.SaveChangesAsync();
+            _bll.Descriptions.Remove(description);
+            await _bll.SaveChangesAsync();
 
             return description;
         }

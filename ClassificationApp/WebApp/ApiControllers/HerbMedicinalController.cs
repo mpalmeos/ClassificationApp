@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class HerbMedicinalController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public HerbMedicinalController(IAppUnitOfWork uow)
+        public HerbMedicinalController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/HerbMedicinal
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HerbMedicinal>>> GetHerbMedicinals()
         {
-            var res = await _uow.HerbMedicinals.AllAsync();
-            return Ok(res);
+            return await _bll.HerbMedicinals.AllAsync();
         }
 
         // GET: api/HerbMedicinal/5
         [HttpGet("{id}")]
         public async Task<ActionResult<HerbMedicinal>> GetHerbMedicinal(int id)
         {
-            var herbMedicinal = await _uow.HerbMedicinals.FindAsync(id);
+            var herbMedicinal = await _bll.HerbMedicinals.FindAsync(id);
 
             if (herbMedicinal == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.HerbMedicinals.Update(herbMedicinal);
-            await _uow.SaveChangesAsync();
+            _bll.HerbMedicinals.Update(herbMedicinal);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbMedicinal>> PostHerbMedicinal(HerbMedicinal herbMedicinal)
         {
-            await _uow.HerbMedicinals.AddAsync(herbMedicinal);
-            await _uow.SaveChangesAsync();
+            await _bll.HerbMedicinals.AddAsync(herbMedicinal);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetHerbMedicinal", new { id = herbMedicinal.Id }, herbMedicinal);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbMedicinal>> DeleteHerbMedicinal(int id)
         {
-            var herbMedicinal = await _uow.HerbMedicinals.FindAsync(id);
+            var herbMedicinal = await _bll.HerbMedicinals.FindAsync(id);
             if (herbMedicinal == null)
             {
                 return NotFound();
             }
 
-            _uow.HerbMedicinals.Remove(herbMedicinal);
-            await _uow.SaveChangesAsync();
+            _bll.HerbMedicinals.Remove(herbMedicinal);
+            await _bll.SaveChangesAsync();
 
             return herbMedicinal;
         }

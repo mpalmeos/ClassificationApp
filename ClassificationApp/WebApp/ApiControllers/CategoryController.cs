@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CategoryController(IAppUnitOfWork uow)
+        public CategoryController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Category
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            var res = await _uow.Categories.AllAsync();
-            return Ok(res);
+            return await _bll.Categories.AllAsync();
         }
 
         // GET: api/Category/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            var category = await _uow.Categories.FindAsync(id);
+            var category = await _bll.Categories.FindAsync(id);
 
             if (category == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.Categories.Update(category);
-            await _uow.SaveChangesAsync();
+            _bll.Categories.Update(category);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            await _uow.Categories.AddAsync(category);
-            await _uow.SaveChangesAsync();
+            await _bll.Categories.AddAsync(category);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Category>> DeleteCategory(int id)
         {
-            var category = await _uow.Categories.FindAsync(id);
+            var category = await _bll.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
             }
 
-            _uow.Categories.Remove(category);
-            await _uow.SaveChangesAsync();
+            _bll.Categories.Remove(category);
+            await _bll.SaveChangesAsync();
 
             return category;
         }

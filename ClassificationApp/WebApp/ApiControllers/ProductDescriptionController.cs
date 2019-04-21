@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductDescriptionController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public ProductDescriptionController(IAppUnitOfWork uow)
+        public ProductDescriptionController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/ProductDescription
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDescription>>> GetProductDescriptions()
         {
-            var res = await _uow.ProductDescriptions.AllAsync();
-            return Ok(res);
+            return await _bll.ProductDescriptions.AllAsync();
         }
 
         // GET: api/ProductDescription/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDescription>> GetProductDescription(int id)
         {
-            var productDescription = await _uow.ProductDescriptions.FindAsync(id);
+            var productDescription = await _bll.ProductDescriptions.FindAsync(id);
 
             if (productDescription == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.ProductDescriptions.Update(productDescription);
-            await _uow.SaveChangesAsync();
+            _bll.ProductDescriptions.Update(productDescription);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductDescription>> PostProductDescription(ProductDescription productDescription)
         {
-            await _uow.ProductDescriptions.AddAsync(productDescription);
-            await _uow.SaveChangesAsync();
+            await _bll.ProductDescriptions.AddAsync(productDescription);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetProductDescription", new { id = productDescription.Id }, productDescription);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductDescription>> DeleteProductDescription(int id)
         {
-            var productDescription = await _uow.ProductDescriptions.FindAsync(id);
+            var productDescription = await _bll.ProductDescriptions.FindAsync(id);
             if (productDescription == null)
             {
                 return NotFound();
             }
 
-            _uow.ProductDescriptions.Remove(productDescription);
-            await _uow.SaveChangesAsync();
+            _bll.ProductDescriptions.Remove(productDescription);
+            await _bll.SaveChangesAsync();
 
             return productDescription;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,26 +19,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CompanyRoleController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CompanyRoleController(IAppUnitOfWork uow)
+        public CompanyRoleController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
+
 
         // GET: api/CompanyRole
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompanyRoleDTO>>> GetCompanyRoles()
         {
-            var res = await _uow.CompanyRoles.GetAllWithConnections();
-            return Ok(res);
+            return await _bll.CompanyRoles.GetAllWithConnections();
         }
 
         // GET: api/CompanyRole/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CompanyRole>> GetCompanyRole(int id)
         {
-            var companyRole = await _uow.CompanyRoles.FindAsync(id);
+            var companyRole = await _bll.CompanyRoles.FindAsync(id);
 
             if (companyRole == null)
             {
@@ -57,8 +58,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.CompanyRoles.Update(companyRole);
-            await _uow.SaveChangesAsync();
+            _bll.CompanyRoles.Update(companyRole);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
@@ -68,8 +69,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompanyRole>> PostCompanyRole(CompanyRole companyRole)
         {
-            await _uow.CompanyRoles.AddAsync(companyRole);
-            await _uow.SaveChangesAsync();
+            await _bll.CompanyRoles.AddAsync(companyRole);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCompanyRole", new { id = companyRole.Id }, companyRole);
         }
@@ -79,14 +80,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompanyRole>> DeleteCompanyRole(int id)
         {
-            var companyRole = await _uow.CompanyRoles.FindAsync(id);
+            var companyRole = await _bll.CompanyRoles.FindAsync(id);
             if (companyRole == null)
             {
                 return NotFound();
             }
 
-            _uow.CompanyRoles.Remove(companyRole);
-            await _uow.SaveChangesAsync();
+            _bll.CompanyRoles.Remove(companyRole);
+            await _bll.SaveChangesAsync();
 
             return companyRole;
         }

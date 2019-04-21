@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductCompanyController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public ProductCompanyController(IAppUnitOfWork uow)
+        public ProductCompanyController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/ProductCompany
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductCompany>>> GetProductCompanies()
         {
-            var res = await _uow.ProductCompanies.AllAsync();
-            return Ok(res);
+            return await _bll.ProductCompanies.AllAsync();
         }
 
         // GET: api/ProductCompany/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductCompany>> GetProductCompany(int id)
         {
-            var productCompany = await _uow.ProductCompanies.FindAsync(id);
+            var productCompany = await _bll.ProductCompanies.FindAsync(id);
 
             if (productCompany == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.ProductCompanies.Update(productCompany);
-            await _uow.SaveChangesAsync();
+            _bll.ProductCompanies.Update(productCompany);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductCompany>> PostProductCompany(ProductCompany productCompany)
         {
-            await _uow.ProductCompanies.AddAsync(productCompany);
-            await _uow.SaveChangesAsync();
+            await _bll.ProductCompanies.AddAsync(productCompany);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetProductCompany", new { id = productCompany.Id }, productCompany);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductCompany>> DeleteProductCompany(int id)
         {
-            var productCompany = await _uow.ProductCompanies.FindAsync(id);
+            var productCompany = await _bll.ProductCompanies.FindAsync(id);
             if (productCompany == null)
             {
                 return NotFound();
             }
 
-            _uow.ProductCompanies.Remove(productCompany);
-            await _uow.SaveChangesAsync();
+            _bll.ProductCompanies.Remove(productCompany);
+            await _bll.SaveChangesAsync();
 
             return productCompany;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,26 +19,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public ProductController(IAppUnitOfWork uow)
+        public ProductController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Product
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
         {
-            var res = await _uow.Products.GetAllWithConnections();
-            return Ok(res);
+            return await _bll.Products.GetAllWithConnections();
         }
 
         // GET: api/Product/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var product = await _uow.Products.FindAsync(id);
+            var product = await _bll.Products.FindAsync(id);
 
             if (product == null)
             {
@@ -57,8 +57,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.Products.Update(product);
-            await _uow.SaveChangesAsync();
+            _bll.Products.Update(product);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -68,8 +68,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            await _uow.Products.AddAsync(product);
-            await _uow.SaveChangesAsync();
+            await _bll.Products.AddAsync(product);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
@@ -79,14 +79,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
-            var product = await _uow.Products.FindAsync(id);
+            var product = await _bll.Products.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
 
-            _uow.Products.Remove(product);
-            await _uow.SaveChangesAsync();
+            _bll.Products.Remove(product);
+            await _bll.SaveChangesAsync();
 
             return product;
         }

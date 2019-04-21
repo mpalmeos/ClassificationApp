@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class HerbController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public HerbController(IAppUnitOfWork uow)
+        public HerbController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Herb
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Herb>>> GetHerbs()
         {
-            var res = await _uow.Herbs.AllAsync();
-            return Ok(res);
+            return await _bll.Herbs.AllAsync();
         }
 
         // GET: api/Herb/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Herb>> GetHerb(int id)
         {
-            var herb = await _uow.Herbs.FindAsync(id);
+            var herb = await _bll.Herbs.FindAsync(id);
 
             if (herb == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.Herbs.Update(herb);
-            await _uow.SaveChangesAsync();
+            _bll.Herbs.Update(herb);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Herb>> PostHerb(Herb herb)
         {
-            await _uow.Herbs.AddAsync(herb);
-            await _uow.SaveChangesAsync();
+            await _bll.Herbs.AddAsync(herb);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetHerb", new { id = herb.Id }, herb);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Herb>> DeleteHerb(int id)
         {
-            var herb = await _uow.Herbs.FindAsync(id);
+            var herb = await _bll.Herbs.FindAsync(id);
             if (herb == null)
             {
                 return NotFound();
             }
 
-            _uow.Herbs.Remove(herb);
-            await _uow.SaveChangesAsync();
+            _bll.Herbs.Remove(herb);
+            await _bll.SaveChangesAsync();
 
             return herb;
         }

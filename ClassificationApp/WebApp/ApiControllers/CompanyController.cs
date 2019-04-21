@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CompanyController(IAppUnitOfWork uow)
+        public CompanyController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
+
 
         // GET: api/Company
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
         {
-            var res = await _uow.Companies.AllAsync();
-            return Ok(res);
+            return await _bll.Companies.AllAsync();
         }
 
         // GET: api/Company/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Company>> GetCompany(int id)
         {
-            var company = await _uow.Companies.FindAsync(id);
+            var company = await _bll.Companies.FindAsync(id);
 
             if (company == null)
             {
@@ -56,8 +57,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.Companies.Update(company);
-            await _uow.SaveChangesAsync();
+            _bll.Companies.Update(company);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
@@ -67,8 +68,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Company>> PostCompany(Company company)
         {
-            await _uow.Companies.AddAsync(company);
-            await _uow.SaveChangesAsync();
+            await _bll.Companies.AddAsync(company);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCompany", new { id = company.Id }, company);
         }
@@ -78,14 +79,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Company>> DeleteCompany(int id)
         {
-            var company = await _uow.Companies.FindAsync(id);
+            var company = await _bll.Companies.FindAsync(id);
             if (company == null)
             {
                 return NotFound();
             }
 
-            _uow.Companies.Remove(company);
-            await _uow.SaveChangesAsync();
+            _bll.Companies.Remove(company);
+            await _bll.SaveChangesAsync();
 
             return company;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CompositionHerbController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CompositionHerbController(IAppUnitOfWork uow)
+        public CompositionHerbController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
+
 
         // GET: api/CompositionHerb
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompositionHerb>>> GetCompositionHerbs()
         {
-            var res = await _uow.CompositionHerbs.AllAsync();
-            return Ok(res);
+            return await _bll.CompositionHerbs.AllAsync();
         }
 
         // GET: api/CompositionHerb/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CompositionHerb>> GetCompositionHerb(int id)
         {
-            var compositionHerb = await _uow.CompositionHerbs.FindAsync(id);
+            var compositionHerb = await _bll.CompositionHerbs.FindAsync(id);
 
             if (compositionHerb == null)
             {
@@ -56,8 +57,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.CompositionHerbs.Update(compositionHerb);
-            await _uow.SaveChangesAsync();
+            _bll.CompositionHerbs.Update(compositionHerb);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
@@ -67,8 +68,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompositionHerb>> PostCompositionHerb(CompositionHerb compositionHerb)
         {
-            await _uow.CompositionHerbs.AddAsync(compositionHerb);
-            await _uow.SaveChangesAsync();
+            await _bll.CompositionHerbs.AddAsync(compositionHerb);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCompositionHerb", new { id = compositionHerb.Id }, compositionHerb);
         }
@@ -78,14 +79,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompositionHerb>> DeleteCompositionHerb(int id)
         {
-            var compositionHerb = await _uow.CompositionHerbs.FindAsync(id);
+            var compositionHerb = await _bll.CompositionHerbs.FindAsync(id);
             if (compositionHerb == null)
             {
                 return NotFound();
             }
 
-            _uow.CompositionHerbs.Remove(compositionHerb);
-            await _uow.SaveChangesAsync();
+            _bll.CompositionHerbs.Remove(compositionHerb);
+            await _bll.SaveChangesAsync();
 
             return compositionHerb;
         }

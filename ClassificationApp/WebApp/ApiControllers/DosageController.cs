@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class DosageController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public DosageController(IAppUnitOfWork uow)
+        public DosageController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Dosage
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Dosage>>> GetDosages()
         {
-            var res = await _uow.Dosages.AllAsync();
-            return Ok(res);
+            return await _bll.Dosages.AllAsync();
         }
 
         // GET: api/Dosage/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Dosage>> GetDosage(int id)
         {
-            var dosage = await _uow.Dosages.FindAsync(id);
+            var dosage = await _bll.Dosages.FindAsync(id);
 
             if (dosage == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.Dosages.Update(dosage);
-            await _uow.SaveChangesAsync();
+            _bll.Dosages.Update(dosage);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Dosage>> PostDosage(Dosage dosage)
         {
-            await _uow.Dosages.AddAsync(dosage);
-            await _uow.SaveChangesAsync();
+            await _bll.Dosages.AddAsync(dosage);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetDosage", new { id = dosage.Id }, dosage);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Dosage>> DeleteDosage(int id)
         {
-            var dosage = await _uow.Dosages.FindAsync(id);
+            var dosage = await _bll.Dosages.FindAsync(id);
             if (dosage == null)
             {
                 return NotFound();
             }
 
-            _uow.Dosages.Remove(dosage);
-            await _uow.SaveChangesAsync();
+            _bll.Dosages.Remove(dosage);
+            await _bll.SaveChangesAsync();
 
             return dosage;
         }

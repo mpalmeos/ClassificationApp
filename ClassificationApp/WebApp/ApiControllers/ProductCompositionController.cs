@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class ProductCompositionController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public ProductCompositionController(IAppUnitOfWork uow)
+        public ProductCompositionController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/ProductComposition
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductComposition>>> GetProductCompositions()
         {
-            var res = await _uow.ProductCompositions.AllAsync();
-            return Ok(res);
+            return await _bll.ProductCompositions.AllAsync();
         }
 
         // GET: api/ProductComposition/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductComposition>> GetProductComposition(int id)
         {
-            var productComposition = await _uow.ProductCompositions.FindAsync(id);
+            var productComposition = await _bll.ProductCompositions.FindAsync(id);
 
             if (productComposition == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.ProductCompositions.Update(productComposition);
-            await _uow.SaveChangesAsync();
+            _bll.ProductCompositions.Update(productComposition);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductComposition>> PostProductComposition(ProductComposition productComposition)
         {
-            await _uow.ProductCompositions.AddAsync(productComposition);
-            await _uow.SaveChangesAsync();
+            await _bll.ProductCompositions.AddAsync(productComposition);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetProductComposition", new { id = productComposition.Id }, productComposition);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ProductComposition>> DeleteProductComposition(int id)
         {
-            var productComposition = await _uow.ProductCompositions.FindAsync(id);
+            var productComposition = await _bll.ProductCompositions.FindAsync(id);
             if (productComposition == null)
             {
                 return NotFound();
             }
 
-            _uow.ProductCompositions.Remove(productComposition);
-            await _uow.SaveChangesAsync();
+            _bll.ProductCompositions.Remove(productComposition);
+            await _bll.SaveChangesAsync();
 
             return productComposition;
         }

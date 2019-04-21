@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CRoleController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CRoleController(IAppUnitOfWork uow)
+        public CRoleController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/CRole
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CRole>>> GetCRoles()
         {
-            var res = await _uow.CRoles.AllAsync();
-            return Ok(res);
+            return await _bll.CRoles.AllAsync();
         }
 
         // GET: api/CRole/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CRole>> GetCRole(int id)
         {
-            var cRole = await _uow.CRoles.FindAsync(id);
+            var cRole = await _bll.CRoles.FindAsync(id);
 
             if (cRole == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.CRoles.Update(cRole);
-            await _uow.SaveChangesAsync();
+            _bll.CRoles.Update(cRole);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
@@ -67,10 +67,10 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CRole>> PostCRole(CRole cRole)
         {
-            await _uow.CRoles.AddAsync(cRole);
-            await _uow.SaveChangesAsync();
+            await _bll.CRoles.AddAsync(cRole);
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetCRole", new { id = cRole.Id }, cRole);
+            return CreatedAtAction("GetCRole", new {id = cRole.Id}, cRole);
         }
 
         // DELETE: api/CRole/5
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CRole>> DeleteCRole(int id)
         {
-            var cRole = await _uow.CRoles.FindAsync(id);
+            var cRole = await _bll.CRoles.FindAsync(id);
             if (cRole == null)
             {
                 return NotFound();
             }
 
-            _uow.CRoles.Remove(cRole);
-            await _uow.SaveChangesAsync();
+            _bll.CRoles.Remove(cRole);
+            await _bll.SaveChangesAsync();
 
             return cRole;
         }

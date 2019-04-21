@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,26 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class CompositionSubstanceController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public CompositionSubstanceController(IAppUnitOfWork uow)
+        public CompositionSubstanceController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
+
 
         // GET: api/CompositionSubstance
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompositionSubstance>>> GetCompositionSubstances()
         {
-            var res = await _uow.CompositionSubstances.AllAsync();
-            return Ok(res);
+            return await _bll.CompositionSubstances.AllAsync();
         }
 
         // GET: api/CompositionSubstance/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CompositionSubstance>> GetCompositionSubstance(int id)
         {
-            var compositionSubstance = await _uow.CompositionSubstances.FindAsync(id);
+            var compositionSubstance = await _bll.CompositionSubstances.FindAsync(id);
 
             if (compositionSubstance == null)
             {
@@ -56,8 +57,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.CompositionSubstances.Update(compositionSubstance);
-            await _uow.SaveChangesAsync();
+            _bll.CompositionSubstances.Update(compositionSubstance);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
@@ -67,8 +68,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompositionSubstance>> PostCompositionSubstance(CompositionSubstance compositionSubstance)
         {
-            await _uow.CompositionSubstances.AddAsync(compositionSubstance);
-            await _uow.SaveChangesAsync();
+            await _bll.CompositionSubstances.AddAsync(compositionSubstance);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCompositionSubstance", new { id = compositionSubstance.Id }, compositionSubstance);
         }
@@ -78,14 +79,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CompositionSubstance>> DeleteCompositionSubstance(int id)
         {
-            var compositionSubstance = await _uow.CompositionSubstances.FindAsync(id);
+            var compositionSubstance = await _bll.CompositionSubstances.FindAsync(id);
             if (compositionSubstance == null)
             {
                 return NotFound();
             }
 
-            _uow.CompositionSubstances.Remove(compositionSubstance);
-            await _uow.SaveChangesAsync();
+            _bll.CompositionSubstances.Remove(compositionSubstance);
+            await _bll.SaveChangesAsync();
 
             return compositionSubstance;
         }

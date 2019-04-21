@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class SubstanceController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public SubstanceController(IAppUnitOfWork uow)
+        public SubstanceController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Substance
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Substance>>> GetSubstances()
         {
-            var res = await _uow.Substances.AllAsync();
-            return Ok(res);
+            return await _bll.Substances.AllAsync();
         }
 
         // GET: api/Substance/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Substance>> GetSubstance(int id)
         {
-            var substance = await _uow.Substances.FindAsync(id);
+            var substance = await _bll.Substances.FindAsync(id);
 
             if (substance == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.Substances.Update(substance);
-            await _uow.SaveChangesAsync();
+            _bll.Substances.Update(substance);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Substance>> PostSubstance(Substance substance)
         {
-            await _uow.Substances.AddAsync(substance);
-            await _uow.SaveChangesAsync();
+            await _bll.Substances.AddAsync(substance);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetSubstance", new { id = substance.Id }, substance);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<Substance>> DeleteSubstance(int id)
         {
-            var substance = await _uow.Substances.FindAsync(id);
+            var substance = await _bll.Substances.FindAsync(id);
             if (substance == null)
             {
                 return NotFound();
             }
 
-            _uow.Substances.Remove(substance);
-            await _uow.SaveChangesAsync();
+            _bll.Substances.Remove(substance);
+            await _bll.SaveChangesAsync();
 
             return substance;
         }

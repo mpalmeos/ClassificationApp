@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,26 +18,25 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class HerbPartController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBll _bll;
 
-        public HerbPartController(IAppUnitOfWork uow)
+        public HerbPartController(IAppBll bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/HerbPart
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HerbPart>>> GetHerbParts()
         {
-            var res = await _uow.HerbParts.AllAsync();
-            return Ok(res);
+            return await _bll.HerbParts.AllAsync();
         }
 
         // GET: api/HerbPart/5
         [HttpGet("{id}")]
         public async Task<ActionResult<HerbPart>> GetHerbPart(int id)
         {
-            var herbPart = await _uow.HerbParts.FindAsync(id);
+            var herbPart = await _bll.HerbParts.FindAsync(id);
 
             if (herbPart == null)
             {
@@ -56,8 +56,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _uow.HerbParts.Update(herbPart);
-            await _uow.SaveChangesAsync();
+            _bll.HerbParts.Update(herbPart);
+            await _bll.SaveChangesAsync();
             
             return NoContent();
         }
@@ -67,8 +67,8 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbPart>> PostHerbPart(HerbPart herbPart)
         {
-            await _uow.HerbParts.AddAsync(herbPart);
-            await _uow.SaveChangesAsync();
+            await _bll.HerbParts.AddAsync(herbPart);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetHerbPart", new { id = herbPart.Id }, herbPart);
         }
@@ -78,14 +78,14 @@ namespace WebApp.ApiControllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HerbPart>> DeleteHerbPart(int id)
         {
-            var herbPart = await _uow.HerbParts.FindAsync(id);
+            var herbPart = await _bll.HerbParts.FindAsync(id);
             if (herbPart == null)
             {
                 return NotFound();
             }
 
-            _uow.HerbParts.Remove(herbPart);
-            await _uow.SaveChangesAsync();
+            _bll.HerbParts.Remove(herbPart);
+            await _bll.SaveChangesAsync();
 
             return herbPart;
         }
