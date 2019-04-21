@@ -63,9 +63,29 @@ namespace WebApp.ApiControllers.Identity
         }
         
         [HttpPost]
-        public async Task<string> Register([FromBody] RegisterDTO model)
+        public async Task<ActionResult<string>> Register([FromBody] RegisterDTO model)
         {
-            return "foo";
+            if (ModelState.IsValid)
+            {
+                var appUser = new AppUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(appUser, model.Password);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("New user created.");
+                    var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
+                    
+                    var jwt = JwtHelper.GenerateJwt(
+                        claimsPrincipal.Claims, 
+                        _configuration["JWT:Key"], 
+                        _configuration["JWT:Issuer"], 
+                        int.Parse(_configuration["JWT:ExpireDays"]));
+                    _logger.LogInformation("Token generated for user");
+                    return Ok(new {token = jwt});
+                }
+                return StatusCode(406); //406 Not Acceptable
+            }
+            return StatusCode(400); //400 Bad Request
         }
 
         public class LoginDTO
@@ -77,6 +97,7 @@ namespace WebApp.ApiControllers.Identity
         public class RegisterDTO
         {
             public string Email { get; set; }
+            
             [Required]
             [MinLength(6)]
             public string Password { get; set; }

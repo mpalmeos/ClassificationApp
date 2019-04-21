@@ -6,7 +6,8 @@ using Contracts.DAL.Base.Repository;
 
 namespace BLL.Base.Services
 {
-    public class BaseEntityService<TEntity, TUnitOfWork> : BaseService, IBaseEntityService<TEntity> where TEntity : class, IBaseEntity, new()
+    public class BaseEntityService<TEntity, TUnitOfWork> : BaseService, IBaseEntityService<TEntity> 
+        where TEntity : class, IBaseEntity, new()
         where TUnitOfWork: IBaseUnitOfWork
     {
         protected readonly TUnitOfWork Uow;
