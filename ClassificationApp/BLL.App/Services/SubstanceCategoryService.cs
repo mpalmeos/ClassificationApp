@@ -14,9 +14,9 @@ namespace BLL.App.Services
         {
         }
 
-        public Task<List<SubstanceCategoryDTO>> GetAllWithConnections()
+        public async Task<List<SubstanceCategoryDTO>> GetAllWithConnections()
         {
-            throw new System.NotImplementedException();
+            return await Uow.SubstanceCategories.GetAllWithConnections();
         }
     }
 }

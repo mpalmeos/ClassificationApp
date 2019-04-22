@@ -14,9 +14,9 @@ namespace BLL.App.Services
         {
         }
 
-        public Task<List<ProductDTO>> GetAllWithConnections()
+        public async Task<List<ProductDTO>> GetAllWithConnections()
         {
-            throw new System.NotImplementedException();
+            return await Uow.Products.GetAllWithConnections();
         }
     }
 }

@@ -16,9 +16,9 @@ namespace BLL.App.Services
         {
         }
 
-        public Task<List<CompanyRoleDTO>> GetAllWithConnections()
+        public async Task<List<CompanyRoleDTO>> GetAllWithConnections()
         {
-            throw new System.NotImplementedException();
+            return await Uow.CompanyRoles.GetAllWithConnections();
         }
     }
 }
