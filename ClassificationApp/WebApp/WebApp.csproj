@@ -27,4 +27,8 @@
       <ProjectReference Include="..\Identity\Identity.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ApiControllers\v1_0" />
+    </ItemGroup>
+
 </Project>

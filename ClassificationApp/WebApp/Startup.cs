@@ -18,11 +18,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp.Helpers;
 
 namespace WebApp
@@ -92,7 +95,7 @@ namespace WebApp
             });
 
             services
-                .AddMvc()
+                .AddMvc(options => options.EnableEndpointRouting = true)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddRazorPagesOptions(options =>
                 {
@@ -106,6 +109,8 @@ namespace WebApp
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 });
 
+            services.AddApiVersioning(options => { options.ReportApiVersions = true; });
+            
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = $"/Identity/Account/Login";
@@ -132,10 +137,15 @@ namespace WebApp
                         ClockSkew = TimeSpan.Zero // remove delay of token when expire
                     };
                 });
+            
+            // Api explorer + OpenAPI/Swagger
+            services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -156,6 +166,18 @@ namespace WebApp
             app.UseAuthentication();
 
             app.UseCors("CorsAllowAll");
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(
+                options =>
+                {
+                    foreach ( var description in provider.ApiVersionDescriptions )
+                    {
+                        options.SwaggerEndpoint(
+                            $"/swagger/{description.GroupName}/swagger.json",
+                            description.GroupName.ToUpperInvariant() );
+                    }
+                } );
 
             app.UseMvc(routes =>
             {

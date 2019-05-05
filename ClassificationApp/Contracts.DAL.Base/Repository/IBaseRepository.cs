@@ -48,6 +48,8 @@ namespace Contracts.DAL.Base.Repository
         TDALEntity Update(TDALEntity entity);
         void Remove(TDALEntity entity);
         void Remove(params object[] id);
+        
+        TDALEntity GetUpdatesAfterUOWSaveChanges(TDALEntity entity);
     }
 
     #endregion
