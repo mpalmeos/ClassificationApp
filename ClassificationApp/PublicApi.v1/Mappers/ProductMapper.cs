@@ -35,7 +35,7 @@ namespace PublicApi.v1.Mappers
                 ProductClassification = ProductClassificationMapper.MapFromBLL(product.ProductClassification),
                 ProductNameId = product.ProductNameId,
                 ProductName = ProductNameMapper.MapFromBLL(product.ProductName)
-                
+
             };
             return res;
         }
