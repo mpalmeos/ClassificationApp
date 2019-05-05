@@ -4,11 +4,12 @@ using Contracts.BLL.Base.Services;
 using Contracts.DAL.App.Repositories;
 using Contracts.DAL.Base.Repository;
 using DAL.App.DTO;
-using Domain;
+using BLLAppDTO = BLL.App.DTO;
 
 namespace Contracts.BLL.App.Services
 {
-    public interface ICompanyRoleService : IBaseEntityService<CompanyRole>, ICompanyRoleRepository
+    public interface ICompanyRoleService : 
+        IBaseEntityService<BLLAppDTO.CompanyRole>, ICompanyRoleRepository<BLLAppDTO.CompanyRole>
     {
         
     }

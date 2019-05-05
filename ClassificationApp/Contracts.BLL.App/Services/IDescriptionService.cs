@@ -1,11 +1,11 @@
 using Contracts.BLL.Base.Services;
 using Contracts.DAL.App.Repositories;
 using Contracts.DAL.Base.Repository;
-using Domain;
+using BLLAppDTO = BLL.App.DTO;
 
 namespace Contracts.BLL.App.Services
 {
-    public interface IDescriptionService : IBaseEntityService<Description>, IDescriptionRepository
+    public interface IDescriptionService : IBaseEntityService<BLLAppDTO.Description>, IDescriptionRepository<BLLAppDTO.Description>
     {
         
     }

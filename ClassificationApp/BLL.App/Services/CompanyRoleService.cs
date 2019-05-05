@@ -10,15 +10,12 @@ using Domain;
 
 namespace BLL.App.Services
 {
-    public class CompanyRoleService : BaseEntityService<CompanyRole, IAppUnitOfWork>, ICompanyRoleService
+    public class CompanyRoleService : 
+        BaseEntityService<CompanyRole, IAppUnitOfWork>, ICompanyRoleService
     {
         public CompanyRoleService(IAppUnitOfWork uow) : base(uow)
         {
-        }
-
-        public async Task<List<CompanyRoleDTO>> GetAllWithConnections()
-        {
-            return await Uow.CompanyRoles.GetAllWithConnections();
+            
         }
     }
 }

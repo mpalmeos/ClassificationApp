@@ -1,11 +1,12 @@
 using Contracts.BLL.Base.Services;
 using Contracts.DAL.App.Repositories;
 using Contracts.DAL.Base.Repository;
-using Domain;
+using BLLAppDTO = BLL.App.DTO;
 
 namespace Contracts.BLL.App.Services
 {
-    public interface IRouteOfAdministrationService : IBaseEntityService<RouteOfAdministration>, IRouteOfAdministrationRepository
+    public interface IRouteOfAdministrationService : 
+        IBaseEntityService<BLLAppDTO.RouteOfAdministration>, IRouteOfAdministrationRepository<BLLAppDTO.RouteOfAdministration>
     {
         
     }

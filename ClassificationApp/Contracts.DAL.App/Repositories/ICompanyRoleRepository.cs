@@ -1,13 +1,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Contracts.DAL.Base.Repository;
-using DAL.App.DTO;
-using Domain;
+using DALAppDTO = DAL.App.DTO;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface ICompanyRoleRepository : IBaseRepository<CompanyRole>
+    public interface ICompanyRoleRepository : ICompanyRoleRepository<DALAppDTO.CompanyRole>
     {
-        Task<List<CompanyRoleDTO>> GetAllWithConnections();
+        
+    }
+    
+    public interface ICompanyRoleRepository<TDALEntity> : IBaseRepository<TDALEntity>
+        where TDALEntity : class, new()
+    {
+        
     }
 }

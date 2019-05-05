@@ -21,6 +21,7 @@ namespace DAL.Base.EF.Repositories
         }
     }
 
+
     public class BaseRepository<TDALEntity, TDomainEntity, TDbContext, TKey> : IBaseRepository<TDALEntity>
         where TDALEntity : class, new()
         where TDomainEntity : class, IDomainEntity<TKey>, new()

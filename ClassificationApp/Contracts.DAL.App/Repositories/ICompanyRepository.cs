@@ -1,9 +1,15 @@
 using Contracts.DAL.Base.Repository;
-using Domain;
+using DALAppDTO = DAL.App.DTO;
 
 namespace Contracts.DAL.App.Repositories
 {
-    public interface ICompanyRepository : IBaseRepository<Company>
+    public interface ICompanyRepository : ICompanyRepository<DALAppDTO.Company>
+    {
+        
+    }
+
+    public interface ICompanyRepository<TDALEntity> : IBaseRepository<TDALEntity>
+        where TDALEntity : class, new()
     {
         
     }
