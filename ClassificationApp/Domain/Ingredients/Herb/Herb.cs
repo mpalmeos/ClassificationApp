@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class Herb : BaseEntity
+    public class Herb : DomainEntity
     {
         [MaxLength(64)]
         [MinLength(1)]

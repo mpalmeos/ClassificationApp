@@ -11,8 +11,11 @@ namespace Contracts.BLL.Base.Helpers
 
         Func<TUnitOfWork, object> GetServiceFactory<TService>();
 
+        /*
+        // Too many generics needed, not doing it!
         Func<TUnitOfWork, object> GetEntityServiceFactory<TEntity>()
-            where TEntity : class, IBaseEntity, new();
+            where TEntity : class, IDomainEntity, new();
+        */
     }
 
 }

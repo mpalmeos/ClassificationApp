@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class CompanyRole : BaseEntity
+    public class CompanyRole : DomainEntity
     {
         [Required]
         public int CompanyId { get; set; }

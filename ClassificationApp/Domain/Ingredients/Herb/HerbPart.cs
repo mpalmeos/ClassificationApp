@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Domain
 {
-    public class HerbPart : BaseEntity
+    public class HerbPart : DomainEntity
     {
         [Required]
         public int HerbId { get; set; }

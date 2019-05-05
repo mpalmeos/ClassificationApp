@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class Product : BaseEntity
+    public class Product : DomainEntity
     {
         public ICollection<ProductCompany> ProductCompanies { get; set; }
 

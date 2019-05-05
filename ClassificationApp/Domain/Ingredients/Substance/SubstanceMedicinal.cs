@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class SubstanceMedicinal : BaseEntity
+    public class SubstanceMedicinal : DomainEntity
     {
         [Required]
         public int SubstanceId { get; set; }

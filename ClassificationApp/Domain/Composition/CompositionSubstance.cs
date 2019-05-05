@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class CompositionSubstance : BaseEntity
+    public class CompositionSubstance : DomainEntity
     {
         [Required]
         public int SubstanceId { get; set; }

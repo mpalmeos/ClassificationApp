@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class Company : BaseEntity
+    public class Company : DomainEntity
     {
         [MaxLength(64)]
         [MinLength(1)]

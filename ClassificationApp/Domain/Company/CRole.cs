@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class CRole : BaseEntity
+    public class CRole : DomainEntity
     {
         [MaxLength(32)]
         [MinLength(1)]

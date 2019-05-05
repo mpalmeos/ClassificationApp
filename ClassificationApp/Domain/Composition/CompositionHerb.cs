@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class CompositionHerb : BaseEntity
+    public class CompositionHerb : DomainEntity
     {
         [Required]
         public int HerbId { get; set; }

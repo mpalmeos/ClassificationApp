@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class SubstanceCategory : BaseEntity
+    public class SubstanceCategory : DomainEntity
     {
         [Required]
         public int CategoryId { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class RouteOfAdministration : BaseEntity
+    public class RouteOfAdministration : DomainEntity
     {
         [MaxLength(64)]
         [MinLength(1)]
