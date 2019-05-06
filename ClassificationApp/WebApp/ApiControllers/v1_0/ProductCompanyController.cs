@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
-using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -81,7 +80,7 @@ namespace WebApp.ApiControllers.v1_0
         // DELETE: api/ProductCompany/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ProductCompany>> DeleteProductCompany(int id)
+        public async Task<ActionResult<v1_0_DTO.ProductCompany>> DeleteProductCompany(int id)
         {
             _bll.ProductCompanies.Remove(id);
             await _bll.SaveChangesAsync();

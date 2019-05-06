@@ -5,7 +5,6 @@ using Contracts.BLL.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CRole = Domain.CRole;
 using v1_0_DTO = PublicApi.v1.DTO;
 using v1_0_Mapper = PublicApi.v1.Mappers;
 

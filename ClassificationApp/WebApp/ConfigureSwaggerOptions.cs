@@ -19,14 +19,13 @@ namespace WebApp
                 options.SwaggerDoc(
                     description.GroupName,
                     new Info(){
-                        Title = $"Contact API {description.ApiVersion}",
+                        Title = $"ClassificationApp API {description.ApiVersion}",
                         Version = description.ApiVersion.ToString()
                     });
                 // include xml comments (enable creation in csproj file)
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
-                
             }
         }
     }
