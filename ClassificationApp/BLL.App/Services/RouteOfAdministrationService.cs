@@ -1,3 +1,4 @@
+using BLL.App.Mappers;
 using BLL.Base.Services;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
@@ -5,10 +6,12 @@ using Domain;
 
 namespace BLL.App.Services
 {
-    public class RouteOfAdministrationService : BaseEntityService<RouteOfAdministration, IAppUnitOfWork>, IRouteOfAdministrationService
+    public class RouteOfAdministrationService : 
+        BaseEntityService<BLL.App.DTO.RouteOfAdministration, DAL.App.DTO.RouteOfAdministration, IAppUnitOfWork>, IRouteOfAdministrationService
     {
-        public RouteOfAdministrationService(IAppUnitOfWork uow) : base(uow)
+        public RouteOfAdministrationService(IAppUnitOfWork uow) : base(uow, new RouteOfAdministrationMapper())
         {
+            ServiceRepository = Uow.RouteOfAdministrations;
         }
     }
 }

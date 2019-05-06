@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BLL.App.Mappers;
 using BLL.Base.Services;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
@@ -8,15 +9,12 @@ using Domain;
 
 namespace BLL.App.Services
 {
-    public class ProductService : BaseEntityService<Product, IAppUnitOfWork>, IProductService
+    public class ProductService : 
+        BaseEntityService<BLL.App.DTO.Product, DAL.App.DTO.Product, IAppUnitOfWork>, IProductService
     {
-        public ProductService(IAppUnitOfWork uow) : base(uow)
+        public ProductService(IAppUnitOfWork uow) : base(uow, new ProductMapper())
         {
-        }
-
-        public async Task<List<ProductDTO>> GetAllWithConnections()
-        {
-            return await Uow.Products.GetAllWithConnections();
+            ServiceRepository = Uow.Products;
         }
     }
 }

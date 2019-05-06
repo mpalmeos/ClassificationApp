@@ -14,7 +14,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase
     {
@@ -28,16 +29,18 @@ namespace WebApp.ApiControllers
 
         // GET: api/Company
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
+        public async Task<ActionResult<IEnumerable<PublicApi.v1.DTO.Company>>> GetCompanies()
         {
-            return await _bll.Companies.AllAsync();
+            return (await _bll.Companies.AllAsync())
+                .Select(e => PublicApi.v1.Mappers.CompanyMapper.MapFromBLL(e)).ToList();
         }
 
         // GET: api/Company/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Company>> GetCompany(int id)
+        public async Task<ActionResult<PublicApi.v1.DTO.Company>> GetCompany(int id)
         {
-            var company = await _bll.Companies.FindAsync(id);
+            var company = 
+                PublicApi.v1.Mappers.CompanyMapper.MapFromBLL(await _bll.Companies.FindAsync(id));
 
             if (company == null)
             {

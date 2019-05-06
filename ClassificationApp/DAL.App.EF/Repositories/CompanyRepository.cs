@@ -7,11 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace DAL.App.EF.Repositories
 {
     public class CompanyRepository : 
-        BaseRepository<DAL.App.DTO.Company, Domain.Company, AppDbContext>, ICompanyRepository
+        BaseRepository<DAL.App.DTO.Company, Domain.Company, AppDbContext>, 
+        ICompanyRepository
     {
         public CompanyRepository(AppDbContext repositoryDbContext) : 
             base(repositoryDbContext, new CompanyMapper())
         {
         }
+        
+        
     }
 }

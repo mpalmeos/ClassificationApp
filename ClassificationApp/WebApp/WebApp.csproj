@@ -25,10 +25,8 @@
       <ProjectReference Include="..\DAL.App.DTO\DAL.App.DTO.csproj" />
       <ProjectReference Include="..\DAL.App.EF\DAL.App.EF.csproj" />
       <ProjectReference Include="..\Identity\Identity.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="ApiControllers\v1_0" />
+      <ProjectReference Include="..\PublicApi.v1.DTO\PublicApi.v1.DTO.csproj" />
+      <ProjectReference Include="..\PublicApi.v1\PublicApi.v1.csproj" />
     </ItemGroup>
 
 </Project>

@@ -3,29 +3,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
 using DAL.App.DTO;
+using DAL.App.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class ProductRepository : BaseRepository<Product, AppDbContext>, IProductRepository
+    public class ProductRepository : 
+        BaseRepository<DAL.App.DTO.Product, Domain.Product, AppDbContext>, IProductRepository
     {
-        public ProductRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
+        public ProductRepository(AppDbContext repositoryDbContext) : 
+            base(repositoryDbContext, new ProductMapper())
         {
         }
-
-        public async Task<List<ProductDTO>> GetAllWithConnections()
+        
+        public async Task<List<DAL.App.DTO.Product>> AllBasicProducts()
         {
             return await RepositoryDbSet
-                .Select(p => new ProductDTO()
-                {
-                    Id = p.Id,
-                    ProductName = p.ProductName.ProductNameValue,
-                    ProductClassification = p.ProductClassification.ProductClassificationValue,
-                    RouteOfAdministration = p.RouteOfAdministration.RouteOfAdministrationValue
-                })
-                .ToListAsync();
+                .Include(c => c.ProductClassification)
+                .Include(r => r.ProductName)
+                .Include(a => a.RouteOfAdministration)
+                .Select(e => ProductMapper.MapFromDomain(e)).ToListAsync();
         }
     }
 }
