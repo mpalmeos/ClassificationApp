@@ -30,4 +30,10 @@
       <ProjectReference Include="..\PublicApi.v1\PublicApi.v1.csproj" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\WebApp.xml</DocumentationFile>
+        <LangVersion>latest</LangVersion>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
 </Project>
