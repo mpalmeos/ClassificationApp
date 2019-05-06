@@ -1,20 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
-using Contracts.DAL.App;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DAL;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using v1_0_DTO = PublicApi.v1.DTO;
+using v1_0_Mapper = PublicApi.v1.Mappers;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers.v1_0
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ProductClassificationController : ControllerBase
     {
@@ -27,16 +25,18 @@ namespace WebApp.ApiControllers
 
         // GET: api/ProductClassification
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductClassification>>> GetProductClassifications()
+        public async Task<ActionResult<IEnumerable<v1_0_DTO.ProductClassification>>> GetProductClassifications()
         {
-            return await _bll.ProductClassifications.AllAsync();
+            return (await _bll.ProductClassifications.AllAsync())
+                .Select(e => v1_0_Mapper.ProductClassificationMapper.MapFromBLL(e)).ToList();
         }
 
         // GET: api/ProductClassification/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductClassification>> GetProductClassification(int id)
+        public async Task<ActionResult<v1_0_DTO.ProductClassification>> GetProductClassification(int id)
         {
-            var productClassification = await _bll.ProductClassifications.FindAsync(id);
+            var productClassification = 
+                v1_0_Mapper.ProductClassificationMapper.MapFromBLL(await _bll.ProductClassifications.FindAsync(id));
 
             if (productClassification == null)
             {
@@ -49,14 +49,16 @@ namespace WebApp.ApiControllers
         // PUT: api/ProductClassification/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutProductClassification(int id, ProductClassification productClassification)
+        public async Task<IActionResult> PutProductClassification(int id, v1_0_DTO.ProductClassification productClassification)
         {
             if (id != productClassification.Id)
             {
                 return BadRequest();
             }
 
-            _bll.ProductClassifications.Update(productClassification);
+            _bll.ProductClassifications
+                .Update(v1_0_Mapper.ProductClassificationMapper
+                    .MapFromExternal(productClassification));
             await _bll.SaveChangesAsync();
             
             return NoContent();
@@ -65,10 +67,16 @@ namespace WebApp.ApiControllers
         // POST: api/ProductClassification
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ProductClassification>> PostProductClassification(ProductClassification productClassification)
+        public async Task<ActionResult<v1_0_DTO.ProductClassification>> PostProductClassification(v1_0_DTO.ProductClassification productClassification)
         {
-            await _bll.ProductClassifications.AddAsync(productClassification);
+            productClassification = v1_0_Mapper.ProductClassificationMapper.MapFromBLL(
+                _bll.ProductClassifications
+                    .Add(v1_0_Mapper.ProductClassificationMapper.MapFromExternal(productClassification)));
             await _bll.SaveChangesAsync();
+
+            productClassification = v1_0_Mapper.ProductClassificationMapper.MapFromBLL(
+                _bll.ProductClassifications.GetUpdatesAfterUOWSaveChanges(
+                    v1_0_Mapper.ProductClassificationMapper.MapFromExternal(productClassification)));
 
             return CreatedAtAction("GetProductClassification", new { id = productClassification.Id }, productClassification);
         }
@@ -76,18 +84,12 @@ namespace WebApp.ApiControllers
         // DELETE: api/ProductClassification/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ProductClassification>> DeleteProductClassification(int id)
+        public async Task<ActionResult<v1_0_DTO.ProductClassification>> DeleteProductClassification(int id)
         {
-            var productClassification = await _bll.ProductClassifications.FindAsync(id);
-            if (productClassification == null)
-            {
-                return NotFound();
-            }
-
-            _bll.ProductClassifications.Remove(productClassification);
+            _bll.ProductClassifications.Remove(id);
             await _bll.SaveChangesAsync();
 
-            return productClassification;
+            return NoContent();
         }
     }
 }

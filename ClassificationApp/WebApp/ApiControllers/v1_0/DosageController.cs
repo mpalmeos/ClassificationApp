@@ -1,20 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
-using Contracts.DAL.App;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DAL;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using v1_0_DTO = PublicApi.v1.DTO;
+using v1_0_Mapper = PublicApi.v1.Mappers;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers.v1_0
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class DosageController : ControllerBase
     {
@@ -27,16 +25,18 @@ namespace WebApp.ApiControllers
 
         // GET: api/Dosage
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Dosage>>> GetDosages()
+        public async Task<ActionResult<IEnumerable<v1_0_DTO.Dosage>>> GetDosages()
         {
-            return await _bll.Dosages.AllAsync();
+            return (await _bll.Dosages.AllAsync())
+                .Select(e => v1_0_Mapper.DosageMapper.MapFromBLL(e)).ToList();
         }
 
         // GET: api/Dosage/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Dosage>> GetDosage(int id)
+        public async Task<ActionResult<v1_0_DTO.Dosage>> GetDosage(int id)
         {
-            var dosage = await _bll.Dosages.FindAsync(id);
+            var dosage = 
+                v1_0_Mapper.DosageMapper.MapFromBLL(await _bll.Dosages.FindAsync(id));
 
             if (dosage == null)
             {
@@ -49,14 +49,14 @@ namespace WebApp.ApiControllers
         // PUT: api/Dosage/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutDosage(int id, Dosage dosage)
+        public async Task<IActionResult> PutDosage(int id, v1_0_DTO.Dosage dosage)
         {
             if (id != dosage.Id)
             {
                 return BadRequest();
             }
 
-            _bll.Dosages.Update(dosage);
+            _bll.Dosages.Update(v1_0_Mapper.DosageMapper.MapFromExternal(dosage));
             await _bll.SaveChangesAsync();
             
             return NoContent();
@@ -65,10 +65,15 @@ namespace WebApp.ApiControllers
         // POST: api/Dosage
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<Dosage>> PostDosage(Dosage dosage)
+        public async Task<ActionResult<v1_0_DTO.Dosage>> PostDosage(v1_0_DTO.Dosage dosage)
         {
-            await _bll.Dosages.AddAsync(dosage);
+            dosage = v1_0_Mapper.DosageMapper.MapFromBLL(
+                _bll.Dosages.Add(v1_0_Mapper.DosageMapper.MapFromExternal(dosage)));
             await _bll.SaveChangesAsync();
+
+            dosage = v1_0_Mapper.DosageMapper.MapFromBLL(
+                _bll.Dosages.GetUpdatesAfterUOWSaveChanges(
+                    v1_0_Mapper.DosageMapper.MapFromExternal(dosage)));;
 
             return CreatedAtAction("GetDosage", new { id = dosage.Id }, dosage);
         }
@@ -76,18 +81,12 @@ namespace WebApp.ApiControllers
         // DELETE: api/Dosage/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<Dosage>> DeleteDosage(int id)
+        public async Task<ActionResult<v1_0_DTO.Dosage>> DeleteDosage(int id)
         {
-            var dosage = await _bll.Dosages.FindAsync(id);
-            if (dosage == null)
-            {
-                return NotFound();
-            }
-
-            _bll.Dosages.Remove(dosage);
+            _bll.Dosages.Remove(id);
             await _bll.SaveChangesAsync();
 
-            return dosage;
+            return NoContent();
         }
     }
 }

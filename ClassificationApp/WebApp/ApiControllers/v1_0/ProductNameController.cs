@@ -1,20 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
-using Contracts.DAL.App;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DAL;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using v1_0_DTO = PublicApi.v1.DTO;
+using v1_0_Mapper = PublicApi.v1.Mappers;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers.v1_0
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ProductNameController : ControllerBase
     {
@@ -27,16 +25,18 @@ namespace WebApp.ApiControllers
 
         // GET: api/ProductName
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductName>>> GetProductNames()
+        public async Task<ActionResult<IEnumerable<v1_0_DTO.ProductName>>> GetProductNames()
         {
-            return await _bll.ProductNames.AllAsync();
+            return (await _bll.ProductNames.AllAsync())
+                .Select(e => v1_0_Mapper.ProductNameMapper.MapFromBLL(e)).ToList();
         }
 
         // GET: api/ProductName/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductName>> GetProductName(int id)
+        public async Task<ActionResult<v1_0_DTO.ProductName>> GetProductName(int id)
         {
-            var productName = await _bll.ProductNames.FindAsync(id);
+            var productName = 
+                v1_0_Mapper.ProductNameMapper.MapFromBLL(await _bll.ProductNames.FindAsync(id));
 
             if (productName == null)
             {
@@ -49,14 +49,14 @@ namespace WebApp.ApiControllers
         // PUT: api/ProductName/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutProductName(int id, ProductName productName)
+        public async Task<IActionResult> PutProductName(int id, v1_0_DTO.ProductName productName)
         {
             if (id != productName.Id)
             {
                 return BadRequest();
             }
 
-            _bll.ProductNames.Update(productName);
+            _bll.ProductNames.Update(v1_0_Mapper.ProductNameMapper.MapFromExternal(productName));
             await _bll.SaveChangesAsync();
             
             return NoContent();
@@ -65,10 +65,15 @@ namespace WebApp.ApiControllers
         // POST: api/ProductName
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ProductName>> PostProductName(ProductName productName)
+        public async Task<ActionResult<v1_0_DTO.ProductName>> PostProductName(v1_0_DTO.ProductName productName)
         {
-            await _bll.ProductNames.AddAsync(productName);
+            productName = v1_0_Mapper.ProductNameMapper.MapFromBLL(
+                _bll.ProductNames.Add(v1_0_Mapper.ProductNameMapper.MapFromExternal(productName)));
             await _bll.SaveChangesAsync();
+
+            productName = v1_0_Mapper.ProductNameMapper.MapFromBLL(
+                _bll.ProductNames.GetUpdatesAfterUOWSaveChanges(
+                    v1_0_Mapper.ProductNameMapper.MapFromExternal(productName)));
 
             return CreatedAtAction("GetProductName", new { id = productName.Id }, productName);
         }
@@ -76,18 +81,12 @@ namespace WebApp.ApiControllers
         // DELETE: api/ProductName/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ProductName>> DeleteProductName(int id)
+        public async Task<ActionResult<v1_0_DTO.ProductName>> DeleteProductName(int id)
         {
-            var productName = await _bll.ProductNames.FindAsync(id);
-            if (productName == null)
-            {
-                return NotFound();
-            }
-
-            _bll.ProductNames.Remove(productName);
+            _bll.ProductNames.Remove(id);
             await _bll.SaveChangesAsync();
 
-            return productName;
+            return NoContent();
         }
     }
 }

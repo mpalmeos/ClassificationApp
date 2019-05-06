@@ -1,21 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
-using Contracts.DAL.App;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DAL;
-using DAL.App.DTO;
-using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using v1_0_DTO = PublicApi.v1.DTO;
+using v1_0_Mapper = PublicApi.v1.Mappers;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers.v1_0
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -28,16 +24,18 @@ namespace WebApp.ApiControllers
 
         // GET: api/Product
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<v1_0_DTO.Product>>> GetProducts()
         {
-            return await _bll.Products.GetAllWithConnections();
+            return (await _bll.Products.AllAsync())
+                .Select(e => v1_0_Mapper.ProductMapper.MapFromBLL(e)).ToList();
         }
 
         // GET: api/Product/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<v1_0_DTO.Product>> GetProduct(int id)
         {
-            var product = await _bll.Products.FindAsync(id);
+            var product = 
+                v1_0_Mapper.ProductMapper.MapFromBLL(await _bll.Products.FindAsync(id));
 
             if (product == null)
             {
@@ -50,14 +48,14 @@ namespace WebApp.ApiControllers
         // PUT: api/Product/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutProduct(int id, v1_0_DTO.Product product)
         {
             if (id != product.Id)
             {
                 return BadRequest();
             }
 
-            _bll.Products.Update(product);
+            _bll.Products.Update(v1_0_Mapper.ProductMapper.MapFromExternal(product));
             await _bll.SaveChangesAsync();
             
             return NoContent();
@@ -66,10 +64,15 @@ namespace WebApp.ApiControllers
         // POST: api/Product
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<v1_0_DTO.Product>> PostProduct(v1_0_DTO.Product product)
         {
-            await _bll.Products.AddAsync(product);
+            product = v1_0_Mapper.ProductMapper.MapFromBLL(
+                _bll.Products.Add(v1_0_Mapper.ProductMapper.MapFromExternal(product)));
             await _bll.SaveChangesAsync();
+
+            product = v1_0_Mapper.ProductMapper.MapFromBLL(
+                _bll.Products.GetUpdatesAfterUOWSaveChanges(
+                    v1_0_Mapper.ProductMapper.MapFromExternal(product)));
 
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
@@ -77,18 +80,12 @@ namespace WebApp.ApiControllers
         // DELETE: api/Product/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<Product>> DeleteProduct(int id)
+        public async Task<ActionResult<v1_0_DTO.Product>> DeleteProduct(int id)
         {
-            var product = await _bll.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            _bll.Products.Remove(product);
+            _bll.Products.Remove(id);
             await _bll.SaveChangesAsync();
 
-            return product;
+            return NoContent();
         }
     }
 }

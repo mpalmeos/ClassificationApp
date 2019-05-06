@@ -1,20 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
-using Contracts.DAL.App;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DAL;
 using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using v1_0_DTO = PublicApi.v1.DTO;
+using v1_0_Mapper = PublicApi.v1.Mappers;
 
-namespace WebApp.ApiControllers
+namespace WebApp.ApiControllers.v1_0
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ProductDescriptionController : ControllerBase
     {
@@ -27,16 +25,18 @@ namespace WebApp.ApiControllers
 
         // GET: api/ProductDescription
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDescription>>> GetProductDescriptions()
+        public async Task<ActionResult<IEnumerable<v1_0_DTO.ProductDescription>>> GetProductDescriptions()
         {
-            return await _bll.ProductDescriptions.AllAsync();
+            return (await _bll.ProductDescriptions.AllAsync())
+                .Select(e => v1_0_Mapper.ProductDescriptionMapper.MapFromBLL(e)).ToList();
         }
 
         // GET: api/ProductDescription/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDescription>> GetProductDescription(int id)
+        public async Task<ActionResult<v1_0_DTO.ProductDescription>> GetProductDescription(int id)
         {
-            var productDescription = await _bll.ProductDescriptions.FindAsync(id);
+            var productDescription = 
+                v1_0_Mapper.ProductDescriptionMapper.MapFromBLL(await _bll.ProductDescriptions.FindAsync(id));
 
             if (productDescription == null)
             {
@@ -49,14 +49,14 @@ namespace WebApp.ApiControllers
         // PUT: api/ProductDescription/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutProductDescription(int id, ProductDescription productDescription)
+        public async Task<IActionResult> PutProductDescription(int id, v1_0_DTO.ProductDescription productDescription)
         {
             if (id != productDescription.Id)
             {
                 return BadRequest();
             }
 
-            _bll.ProductDescriptions.Update(productDescription);
+            _bll.ProductDescriptions.Update(v1_0_Mapper.ProductDescriptionMapper.MapFromExternal(productDescription));
             await _bll.SaveChangesAsync();
             
             return NoContent();
@@ -65,10 +65,15 @@ namespace WebApp.ApiControllers
         // POST: api/ProductDescription
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ProductDescription>> PostProductDescription(ProductDescription productDescription)
+        public async Task<ActionResult<v1_0_DTO.ProductDescription>> PostProductDescription(v1_0_DTO.ProductDescription productDescription)
         {
-            await _bll.ProductDescriptions.AddAsync(productDescription);
+            productDescription = v1_0_Mapper.ProductDescriptionMapper.MapFromBLL(
+                _bll.ProductDescriptions.Add(v1_0_Mapper.ProductDescriptionMapper.MapFromExternal(productDescription)));
             await _bll.SaveChangesAsync();
+
+            productDescription = v1_0_Mapper.ProductDescriptionMapper.MapFromBLL(
+                _bll.ProductDescriptions.GetUpdatesAfterUOWSaveChanges(
+                    v1_0_Mapper.ProductDescriptionMapper.MapFromExternal(productDescription)));
 
             return CreatedAtAction("GetProductDescription", new { id = productDescription.Id }, productDescription);
         }
@@ -76,18 +81,12 @@ namespace WebApp.ApiControllers
         // DELETE: api/ProductDescription/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ProductDescription>> DeleteProductDescription(int id)
+        public async Task<ActionResult<v1_0_DTO.ProductDescription>> DeleteProductDescription(int id)
         {
-            var productDescription = await _bll.ProductDescriptions.FindAsync(id);
-            if (productDescription == null)
-            {
-                return NotFound();
-            }
-
-            _bll.ProductDescriptions.Remove(productDescription);
+            _bll.ProductDescriptions.Remove(id);
             await _bll.SaveChangesAsync();
 
-            return productDescription;
+            return NoContent();
         }
     }
 }
