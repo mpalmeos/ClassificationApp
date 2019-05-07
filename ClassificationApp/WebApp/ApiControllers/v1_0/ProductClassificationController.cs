@@ -22,6 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
+        /// <summary>
+        /// Get array of ProductClassifications.
+        /// </summary>
+        /// <returns>Array of ProductClassification.</returns>
         // GET: api/ProductClassification
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.ProductClassification>>> GetProductClassifications()
@@ -30,6 +34,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.ProductClassificationMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get ProductClassification by ID.
+        /// </summary>
+        /// <param name="id">ID of ProductClassification to retrieve.</param>
+        /// <returns>Specific ProductClassification by ID.</returns>
         // GET: api/ProductClassification/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.ProductClassification>> GetProductClassification(int id)
@@ -45,6 +54,12 @@ namespace WebApp.ApiControllers.v1_0
             return productClassification;
         }
 
+        /// <summary>
+        /// Modify existing ProductClassification.
+        /// </summary>
+        /// <param name="id">ID of ProductClassification to be modified.</param>
+        /// <param name="productClassification">ProductClassification to be modified.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/ProductClassification/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -63,6 +78,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Add new ProductClassification to database.
+        /// </summary>
+        /// <param name="productClassification">ProductClassification to be added.</param>
+        /// <returns>New ProductClassification and ID.</returns>
         // POST: api/ProductClassification
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -80,6 +100,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetProductClassification", new { id = productClassification.Id }, productClassification);
         }
 
+        /// <summary>
+        /// Delete specific ProductClassification from database (hard delete).
+        /// </summary>
+        /// <param name="id">ID of ProductClassification to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/ProductClassification/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

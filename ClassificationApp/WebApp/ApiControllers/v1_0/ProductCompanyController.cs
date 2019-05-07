@@ -22,6 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
+        /// <summary>
+        /// Get array of ProductCompanies.
+        /// </summary>
+        /// <returns>Array of ProductCompanies.</returns>
         // GET: api/ProductCompany
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.ProductCompany>>> GetProductCompanies()
@@ -30,6 +34,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.ProductCompanyMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get specific ProductCompany by ID.
+        /// </summary>
+        /// <param name="id">ID for ProductCompany to be retrieved.</param>
+        /// <returns>ProductCompany by ID.</returns>
         // GET: api/ProductCompany/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.ProductCompany>> GetProductCompany(int id)
@@ -45,6 +54,12 @@ namespace WebApp.ApiControllers.v1_0
             return productCompany;
         }
 
+        /// <summary>
+        /// Modify existing ProductCompany.
+        /// </summary>
+        /// <param name="id">ID of ProductCompany to be modified.</param>
+        /// <param name="productCompany">ProductCompany to be modified.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/ProductCompany/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -61,6 +76,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Add new ProductCompany to database.
+        /// </summary>
+        /// <param name="productCompany">ProductCompany to be added.</param>
+        /// <returns>New ProductCompany and ID.</returns>
         // POST: api/ProductCompany
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -77,6 +97,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetProductCompany", new { id = productCompany.Id }, productCompany);
         }
 
+        /// <summary>
+        /// Delete specific ProductCompany from database (hard delete).
+        /// </summary>
+        /// <param name="id">ID of ProductCompany to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/ProductCompany/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

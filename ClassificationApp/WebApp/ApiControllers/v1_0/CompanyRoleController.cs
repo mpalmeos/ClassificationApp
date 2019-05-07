@@ -22,7 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
-
+        /// <summary>
+        /// Get all CompanyRoles
+        /// </summary>
+        /// <returns>Array of CompanyRoles.</returns>
         // GET: api/CompanyRole
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.CompanyRole>>> GetCompanyRoles()
@@ -31,6 +34,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.CompanyRoleMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get CompanyRole by ID.
+        /// </summary>
+        /// <param name="id">ID of CompanyRole to be retreived.</param>
+        /// <returns>Specific CompanyRole by ID</returns>
         // GET: api/CompanyRole/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.CompanyRole>> GetCompanyRole(int id)
@@ -46,6 +54,12 @@ namespace WebApp.ApiControllers.v1_0
             return companyRole;
         }
 
+        /// <summary>
+        /// Modify existing CompanyRole.
+        /// </summary>
+        /// <param name="id">ID of CompanyRole to be modified.</param>
+        /// <param name="companyRole">Modified CompanyRole object.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/CompanyRole/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -62,6 +76,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Add new CompanyRole to database.
+        /// </summary>
+        /// <param name="companyRole">CompanyRole object to be added to database.</param>
+        /// <returns>New CompanyRole object and ID.</returns>
         // POST: api/CompanyRole
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -78,6 +97,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetCompanyRole", new { id = companyRole.Id }, companyRole);
         }
 
+        /// <summary>
+        /// Deletes CompanyRole by ID.
+        /// </summary>
+        /// <param name="id">ID of CompanyRole to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/CompanyRole/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

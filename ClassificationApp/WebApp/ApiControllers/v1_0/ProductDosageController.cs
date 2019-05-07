@@ -22,6 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
+        /// <summary>
+        /// Get array of ProductDosages.
+        /// </summary>
+        /// <returns>Array of ProductDosages.</returns>
         // GET: api/ProductDosage
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.ProductDosage>>> GetProductDosages()
@@ -29,7 +33,12 @@ namespace WebApp.ApiControllers.v1_0
             return (await _bll.ProductDosages.AllAsync())
                 .Select(e => v1_0_Mapper.ProductDosageMapper.MapFromBLL(e)).ToList();
         }
-
+        
+        /// <summary>
+        /// Get specific ProductDosage by ID.
+        /// </summary>
+        /// <param name="id">ID of ProductDosage to be retrieved.</param>
+        /// <returns>Specific ProductDosage by ID.</returns>
         // GET: api/ProductDosage/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.ProductDosage>> GetProductDosage(int id)
@@ -45,6 +54,12 @@ namespace WebApp.ApiControllers.v1_0
             return productDosage;
         }
 
+        /// <summary>
+        /// Modify existing ProductDosage.
+        /// </summary>
+        /// <param name="id">ID of ProductDosage to be modified.</param>
+        /// <param name="productDosage">ProductDosage to be modified.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/ProductDosage/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -61,6 +76,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Add ned ProductDosage to database.
+        /// </summary>
+        /// <param name="productDosage">ProductDosage to be added.</param>
+        /// <returns>New productDosage and ID.</returns>
         // POST: api/ProductDosage
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -77,6 +97,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetProductDosage", new { id = productDosage.Id }, productDosage);
         }
 
+        /// <summary>
+        /// Delete specific ProductDosage from database (hard delete).
+        /// </summary>
+        /// <param name="id">ID of ProductDosage to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/ProductDosage/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

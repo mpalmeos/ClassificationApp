@@ -22,6 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
+        /// <summary>
+        /// Get array of ProductNames.
+        /// </summary>
+        /// <returns>Array of ProductNames.</returns>
         // GET: api/ProductName
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.ProductName>>> GetProductNames()
@@ -30,6 +34,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.ProductNameMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get specific ProductName by ID.
+        /// </summary>
+        /// <param name="id">ID of ProductName to be retrieved.</param>
+        /// <returns>Specific ProductName by ID.</returns>
         // GET: api/ProductName/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.ProductName>> GetProductName(int id)
@@ -45,6 +54,12 @@ namespace WebApp.ApiControllers.v1_0
             return productName;
         }
 
+        /// <summary>
+        /// Modify existing ProductName.
+        /// </summary>
+        /// <param name="id">ID of ProductName to modify.</param>
+        /// <param name="productName">ProductName to modify.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/ProductName/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -61,6 +76,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Add new ProductName to database.
+        /// </summary>
+        /// <param name="productName">ProductName to be added.</param>
+        /// <returns>New ProductName and ID.</returns>
         // POST: api/ProductName
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -77,6 +97,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetProductName", new { id = productName.Id }, productName);
         }
 
+        /// <summary>
+        /// Delete specific ProductName from database (hard delete).
+        /// </summary>
+        /// <param name="id">ID of ProductName to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/ProductName/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

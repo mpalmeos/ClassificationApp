@@ -22,6 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
+        /// <summary>
+        /// Get array of Routes Of Administration.
+        /// </summary>
+        /// <returns>Array of Routes Of Administration.</returns>
         // GET: api/RouteOfAdministration
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.RouteOfAdministration>>> GetRouteOfAdministrations()
@@ -30,6 +34,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.RouteOfAdministrationMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get specific RouteOfAdministration by ID.
+        /// </summary>
+        /// <param name="id">ID of RouteOfAdministration to retrieve.</param>
+        /// <returns>Specific RouteOfAdministration by ID.</returns>
         // GET: api/RouteOfAdministration/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.RouteOfAdministration>> GetRouteOfAdministration(int id)
@@ -45,6 +54,12 @@ namespace WebApp.ApiControllers.v1_0
             return routeOfAdministration;
         }
 
+        /// <summary>
+        /// Modify specific RouteOfAdministration by ID.
+        /// </summary>
+        /// <param name="id">ID of RouteOfAdministration to modify.</param>
+        /// <param name="routeOfAdministration">Modified RouteOfAdministration.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/RouteOfAdministration/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -61,6 +76,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Add new RouteOfAdministration to database.
+        /// </summary>
+        /// <param name="routeOfAdministration">RouteOfAdministration to be added.</param>
+        /// <returns>New RouteOfAdministration and ID.</returns>
         // POST: api/RouteOfAdministration
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -77,6 +97,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetRouteOfAdministration", new { id = routeOfAdministration.Id }, routeOfAdministration);
         }
 
+        /// <summary>
+        /// Delete specific RouteOfAdministration from database (hard delete).
+        /// </summary>
+        /// <param name="id">ID of RouteOfAdministration to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/RouteOfAdministration/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

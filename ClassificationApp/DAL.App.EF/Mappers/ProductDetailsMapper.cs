@@ -63,28 +63,23 @@ namespace DAL.App.EF.Mappers
             return res;
         }
         
-        public static ValueTuple<internalDTO.RouteOfAdministration, 
-            internalDTO.ProductClassification,
-            internalDTO.ProductName,
-            internalDTO.ProductCompany,
-            internalDTO.ProductDescription,
-            internalDTO.ProductDosage> MapFromDAL(externalDTO.Customs.ProductDetails product)
+        public static (
+            internalDTO.RouteOfAdministration route, 
+            internalDTO.ProductClassification pclass,
+            internalDTO.ProductName pname,
+            internalDTO.ProductCompany pcomp,
+            internalDTO.ProductDescription pdesc,
+            internalDTO.ProductDosage pdose
+            ) MapFromDAL(externalDTO.Customs.ProductDetails product)
         {
-            var res = new ValueTuple<
-                internalDTO.RouteOfAdministration,
-                internalDTO.ProductClassification,
-                internalDTO.ProductName,
-                internalDTO.ProductCompany,
-                internalDTO.ProductDescription,
-                internalDTO.ProductDosage>()
-            {
-                Item1 = RouteOfAdministrationMapper.MapFromDAL(product.RouteOfAdministration),
-                Item2 = ProductClassificationMapper.MapFromDAL(product.ProductClassification),
-                Item3 = ProductNameMapper.MapFromDAL(product.ProductName),
-                Item4 = ProductCompanyMapper.MapFromDAL(product.ProductCompany),
-                Item5 = ProductDescriptionMapper.MapFromDAL(product.ProductDescription),
-                Item6 = ProductDosageMapper.MapFromDAL(product.ProductDosage)
-            };
+            var res = (
+                    route: RouteOfAdministrationMapper.MapFromDAL(product.RouteOfAdministration),
+                    pclass: ProductClassificationMapper.MapFromDAL(product.ProductClassification),
+                    pname: ProductNameMapper.MapFromDAL(product.ProductName),
+                    pcomp: ProductCompanyMapper.MapFromDAL(product.ProductCompany),
+                    pdesc: ProductDescriptionMapper.MapFromDAL(product.ProductDescription),
+                    pdose: ProductDosageMapper.MapFromDAL(product.ProductDosage)
+                    );
             return res;
         }
     }

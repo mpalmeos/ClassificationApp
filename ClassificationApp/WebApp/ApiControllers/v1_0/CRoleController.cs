@@ -22,6 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
+        /// <summary>
+        /// Get all Roles from database.
+        /// </summary>
+        /// <returns>Array of Roles.</returns>
         // GET: api/CRole
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.CRole>>> GetCRoles()
@@ -30,6 +34,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.CRoleMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get specific Role from database by ID.
+        /// </summary>
+        /// <param name="id">ID of Role to be retrieved.</param>
+        /// <returns>Specific Role by ID.</returns>
         // GET: api/CRole/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.CRole>> GetCRole(int id)
@@ -44,6 +53,12 @@ namespace WebApp.ApiControllers.v1_0
             return cRole;
         }
 
+        /// <summary>
+        /// Modify specific Role in database-
+        /// </summary>
+        /// <param name="id">ID of Role to be modified.</param>
+        /// <param name="cRole">Modified Role.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/CRole/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -60,6 +75,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Addition of new Role to database.
+        /// </summary>
+        /// <param name="cRole">New Role to be added.</param>
+        /// <returns>New Role and ID.</returns>
         // POST: api/CRole
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -76,6 +96,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetCRole", new {id = cRole.Id}, cRole);
         }
 
+        /// <summary>
+        /// Delete specific Role from database.
+        /// </summary>
+        /// <param name="id">ID of Role to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/CRole/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

@@ -22,6 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
+        /// <summary>
+        /// Get array of Dosages.
+        /// </summary>
+        /// <returns>Array of Dosages.</returns>
         // GET: api/Dosage
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.Dosage>>> GetDosages()
@@ -30,6 +34,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.DosageMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get Dosage by ID.
+        /// </summary>
+        /// <param name="id">ID of Dosage to be retrieved.</param>
+        /// <returns>Specific Dosage by ID.</returns>
         // GET: api/Dosage/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.Dosage>> GetDosage(int id)
@@ -45,6 +54,12 @@ namespace WebApp.ApiControllers.v1_0
             return dosage;
         }
 
+        /// <summary>
+        /// Modify Dosage by ID.
+        /// </summary>
+        /// <param name="id">ID of Dosage to be modified.</param>
+        /// <param name="dosage">Dosage to be modified.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/Dosage/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -61,6 +76,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Add new Dosage to database.
+        /// </summary>
+        /// <param name="dosage">Dosage to be added.</param>
+        /// <returns>New Dosage and ID.</returns>
         // POST: api/Dosage
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -77,6 +97,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetDosage", new { id = dosage.Id }, dosage);
         }
 
+        /// <summary>
+        /// Delete specific Dosage from database (hard delete).
+        /// </summary>
+        /// <param name="id">ID of Dosage to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/Dosage/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

@@ -32,6 +32,12 @@ namespace WebApp.ApiControllers.v1_0.Identity
             _emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Checks user credentials in order to log in.
+        /// </summary>
+        /// <param name="model">User login credentials and JWT.</param>
+        /// <returns>Does not return anything.</returns>
+        /// <response code="403">Login not authorised.</response>
         [HttpPost]
         public async Task<ActionResult<string>> Login([FromBody] LoginDTO model)
         {
@@ -64,6 +70,13 @@ namespace WebApp.ApiControllers.v1_0.Identity
             return StatusCode(403);
         }
         
+        /// <summary>
+        /// Addition of new user credentials to database.
+        /// </summary>
+        /// <param name="model">New user credentials and JWT.</param>
+        /// <returns>Does not return anything.</returns>
+        /// <response code="400">Bad request.</response>
+        /// <response code="406">Credentials not acceptable.</response>
         [HttpPost]
         public async Task<ActionResult<string>> Register([FromBody] RegisterDTO model)
         {

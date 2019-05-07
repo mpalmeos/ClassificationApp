@@ -22,7 +22,11 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
-
+        /// <summary>
+        /// Get all Company objects.
+        /// </summary>
+        /// <returns>Array of all Companies.</returns>
+        /// <response code="200">The array of Companies was successfully delivered.</response>
         // GET: api/Company
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.Company>>> GetCompanies()
@@ -31,6 +35,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.CompanyMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get Company object by CompanyID.
+        /// </summary>
+        /// <param name="id">CompanyID of the Company object to be retrieved.</param>
+        /// <returns>One Company object</returns>
         // GET: api/Company/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.Company>> GetCompany(int id)
@@ -46,6 +55,12 @@ namespace WebApp.ApiControllers.v1_0
             return company;
         }
 
+        /// <summary>
+        /// Updates single Company object.
+        /// </summary>
+        /// <param name="id">CompanyID of the Company object to be updated.</param>
+        /// <param name="company">Company object to be modified.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/Company/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -62,6 +77,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Adding new Company object to database.
+        /// </summary>
+        /// <param name="company">Company object to be added to the database</param>
+        /// <returns>The new Company object and ID.</returns>
         // POST: api/Company
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -78,6 +98,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetCompany", new { id = company.Id }, company);
         }
 
+        /// <summary>
+        /// Deletes Company object from database (hard delete).
+        /// </summary>
+        /// <param name="id">CompanyID of the Company item to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/Company/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

@@ -22,6 +22,10 @@ namespace WebApp.ApiControllers.v1_0
             _bll = bll;
         }
 
+        /// <summary>
+        /// Get array of ProductDescriptions.
+        /// </summary>
+        /// <returns>Array of ProductDescriptions.</returns>
         // GET: api/ProductDescription
         [HttpGet]
         public async Task<ActionResult<IEnumerable<v1_0_DTO.ProductDescription>>> GetProductDescriptions()
@@ -30,6 +34,11 @@ namespace WebApp.ApiControllers.v1_0
                 .Select(e => v1_0_Mapper.ProductDescriptionMapper.MapFromBLL(e)).ToList();
         }
 
+        /// <summary>
+        /// Get specific ProductDescription by ID.
+        /// </summary>
+        /// <param name="id">ID of ProductDescription to be retrieved.</param>
+        /// <returns>Specific ProductDescription by ID.</returns>
         // GET: api/ProductDescription/5
         [HttpGet("{id}")]
         public async Task<ActionResult<v1_0_DTO.ProductDescription>> GetProductDescription(int id)
@@ -45,6 +54,12 @@ namespace WebApp.ApiControllers.v1_0
             return productDescription;
         }
 
+        /// <summary>
+        /// Modify existing ProductDescription.
+        /// </summary>
+        /// <param name="id">ID of ProductDescription to be modified.</param>
+        /// <param name="productDescription">ProductDescription to be modified.</param>
+        /// <returns>Does not return anything.</returns>
         // PUT: api/ProductDescription/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -61,6 +76,11 @@ namespace WebApp.ApiControllers.v1_0
             return NoContent();
         }
 
+        /// <summary>
+        /// Add new ProductDescription to database.
+        /// </summary>
+        /// <param name="productDescription">ProductDescription to be added to the database.</param>
+        /// <returns>New ProductDescription and ID.</returns>
         // POST: api/ProductDescription
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -77,6 +97,11 @@ namespace WebApp.ApiControllers.v1_0
             return CreatedAtAction("GetProductDescription", new { id = productDescription.Id }, productDescription);
         }
 
+        /// <summary>
+        /// Delete specific ProductDescription from database (hard delete).
+        /// </summary>
+        /// <param name="id">ID of ProductDescription to be deleted.</param>
+        /// <returns>Does not return anything.</returns>
         // DELETE: api/ProductDescription/5
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
