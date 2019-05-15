@@ -246,7 +246,7 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("HerbParts");
                 });
 
-            modelBuilder.Entity("Domain.Identity.AppRole", b =>
+            modelBuilder.Entity("Domain.ee.itcollege.mpalmeos.Identity.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -269,7 +269,7 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Domain.Identity.AppUser", b =>
+            modelBuilder.Entity("Domain.ee.itcollege.mpalmeos.Identity.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -577,7 +577,7 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("UnitOfMeasures");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -595,7 +595,7 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -613,7 +613,7 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider");
 
@@ -630,7 +630,7 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityUserRole<int>", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -643,7 +643,7 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityUserToken<int>", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -860,46 +860,46 @@ namespace DAL.App.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Domain.Identity.AppRole")
+                    b.HasOne("Domain.ee.itcollege.mpalmeos.Identity.AppRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Domain.Identity.AppUser")
+                    b.HasOne("Domain.ee.itcollege.mpalmeos.Identity.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Domain.Identity.AppUser")
+                    b.HasOne("Domain.ee.itcollege.mpalmeos.Identity.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Domain.Identity.AppRole")
+                    b.HasOne("Domain.ee.itcollege.mpalmeos.Identity.AppRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Identity.AppUser")
+                    b.HasOne("Domain.ee.itcollege.mpalmeos.Identity.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.ee.itcollege.mpalmeos.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Domain.Identity.AppUser")
+                    b.HasOne("Domain.ee.itcollege.mpalmeos.Identity.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);

@@ -1,7 +1,7 @@
 using BLL.App.Mappers;
-using BLL.Base.Services;
+using ee.itcollege.mpalmeos.BLL.Base.Services;
 using Contracts.BLL.App.Services;
-using Contracts.BLL.Base.Mappers;
+using ee.itcollege.mpalmeos.Contracts.BLL.Base.Mappers;
 using Contracts.DAL.App;
 
 namespace BLL.App.Services

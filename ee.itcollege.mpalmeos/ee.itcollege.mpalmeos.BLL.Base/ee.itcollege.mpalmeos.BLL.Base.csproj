@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\common.props" />
+    
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ee.itcollege.mpalmeos.Contracts.BLL.Base\ee.itcollege.mpalmeos.Contracts.BLL.Base.csproj" />
+      <ProjectReference Include="..\ee.itcollege.mpalmeos.Contracts.DAL.Base\ee.itcollege.mpalmeos.Contracts.DAL.Base.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="8.1.0" />
+    </ItemGroup>
+
+</Project>

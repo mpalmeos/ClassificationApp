@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
-using Contracts.DAL.Base.Helpers;
+using ee.itcollege.mpalmeos.Contracts.DAL.Base.Helpers;
 using DAL.App.EF.Repositories;
-using DAL.Base.EF;
+using ee.itcollege.mpalmeos.DAL.Base.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF

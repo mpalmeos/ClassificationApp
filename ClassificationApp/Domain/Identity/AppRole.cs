@@ -1,4 +1,4 @@
-using Contracts.DAL.Base;
+using ee.itcollege.mpalmeos.Contracts.DAL.Base;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Identity

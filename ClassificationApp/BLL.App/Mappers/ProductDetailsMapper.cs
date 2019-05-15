@@ -1,5 +1,5 @@
 using System;
-using Contracts.BLL.Base.Mappers;
+using ee.itcollege.mpalmeos.Contracts.BLL.Base.Mappers;
 using internalDTO = DAL.App.DTO;
 using externalDTO = BLL.App.DTO;
 

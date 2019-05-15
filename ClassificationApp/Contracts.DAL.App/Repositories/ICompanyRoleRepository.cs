@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Contracts.DAL.Base.Repository;
+using ee.itcollege.mpalmeos.Contracts.DAL.Base.Repository;
 using DALAppDTO = DAL.App.DTO;
 
 namespace Contracts.DAL.App.Repositories

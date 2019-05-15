@@ -3,14 +3,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using BLL.App;
 using BLL.App.Helpers;
-using BLL.Base.Helpers;
+using ee.itcollege.mpalmeos.BLL.Base.Helpers;
 using Contracts.BLL.App;
-using Contracts.BLL.Base.Helpers;
+using ee.itcollege.mpalmeos.Contracts.BLL.Base.Helpers;
 using Contracts.DAL.App;
-using Contracts.DAL.Base.Helpers;
+using ee.itcollege.mpalmeos.Contracts.DAL.Base.Helpers;
 using DAL.App.EF;
 using DAL.App.EF.Helpers;
-using DAL.Base.EF.Helpers;
+using ee.itcollege.mpalmeos.DAL.Base.EF.Helpers;
 using Domain.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -100,8 +100,8 @@ namespace WebApp
                 .AddRazorPagesOptions(options =>
                 {
                     options.AllowAreas = true;
-                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
-                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                    options.Conventions.AuthorizeAreaFolder("ee.itcollege.mpalmeos.Identity", "/Account/Manage");
+                    options.Conventions.AuthorizeAreaPage("ee.itcollege.mpalmeos.Identity", "/Account/Logout");
                 })
                 .AddJsonOptions(options =>
                 {
@@ -113,9 +113,9 @@ namespace WebApp
             
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = $"/Identity/Account/Login";
-                options.LogoutPath = $"/Identity/Account/Logout";
-                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                options.LoginPath = $"/ee.itcollege.mpalmeos.Identity/Account/Login";
+                options.LogoutPath = $"/ee.itcollege.mpalmeos.Identity/Account/Logout";
+                options.AccessDeniedPath = $"/ee.itcollege.mpalmeos.Identity/Account/AccessDenied";
             });
 
             services.AddSingleton<IEmailSender, EmailSender>();

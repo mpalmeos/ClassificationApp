@@ -1,5 +1,5 @@
 using Contracts.DAL.App.Repositories;
-using Contracts.DAL.Base;
+using ee.itcollege.mpalmeos.Contracts.DAL.Base;
 
 namespace Contracts.DAL.App
 {

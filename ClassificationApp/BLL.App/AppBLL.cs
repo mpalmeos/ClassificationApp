@@ -1,7 +1,7 @@
-using BLL.Base;
+using ee.itcollege.mpalmeos.BLL.Base;
 using Contracts.BLL.App;
 using Contracts.BLL.App.Services;
-using Contracts.BLL.Base.Helpers;
+using ee.itcollege.mpalmeos.Contracts.BLL.Base.Helpers;
 using Contracts.DAL.App;
 
 namespace BLL.App
