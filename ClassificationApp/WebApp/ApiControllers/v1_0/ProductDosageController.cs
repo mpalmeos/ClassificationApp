@@ -44,7 +44,7 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.ProductDosage>> GetProductDosage(int id)
         {
             var productDosage = 
-                v1_0_Mapper.ProductDosageMapper.MapFromBLL(await _bll.ProductDosages.FindAsync(id));
+                v1_0_Mapper.ProductDosageMapper.MapFromBLL(await _bll.ProductDosages.FindAllPerEntity(id));
 
             if (productDosage == null)
             {

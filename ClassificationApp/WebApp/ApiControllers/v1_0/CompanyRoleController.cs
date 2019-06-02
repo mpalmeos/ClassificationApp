@@ -44,7 +44,7 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.CompanyRole>> GetCompanyRole(int id)
         {
             var companyRole = 
-                v1_0_Mapper.CompanyRoleMapper.MapFromBLL(await _bll.CompanyRoles.FindAsync(id));
+                v1_0_Mapper.CompanyRoleMapper.MapFromBLL(await _bll.CompanyRoles.FindAllPerEntity(id));
 
             if (companyRole == null)
             {
@@ -83,7 +83,7 @@ namespace WebApp.ApiControllers.v1_0
         /// <returns>New CompanyRole object and ID.</returns>
         // POST: api/CompanyRole
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<v1_0_DTO.CompanyRole>> PostCompanyRole(v1_0_DTO.CompanyRole companyRole)
         {
             companyRole = v1_0_Mapper.CompanyRoleMapper.MapFromBLL(

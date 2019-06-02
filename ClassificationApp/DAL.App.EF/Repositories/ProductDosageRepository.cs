@@ -6,6 +6,7 @@ using DAL.App.EF.Mappers;
 using ee.itcollege.mpalmeos.DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using ProductDosage = DAL.App.DTO.ProductDosage;
 
 namespace DAL.App.EF.Repositories
 {
@@ -16,13 +17,24 @@ namespace DAL.App.EF.Repositories
             base(repositoryDbContext, new ProductDosageMapper())
         {
         }
-        
-        public async Task<List<DAL.App.DTO.ProductDosage>> AllProductsWithDosages(int id)
+
+        public override async Task<List<ProductDosage>> AllAsync()
         {
             return await RepositoryDbSet
                 .Include(c => c.Dosage)
                 .Include(r => r.Product)
                 .Select(e => ProductDosageMapper.MapFromDomain(e)).ToListAsync();
         }
+
+        public async Task<ProductDosage> FindAllPerEntity(int id)
+        {
+            var productDosage = await RepositoryDbSet
+                .Include(c => c.Dosage)
+                .Include(r => r.Product)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            return ProductDosageMapper.MapFromDomain(productDosage);
+        }
+        
     }
 }

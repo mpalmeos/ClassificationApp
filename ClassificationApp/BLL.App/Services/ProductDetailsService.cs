@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using BLL.App.DTO.Customs;
 using BLL.App.Mappers;
 using ee.itcollege.mpalmeos.BLL.Base.Services;
 using Contracts.BLL.App.Services;
@@ -12,6 +14,11 @@ namespace BLL.App.Services
         public ProductDetailsService(IAppUnitOfWork uow) : base(uow, new ProductDetailsMapper())
         {
             ServiceRepository = Uow.ProductDetails;
+        }
+
+        public Task<ProductDetails> FindAllPerEntity(int id)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

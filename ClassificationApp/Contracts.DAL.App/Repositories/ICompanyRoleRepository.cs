@@ -13,6 +13,6 @@ namespace Contracts.DAL.App.Repositories
     public interface ICompanyRoleRepository<TDALEntity> : IBaseRepository<TDALEntity>
         where TDALEntity : class, new()
     {
-        
+        Task<TDALEntity> FindAllPerEntity(int id);
     }
 }

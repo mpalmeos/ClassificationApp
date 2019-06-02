@@ -44,7 +44,7 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.Product>> GetProduct(int id)
         {
             var product = 
-                v1_0_Mapper.ProductMapper.MapFromBLL(await _bll.Products.FindAsync(id));
+                v1_0_Mapper.ProductMapper.MapFromBLL(await _bll.Products.FindAllPerEntity(id));
 
             if (product == null)
             {

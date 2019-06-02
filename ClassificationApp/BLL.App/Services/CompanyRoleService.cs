@@ -18,5 +18,10 @@ namespace BLL.App.Services
         {
             ServiceRepository = Uow.CompanyRoles;
         }
+        
+        public async Task<BLL.App.DTO.CompanyRole> FindAllPerEntity(int id)
+        {
+            return CompanyRoleMapper.MapFromDAL(await Uow.CompanyRoles.FindAllPerEntity(id));
+        }
     }
 }

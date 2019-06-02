@@ -44,7 +44,7 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.ProductDescription>> GetProductDescription(int id)
         {
             var productDescription = 
-                v1_0_Mapper.ProductDescriptionMapper.MapFromBLL(await _bll.ProductDescriptions.FindAsync(id));
+                v1_0_Mapper.ProductDescriptionMapper.MapFromBLL(await _bll.ProductDescriptions.FindAllPerEntity(id));
 
             if (productDescription == null)
             {

@@ -7,7 +7,6 @@ ProjectSection(SolutionItems) = preProject
 	..\README.md = ..\README.md
 	..\.gitignore = ..\.gitignore
 	..\C#_Projekt_M_Palmeos.pdf = ..\C#_Projekt_M_Palmeos.pdf
-	..\DBPic2.jpg = ..\DBPic2.jpg
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{D70F8924-4797-4DFF-B893-6B736AF0F28D}"
