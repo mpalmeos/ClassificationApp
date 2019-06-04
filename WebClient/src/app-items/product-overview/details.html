@@ -39,7 +39,7 @@
   </div>
   <div>
     <!-- if.bind - add/remove element to dom based on predicate -->
-    <a if.bind="productCompany != null" route-href="route: product-overviewEdit; params.bind: {id: productCompany.id}">Muuda andmeid</a> |
+    <a if.bind="productCompany != null" route-href="route: product-overviewEdit; params.bind: {id: productCompany.id}" show.bind="appConfig.jwt != null">Muuda andmeid</a> |
     <a route-href="route: product-overviewIndex">Tagasi nimekirja</a>
   </div>
 </template>

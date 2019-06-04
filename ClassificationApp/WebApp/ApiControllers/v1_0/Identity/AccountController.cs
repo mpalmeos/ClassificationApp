@@ -4,10 +4,10 @@ using Domain.Identity;
 using ee.itcollege.mpalmeos.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using WebApp.Areas.Identity.Pages.Account;
 
 namespace WebApp.ApiControllers.v1_0.Identity
 {
