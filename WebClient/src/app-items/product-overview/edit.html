@@ -17,9 +17,8 @@
             <dd class="col-sm-10">
               <label>
                 <select value.bind="productCompany.company.id">
-                  <option repeat.for="item of company" model.bind="item.id">
-                    ${item.companyName}
-                  </option>
+                  <option model.bind="null">${productCompany.company.companyName}</option>
+                  <option repeat.for="item of company" model.bind="item.id">${item.companyName}</option>
                 </select>
               </label>
             </dd>
@@ -32,9 +31,8 @@
             <dd class="col-sm-10">
               <label>
                 <select value.bind="productCompany.product.routeOfAdministration.id">
-                  <option repeat.for="item of routeOfAdmin" model.bind="item.id">
-                    ${item.routeOfAdministrationValue}
-                  </option>
+                  <option model.bind="null">${productCompany.product.routeOfAdministration.routeOfAdministrationValue}</option>
+                  <option repeat.for="item of routeOfAdmin" model.bind="item.id">${item.routeOfAdministrationValue}</option>
                 </select>
               </label>
             </dd>
@@ -55,9 +53,8 @@
             </dt>
             <dd class="col-sm-10">
               <select value.bind="productCompany.product.productClassification.id">
-                <option repeat.for="item of classification" model.bind="item.id">
-                  ${item.productClassificationValue}
-                </option>
+                <option model.bind="null">${productCompany.product.productClassification.productClassificationValue}</option>
+                <option repeat.for="item of classification" model.bind="item.id">${item.productClassificationValue}</option>
               </select>
             </dd>
           </dl>
