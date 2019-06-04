@@ -14,5 +14,6 @@ export class ProductService extends BaseService<IProduct> {
     private appConfig: AppConfig
   ) {
     super(httpClient, appConfig, 'Product');
+    
   }
 }

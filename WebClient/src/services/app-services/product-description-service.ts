@@ -15,4 +15,26 @@ export class ProductDescriptionService extends BaseService<IProductDescription> 
   ) {
     super(httpClient, appConfig, 'ProductDescription');
   }
+
+  fetchByProduct(productId: number): Promise<IProductDescription> {
+    let url = this.appConfig.apiUrl + 'ProductDescription' + '/' + productId;
+
+    return this.httpClient.fetch(url, {
+      cache: 'no-store',
+      headers: {
+        Authorization: 'Bearer ' + this.appConfig.jwt,
+      }
+    })
+      .then(response => {
+        log.debug('resonse', response);
+        return response.json();
+      })
+      .then(jsonData => {
+        log.debug('jsonData', jsonData);
+        return jsonData;
+      }).catch(reason => {
+        log.debug('catch reason', reason);
+      });
+  }
+
 }

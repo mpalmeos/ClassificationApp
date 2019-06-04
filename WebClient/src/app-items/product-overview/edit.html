@@ -1,0 +1,73 @@
+<template>
+
+  <h1>${productCompany.product.productName.productNameValue}</h1>
+
+  <h4></h4>
+  <hr />
+  <div class="row">
+    <div class="col-md-4">
+      <form method="post" submit.delegate="submit()">
+
+        <div class="form-group">
+
+          <dl class="row">
+            <dt class="col-sm-2">
+              <label class="control-label">Tootja</label>
+            </dt>
+            <dd class="col-sm-10">
+              <select value.bind="productCompany.company.id">
+                <option repeat.for="item of company" model.bind="item.id">
+                  ${item.companyName}
+                </option>
+              </select>
+            </dd>
+          </dl>
+
+          <dl class="row">
+            <dt class="col-sm-2">
+              <label class="control-label">Manustamisviis</label>
+            </dt>
+            <dd class="col-sm-10">
+              <select value.bind="productCompany.product.routeOfAdministration.id">
+                <option repeat.for="item of routeOfAdmin" model.bind="item.id">
+                  ${item.routeOfAdministrationValue}
+                </option>
+              </select>
+            </dd>
+          </dl>
+
+          <dl class="row">
+            <dt class="col-sm-2">
+              <label class="control-label" for="description">Kirjeldus</label>
+            </dt>
+            <dd class="col-sm-10">
+              <input class="form-control" id="description" type="text" value.bind="productDescription.description.descriptionValue"/>
+            </dd>
+          </dl>
+
+          <dl class="row">
+            <dt class="col-sm-2">
+              <label class="control-label">Määratlus</label>
+            </dt>
+            <dd class="col-sm-10">
+              <select value.bind="productCompany.product.productClassification.id">
+                <option repeat.for="item of classification" model.bind="item.id">
+                  ${item.productClassificationValue}
+                </option>
+              </select>
+            </dd>
+          </dl>
+          
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div>
+    <a route-href="route: product-overviewDetails; params.bind: {id: productCompany.id}">Tagasi</a>
+  </div>
+
+</template>

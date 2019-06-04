@@ -20,7 +20,12 @@ namespace DAL.App.EF.Repositories
         public override async Task<List<ProductDescription>> AllAsync()
         {
             return await RepositoryDbSet
-                .Include(c => c.Product)
+                .Include(r => r.Product)
+                    .ThenInclude(p => p.RouteOfAdministration)
+                .Include(r => r.Product)
+                    .ThenInclude(n => n.ProductName)
+                .Include(r => r.Product)
+                    .ThenInclude(c => c.ProductClassification)
                 .Include(r => r.Description)
                 .Select(e => ProductDescriptionMapper.MapFromDomain(e)).ToListAsync();
         }
@@ -28,12 +33,19 @@ namespace DAL.App.EF.Repositories
         public async Task<ProductDescription> FindAllPerEntity(int id)
         {
             var productDescription = await RepositoryDbSet
-                .Include(c => c.Product)
+                .Include(r => r.Product)
+                    .ThenInclude(p => p.RouteOfAdministration)
+                .Include(r => r.Product)
+                    .ThenInclude(n => n.ProductName)
+                .Include(r => r.Product)
+                    .ThenInclude(c => c.ProductClassification)
                 .Include(r => r.Description)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => id.Equals(m.ProductId));
+            //.FirstOrDefaultAsync(m => m.Id == id);
 
             return ProductDescriptionMapper.MapFromDomain(productDescription);
         }
+
         
     }
 }

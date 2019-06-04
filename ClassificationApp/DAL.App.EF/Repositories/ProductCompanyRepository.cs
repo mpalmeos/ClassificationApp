@@ -23,6 +23,11 @@ namespace DAL.App.EF.Repositories
             return await RepositoryDbSet
                 .Include(c => c.Company)
                 .Include(r => r.Product)
+                    .ThenInclude(p => p.RouteOfAdministration)
+                .Include(r => r.Product)
+                    .ThenInclude(n => n.ProductName)
+                .Include(r => r.Product)
+                    .ThenInclude(c => c.ProductClassification)
                 .Select(e => ProductCompanyMapper.MapFromDomain(e)).ToListAsync();
         }
 
@@ -31,6 +36,11 @@ namespace DAL.App.EF.Repositories
             var productCompany = await RepositoryDbSet
                 .Include(c => c.Company)
                 .Include(r => r.Product)
+                    .ThenInclude(p => p.RouteOfAdministration)
+                .Include(r => r.Product)
+                    .ThenInclude(n => n.ProductName)
+                .Include(r => r.Product)
+                    .ThenInclude(c => c.ProductClassification)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             return ProductCompanyMapper.MapFromDomain(productCompany);

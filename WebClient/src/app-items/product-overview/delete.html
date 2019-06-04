@@ -1,0 +1,33 @@
+<template>
+  <h1>Kustuta toode</h1>
+
+  <h3>Kas oled kindel, et soovid kustutada selle toote?</h3>
+  <div>
+    <hr/>
+    <dl class="row">
+      <dt class="col-sm-4">
+      Toote nimi
+    </dt>
+      <dd class="col-sm-8">
+        ${productCompany.product.productName.productNameValue}
+      </dd>
+      <dt class="col-sm-4">
+        Manustamisviis
+      </dt>
+      <dd class="col-sm-8">
+        ${productCompany.product.routeOfAdministration.routeOfAdministrationValue}
+      </dd>
+      <dt class="col-sm-4">
+        Tootja
+      </dt>
+      <dd class="col-sm-8">
+        ${productCompany.company.companyName}
+      </dd>
+    </dl>
+
+    <form method="post" submit.delegate="submit()">
+      <input type="submit" value="Kustuta" class="btn btn-danger"/> |
+      <a route-href="route: product-overviewIndex">Tagasi nimekirja</a>
+    </form>
+  </div>
+</template>

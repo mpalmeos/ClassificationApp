@@ -1,0 +1,45 @@
+<template>
+  <h1>Määratletud tooted</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>
+        Toote nimi
+      </th>
+      <th>
+        Tootja
+      </th>
+      <th>
+        Manustamisviis
+      </th>
+      <th>
+        Määratlus
+      </th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- repeat this tr element, iterate over contactTypes -->
+    <tr repeat.for="item of products">
+      <td>
+        <!-- string interpolation -->
+        ${item.product.productName.productNameValue}
+      </td>
+      <td>
+        ${item.company.companyName}
+      </td>
+      <td>
+        ${item.product.routeOfAdministration.routeOfAdministrationValue}
+      </td>
+      <td>
+        ${item.product.productClassification.productClassificationValue}
+      </td>
+      <td>
+        <a route-href="route: product-overviewDetails; params.bind: {id: item.id}">Vaata lähemalt</a> |
+        <a route-href="route: product-overviewDelete; params.bind: {id: item.id}" show.bind="appConfig.jwt != null">Kustuta</a>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</template>

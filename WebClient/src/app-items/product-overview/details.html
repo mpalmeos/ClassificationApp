@@ -1,0 +1,45 @@
+<template>
+  <h1>${productCompany.product.productName.productNameValue}</h1>
+
+  <div>
+    <h4></h4>
+    <hr />
+    <dl class="row">
+      <dt class = "col-sm-2">
+        Tootja
+      </dt>
+      <dd class = "col-sm-10">
+        ${productCompany.company.companyName}
+      </dd>
+    </dl>
+    <dl class="row">
+      <dt class = "col-sm-2">
+        Manustamisviis
+      </dt>
+      <dd class = "col-sm-10">
+        ${productCompany.product.routeOfAdministration.routeOfAdministrationValue}
+      </dd>
+    </dl>
+    <dl class="row">
+      <dt class = "col-sm-2">
+        Kirjeldus
+      </dt>
+      <dd class = "col-sm-10">
+        ${productDescription.description.descriptionValue}
+      </dd>
+    </dl>
+    <dl class="row">
+      <dt class = "col-sm-2">
+        Määratlus
+      </dt>
+      <dd class = "col-sm-10">
+        ${productCompany.product.productClassification.productClassificationValue}
+      </dd>
+    </dl>
+  </div>
+  <div>
+    <!-- if.bind - add/remove element to dom based on predicate -->
+    <a if.bind="productCompany != null" route-href="route: product-overviewEdit; params.bind: {id: productCompany.id}">Muuda andmeid</a> |
+    <a route-href="route: product-overviewIndex">Tagasi nimekirja</a>
+  </div>
+</template>
