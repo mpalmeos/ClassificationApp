@@ -15,11 +15,13 @@
               <label class="control-label">Tootja</label>
             </dt>
             <dd class="col-sm-10">
-              <select value.bind="productCompany.company.id">
-                <option repeat.for="item of company" model.bind="item.id">
-                  ${item.companyName}
-                </option>
-              </select>
+              <label>
+                <select value.bind="productCompany.company.id">
+                  <option repeat.for="item of company" model.bind="item.id">
+                    ${item.companyName}
+                  </option>
+                </select>
+              </label>
             </dd>
           </dl>
 
@@ -28,11 +30,13 @@
               <label class="control-label">Manustamisviis</label>
             </dt>
             <dd class="col-sm-10">
-              <select value.bind="productCompany.product.routeOfAdministration.id">
-                <option repeat.for="item of routeOfAdmin" model.bind="item.id">
-                  ${item.routeOfAdministrationValue}
-                </option>
-              </select>
+              <label>
+                <select value.bind="productCompany.product.routeOfAdministration.id">
+                  <option repeat.for="item of routeOfAdmin" model.bind="item.id">
+                    ${item.routeOfAdministrationValue}
+                  </option>
+                </select>
+              </label>
             </dd>
           </dl>
 

@@ -17,27 +17,28 @@ export class MainRouter {
     log.debug('configureRouter running');
     
     this.router = router;
-    config.title = 'WebClient - Aurelia';
+    config.title = 'Ravimiameti määratlused';
     config.map([
-      {route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('home'), nav: true, title: 'Home'},
+      {route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('home'), nav: true, title: 'Pealeht'},
 
-      {route: 'identity/login', name: 'identity' + 'Login', moduleId: PLATFORM.moduleName('identity/login'), nav: false, title: 'Login'},
-      {route: 'identity/register', name: 'identity' + 'Register', moduleId: PLATFORM.moduleName('identity/register'), nav: false, title: 'Register'},
-      {route: 'identity/logout', name: 'identity' + 'Logout', moduleId: PLATFORM.moduleName('identity/logout'), nav: false, title: 'Logout'},
+      {route: 'identity/login', name: 'identity' + 'Login', moduleId: PLATFORM.moduleName('identity/login'), nav: false, title: 'Logi sisse'},
+      {route: 'identity/register', name: 'identity' + 'Register', moduleId: PLATFORM.moduleName('identity/register'), nav: false, title: 'Registreeri'},
+      {route: 'identity/logout', name: 'identity' + 'Logout', moduleId: PLATFORM.moduleName('identity/logout'), nav: false, title: 'Logi välja'},
       
       //{route: '', name: '', moduleId: PLATFORM.moduleName(''), nav: true, title: ''},
       
-      {route: ['company','company/index'], name: 'company' + 'Index', moduleId: PLATFORM.moduleName('app-items/company/index'), nav: true, title: 'Company'},
+      {route: ['company','company/index'], name: 'company' + 'Index', moduleId: PLATFORM.moduleName('app-items/company/index'), nav: false, title: 'Company'},
       {route: 'company/create', name: 'company' + 'Create', moduleId: PLATFORM.moduleName('app-items/company/create'), nav: false, title: 'Company Create'},
       {route: 'company/edit/:id', name: 'company' + 'Edit', moduleId: PLATFORM.moduleName('app-items/company/edit'), nav: false, title: 'Company Edit'},
       {route: 'company/delete/:id', name: 'company' + 'Delete', moduleId: PLATFORM.moduleName('app-items/company/delete'), nav: false, title: 'Company Delete'},
       {route: 'company/details/:id', name: 'company' + 'Details', moduleId: PLATFORM.moduleName('app-items/company/details'), nav: false, title: 'Company Details'},
 
-      {route: ['product-overview','product-overview/index'], name: 'product-overview' + 'Index', moduleId: PLATFORM.moduleName('app-items/product-overview/index'), nav: true, title: 'Product Overview'},
-      {route: 'product-overview/edit/:id', name: 'product-overview' + 'Edit', moduleId: PLATFORM.moduleName('app-items/product-overview/edit'), nav: false, title: 'Product-overview Edit'},
-      {route: 'product-overview/delete/:id', name: 'product-overview' + 'Delete', moduleId: PLATFORM.moduleName('app-items/product-overview/delete'), nav: false, title: 'Product-overview Delete'},
-      {route: 'product-overview/details/:id', name: 'product-overview' + 'Details', moduleId: PLATFORM.moduleName('app-items/product-overview/details'), nav: false, title: 'Product-overview Details'},
-
+      {route: ['product-overview','product-overview/index'], name: 'product-overview' + 'Index', moduleId: PLATFORM.moduleName('app-items/product-overview/index'), nav: true, title: 'Määratletud tooted'},
+      {route: 'product-overview/edit/:id', name: 'product-overview' + 'Edit', moduleId: PLATFORM.moduleName('app-items/product-overview/edit'), nav: false, title: 'Muuda toode'},
+      {route: 'product-overview/delete/:id', name: 'product-overview' + 'Delete', moduleId: PLATFORM.moduleName('app-items/product-overview/delete'), nav: false, title: 'Kustuta toode'},
+      {route: 'product-overview/details/:id', name: 'product-overview' + 'Details', moduleId: PLATFORM.moduleName('app-items/product-overview/details'), nav: false, title: 'Detailivaade'},
+      {route: 'product-overview/create', name: 'product-overview' + 'Create', moduleId: PLATFORM.moduleName('app-items/product-overview/create'), nav: false, title: 'Lisa toode'},
+      
       /*
       {route: ['c-role','c-role/index'], name: 'c-role' + 'Index', moduleId: PLATFORM.moduleName('app-items/c-role/index'), nav: false, title: 'C-role'},
       {route: 'c-role/create', name: 'c-role' + 'Create', moduleId: PLATFORM.moduleName('app-items/c-role/create'), nav: false, title: 'C-role Create'},
