@@ -12,6 +12,7 @@ User story 3: see product complete view.<br>
 HW4: done (all previous user stories have been implemented in rest server via BLL/services). <br>
 HW5: done (all DTOs added, ApiController methods are commented and Swagger implemented). <br>
 HW6: done (Base projects separated into nuget packages, those are added to project and project works) <br>
+HW7: done (both back and front end have been deployed to Azure server via docker) <br>
 
 This is my project for Distributed Systems II Spring 2019.<br>
 Explanation of project is given in the accompanying PDF file, which will be updated during development.
