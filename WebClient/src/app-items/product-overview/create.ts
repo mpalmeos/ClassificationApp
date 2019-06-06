@@ -20,21 +20,9 @@ export var log = LogManager.getLogger("ProductCompany.Create");
 @autoinject
 export class Create {
 
-  private newProductCompany: IProductCompany = new class implements IProductCompany {
-    company: ICompany;
-    id: number;
-    product: IProduct;
-  };
-  private newProductName: IProductName = new class implements IProductName {
-    id: number;
-    productNameValue: string;
-  };
-  private newProduct: IProduct = new class implements IProduct {
-    id: number;
-    productClassification: IProductClassification;
-    productName: IProductName;
-    routeOfAdministration: IRouteOfAdministration;
-  };
+  private newProductCompany: IProductCompany;
+  private newProductName: IProductName;
+  private newProduct: IProduct;
   private productDescription: IProductDescription;
   private company : ICompany[];
   private routeOfAdmin: IRouteOfAdministration[];
@@ -56,36 +44,40 @@ export class Create {
   // ============ View methods ==============
   submit():void{
     
-    if (this.newProductName.productNameValue != null){
-      this.productNameService.post(this.newProductName).then(
+    this.productNameService.post(this.newProductName).then(
+      response => {
+        return response.json()
+      }
+    ).then(jsonData => {
+      return <IProductName>jsonData;
+    }).then(data => {
+        this.newProduct.productName = data;
+        return this.newProduct;
+      }
+    ).then(product => {
+      this.productService.post(product).then(
         response => {
-          return response.json()}
-      ).then(jsonData => {
-        return <IProductName>jsonData;
-      }).then(data => {
-          this.newProduct.productName = data;
-          return this.newProduct;
+          return response.json()
         }
-      ).then(product => {
-        this.productService.post(product).then(
-          response => {return response.json()}
-        ).then(jsonData => {return <IProduct>jsonData})
-          .then(productData => {
-            this.newProductCompany.product = productData;
-            return this.newProductCompany;
-          }).then(result => {
-          this.productCompanyService.post(result).then(
-            response => {
-              if (response.status == 201){
-                this.router.navigateToRoute("product-overviewIndex");
-              } else {
-                log.error('Error in response!', response)
-              }
+      ).then(jsonData => {
+        return <IProduct>jsonData
+      })
+        .then(productData => {
+          this.newProductCompany.product = productData;
+          return this.newProductCompany;
+        }).then(result => {
+        this.productCompanyService.post(result).then(
+          response => {
+            if (response.status == 201) {
+              this.router.navigateToRoute("product-overviewIndex");
+            } else {
+              log.error('Error in response!', response)
             }
-          )
-        })
-      });
-    } 
+          }
+        )
+      })
+    });
+    
     
     /*this.newName.productNameValue = this.newProductName;
     this.newProduct.routeOfAdministration.id = this.newRouteOfAdminId;

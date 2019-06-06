@@ -1,7 +1,7 @@
 <template>
   <h1>Määratletud tooted</h1>
   <p>
-    <a route-href="route: product-overviewCreate">Lisa uus toode</a>
+    <a route-href="route: product-overviewCreate" show.bind="appConfig.jwt != null">Lisa uus toode</a>
   </p>
   <table class="table">
     <thead>
