@@ -13,7 +13,8 @@
             <label class="control-label" for="name">Toote nimi</label>
           </dt>
           <dd class="col-sm-10">
-            <input class="form-control" id="name" type="text" value.bind="productCompany.product.productName.productNameValue"/>
+            <input class="form-control" id="name" type="text" 
+                   value.bind="newProductName.productNameValue"/>
           </dd>
         </dl>        
 
@@ -23,8 +24,8 @@
           </dt>
           <dd class="col-sm-10">
             <label>
-              <select value.bind="productCompany.company.id">
-                <option repeat.for="item of company" model.bind="item.id">
+              <select value.bind="newProductCompany.company">
+                <option repeat.for="item of company" model.bind="item">
                   ${item.companyName}
                 </option>
               </select>
@@ -38,8 +39,8 @@
           </dt>
           <dd class="col-sm-10">
             <label>
-              <select value.bind="productCompany.product.routeOfAdministration.id">
-                <option repeat.for="item of routeOfAdmin" model.bind="item.id">
+              <select value.bind="newProduct.routeOfAdministration">
+                <option repeat.for="item of routeOfAdmin" model.bind="item">
                   ${item.routeOfAdministrationValue}
                 </option>
               </select>
@@ -61,8 +62,8 @@
             <label class="control-label">Määratlus</label>
           </dt>
           <dd class="col-sm-10">
-            <select value.bind="productCompany.product.productClassification.id">
-              <option repeat.for="item of classification" model.bind="item.id">
+            <select value.bind="newProduct.productClassification">
+              <option repeat.for="item of classification" model.bind="item">
                 ${item.productClassificationValue}
               </option>
             </select>

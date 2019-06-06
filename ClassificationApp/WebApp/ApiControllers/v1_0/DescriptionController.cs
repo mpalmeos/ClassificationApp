@@ -87,14 +87,15 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.Description>> PostDescription(v1_0_DTO.Description description)
         {
             description = v1_0_Mapper.DescriptionMapper.MapFromBLL(
-                _bll.Descriptions.Add(v1_0_Mapper.DescriptionMapper.MapFromExternal(description)));
+                await _bll.Descriptions.AddAsync(v1_0_Mapper.DescriptionMapper.MapFromExternal(description)));
             await _bll.SaveChangesAsync();
 
             description = v1_0_Mapper.DescriptionMapper.MapFromBLL(
                 _bll.Descriptions.GetUpdatesAfterUOWSaveChanges(
                     v1_0_Mapper.DescriptionMapper.MapFromExternal(description)));
 
-            return CreatedAtAction("GetDescription", new { id = description.Id }, description);
+            return CreatedAtAction("GetDescription", new { version = HttpContext.GetRequestedApiVersion().ToString(),
+                id = description.Id }, description);
         }
 
         /// <summary>

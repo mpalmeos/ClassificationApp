@@ -87,14 +87,14 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.RouteOfAdministration>> PostRouteOfAdministration(v1_0_DTO.RouteOfAdministration routeOfAdministration)
         {
             routeOfAdministration = v1_0_Mapper.RouteOfAdministrationMapper.MapFromBLL(
-                _bll.RouteOfAdministrations.Add(v1_0_Mapper.RouteOfAdministrationMapper.MapFromExternal(routeOfAdministration)));
+                await _bll.RouteOfAdministrations.AddAsync(v1_0_Mapper.RouteOfAdministrationMapper.MapFromExternal(routeOfAdministration)));
             await _bll.SaveChangesAsync();
 
             routeOfAdministration = v1_0_Mapper.RouteOfAdministrationMapper.MapFromBLL(
                 _bll.RouteOfAdministrations.GetUpdatesAfterUOWSaveChanges(
                     v1_0_Mapper.RouteOfAdministrationMapper.MapFromExternal(routeOfAdministration)));
 
-            return CreatedAtAction("GetRouteOfAdministration", new { id = routeOfAdministration.Id }, routeOfAdministration);
+            return CreatedAtAction("GetRouteOfAdministration", new { version = HttpContext.GetRequestedApiVersion().ToString(), id = routeOfAdministration.Id }, routeOfAdministration);
         }
 
         /// <summary>

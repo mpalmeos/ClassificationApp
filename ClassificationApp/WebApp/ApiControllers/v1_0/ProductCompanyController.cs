@@ -87,14 +87,14 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.ProductCompany>> PostProductCompany(v1_0_DTO.ProductCompany productCompany)
         {
             productCompany = v1_0_Mapper.ProductCompanyMapper.MapFromBLL(
-                _bll.ProductCompanies.Add(v1_0_Mapper.ProductCompanyMapper.MapFromExternal(productCompany)));
+                await _bll.ProductCompanies.AddAsync(v1_0_Mapper.ProductCompanyMapper.MapFromExternal(productCompany)));
             await _bll.SaveChangesAsync();
 
             productCompany = v1_0_Mapper.ProductCompanyMapper.MapFromBLL(
                 _bll.ProductCompanies.GetUpdatesAfterUOWSaveChanges(
                     v1_0_Mapper.ProductCompanyMapper.MapFromExternal(productCompany)));
 
-            return CreatedAtAction("GetProductCompany", new { id = productCompany.Id }, productCompany);
+            return CreatedAtAction("GetProductCompany", new { version = HttpContext.GetRequestedApiVersion().ToString(), id = productCompany.Id }, productCompany);
         }
 
         /// <summary>

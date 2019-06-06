@@ -19,7 +19,7 @@ export class MainRouter {
     this.router = router;
     config.title = 'Ravimiameti määratlused';
     config.map([
-      {route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('home'), nav: true, title: 'Pealeht'},
+      {route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('home'), nav: false, title: 'Pealeht'},
 
       {route: 'identity/login', name: 'identity' + 'Login', moduleId: PLATFORM.moduleName('identity/login'), nav: false, title: 'Logi sisse'},
       {route: 'identity/register', name: 'identity' + 'Register', moduleId: PLATFORM.moduleName('identity/register'), nav: false, title: 'Registreeri'},

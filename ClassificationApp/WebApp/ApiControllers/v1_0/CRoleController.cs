@@ -86,14 +86,14 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.CRole>> PostCRole(v1_0_DTO.CRole cRole)
         {
             cRole = v1_0_Mapper.CRoleMapper.MapFromBLL(
-                _bll.CRoles.Add(v1_0_Mapper.CRoleMapper.MapFromExternal(cRole)));
+                await _bll.CRoles.AddAsync(v1_0_Mapper.CRoleMapper.MapFromExternal(cRole)));
             await _bll.SaveChangesAsync();
 
             cRole = v1_0_Mapper.CRoleMapper.MapFromBLL(
                 _bll.CRoles.GetUpdatesAfterUOWSaveChanges(
                     v1_0_Mapper.CRoleMapper.MapFromExternal(cRole)));
 
-            return CreatedAtAction("GetCRole", new {id = cRole.Id}, cRole);
+            return CreatedAtAction("GetCRole", new {version = HttpContext.GetRequestedApiVersion().ToString(), id = cRole.Id}, cRole);
         }
 
         /// <summary>

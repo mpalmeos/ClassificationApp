@@ -83,18 +83,18 @@ namespace WebApp.ApiControllers.v1_0
         /// <returns>New CompanyRole object and ID.</returns>
         // POST: api/CompanyRole
         [HttpPost]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<v1_0_DTO.CompanyRole>> PostCompanyRole(v1_0_DTO.CompanyRole companyRole)
         {
             companyRole = v1_0_Mapper.CompanyRoleMapper.MapFromBLL(
-                _bll.CompanyRoles.Add(v1_0_Mapper.CompanyRoleMapper.MapFromExternal(companyRole)));
+                await _bll.CompanyRoles.AddAsync(v1_0_Mapper.CompanyRoleMapper.MapFromExternal(companyRole)));
             await _bll.SaveChangesAsync();
 
             companyRole = v1_0_Mapper.CompanyRoleMapper.MapFromBLL(
                 _bll.CompanyRoles.GetUpdatesAfterUOWSaveChanges(
                     v1_0_Mapper.CompanyRoleMapper.MapFromExternal(companyRole)));
 
-            return CreatedAtAction("GetCompanyRole", new { id = companyRole.Id }, companyRole);
+            return CreatedAtAction("GetCompanyRole", new { version = HttpContext.GetRequestedApiVersion().ToString(), id = companyRole.Id }, companyRole);
         }
 
         /// <summary>

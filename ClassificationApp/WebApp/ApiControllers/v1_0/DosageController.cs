@@ -87,14 +87,14 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.Dosage>> PostDosage(v1_0_DTO.Dosage dosage)
         {
             dosage = v1_0_Mapper.DosageMapper.MapFromBLL(
-                _bll.Dosages.Add(v1_0_Mapper.DosageMapper.MapFromExternal(dosage)));
+                await _bll.Dosages.AddAsync(v1_0_Mapper.DosageMapper.MapFromExternal(dosage)));
             await _bll.SaveChangesAsync();
 
             dosage = v1_0_Mapper.DosageMapper.MapFromBLL(
                 _bll.Dosages.GetUpdatesAfterUOWSaveChanges(
                     v1_0_Mapper.DosageMapper.MapFromExternal(dosage)));;
 
-            return CreatedAtAction("GetDosage", new { id = dosage.Id }, dosage);
+            return CreatedAtAction("GetDosage", new {version = HttpContext.GetRequestedApiVersion().ToString(), id = dosage.Id }, dosage);
         }
 
         /// <summary>

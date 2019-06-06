@@ -24,5 +24,14 @@ namespace DAL.App.EF.Repositories
                 .Include(r => r.ProductNameValue)
                 .Select(e => ProductNameMapper.MapFromDomain(e)).ToListAsync();
         }
+
+        public async Task<DAL.App.DTO.ProductName> FindNameByName(string name)
+        {
+            var productName = await RepositoryDbSet
+                .Include(r => r.ProductNameValue)
+                .FirstOrDefaultAsync(m => name.Trim().Equals(m.ProductNameValue));
+
+            return ProductNameMapper.MapFromDomain(productName);
+        }
     }
 }

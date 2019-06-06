@@ -89,15 +89,15 @@ namespace WebApp.ApiControllers.v1_0
         public async Task<ActionResult<v1_0_DTO.ProductClassification>> PostProductClassification(v1_0_DTO.ProductClassification productClassification)
         {
             productClassification = v1_0_Mapper.ProductClassificationMapper.MapFromBLL(
-                _bll.ProductClassifications
-                    .Add(v1_0_Mapper.ProductClassificationMapper.MapFromExternal(productClassification)));
+                await _bll.ProductClassifications
+                    .AddAsync(v1_0_Mapper.ProductClassificationMapper.MapFromExternal(productClassification)));
             await _bll.SaveChangesAsync();
 
             productClassification = v1_0_Mapper.ProductClassificationMapper.MapFromBLL(
                 _bll.ProductClassifications.GetUpdatesAfterUOWSaveChanges(
                     v1_0_Mapper.ProductClassificationMapper.MapFromExternal(productClassification)));
 
-            return CreatedAtAction("GetProductClassification", new { id = productClassification.Id }, productClassification);
+            return CreatedAtAction("GetProductClassification", new {version = HttpContext.GetRequestedApiVersion().ToString(),  id = productClassification.Id }, productClassification);
         }
 
         /// <summary>
